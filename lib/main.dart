@@ -14,11 +14,11 @@ class MyApp extends StatelessWidget {
       title: 'D-Férias',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 247, 234, 220),
+        scaffoldBackgroundColor: const Color(0xFFF7EADC),
         colorScheme: const ColorScheme.light(primary: Color(0xFFFF8D06), secondary: Color(0xFFF19413)),
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }
