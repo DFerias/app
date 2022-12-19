@@ -1,25 +1,30 @@
 part of 'login_bloc.dart';
 
-class LoginState {
+@immutable
+abstract class AuthState {}
+
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
+
+class AuthLoaded extends AuthState {
   final String? email;
   final String? password;
-  final FormEnvioStatus formStatus;
 
-  LoginState({
+  AuthLoaded({
     this.email,
     this.password,
-    this.formStatus = const InitialFormStatus(),
   });
 
-  LoginState copyWith({
+  AuthLoaded copyWith({
     String? email,
     String? password,
-    FormEnvioStatus? formStatus,
   }) {
-    return LoginState(
+    return AuthLoaded(
       email: email ?? this.email,
       password: password ?? this.password,
-      formStatus: formStatus ?? this.formStatus,
     );
   }
 }
+
+class AuthError extends AuthState {}
