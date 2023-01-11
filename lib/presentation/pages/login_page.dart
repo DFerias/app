@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool _enableSenha = false;
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +22,13 @@ class LoginPage extends StatelessWidget {
               Image.asset('assets/d_ferias_logo.png'),
               const SizedBox(height: 17.0),
               const Text(
-                'Bem-vindo!',
+                'Bem-vindo(a)!',
                 style: TextStyle(fontSize: 20.0),
               ),
               const SizedBox(height: 20.0),
               _loginForm(),
+              const SizedBox(height: 25.0),
+              _loginButton(),
               const SizedBox(height: 25.0),
               _resetPasswordButton(),
             ],
@@ -36,8 +45,6 @@ class LoginPage extends StatelessWidget {
           _emailField(),
           const SizedBox(height: 15.0),
           _passwordField(),
-          const SizedBox(height: 25.0),
-          _loginButton(),
         ],
       ),
     );
@@ -67,7 +74,7 @@ class LoginPage extends StatelessWidget {
     return TextFormField(
       controller: null,
       keyboardType: TextInputType.text,
-      obscureText: true,
+      obscureText: !_enableSenha,
       decoration: InputDecoration(
         label: const Text('Senha'),
         floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
@@ -76,6 +83,12 @@ class LoginPage extends StatelessWidget {
           Icons.lock_outline,
           color: Colors.orange,
           size: 25.0,
+        ),
+        suffixIcon: GestureDetector(
+          child: !_enableSenha ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
+          onTap: () {
+            _visualizarSenha();
+          },
         ),
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.orange),
@@ -106,5 +119,17 @@ class LoginPage extends StatelessWidget {
       ),
       onPressed: () {},
     );
+  }
+
+  void _visualizarSenha() {
+    if (_enableSenha == false) {
+      setState(() {
+        _enableSenha = true;
+      });
+    } else {
+      setState(() {
+        _enableSenha = false;
+      });
+    }
   }
 }
