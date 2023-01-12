@@ -1,20 +1,26 @@
+import 'package:app/data/models/authModel.dart';
+import 'package:app/data/repositories/auth_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  static final AuthBloc instance = AuthBloc();
+  AuthRepository authRepository = AuthRepository();
+
   AuthBloc() : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) async {
-      if (event is Login) {
-        if (event.email.isEmpty || event.password.isEmpty) {
-          emit(AuthError());
+    on<LoginEvent>((event, emit) async {
+      if (event.email!.isEmpty || event.password!.isEmpty) {
+        emit(AuthError('Ocorreu um erro, verifique e tente novamente!'));
+      } else {
+        emit(AuthLoading());
+        final data = await authRepository.login(event.email!, event.password!);
+
+        if (data is AuthModel) {
+          emit(AuthSucess(data));
         } else {
-          emit(AuthLoading());
-          await Future.delayed(const Duration(seconds: 3), () {
-            emit(AuthLoaded(email: event.email, password: event.password));
-          });
+          emit(AuthInitial());
         }
       }
     });
