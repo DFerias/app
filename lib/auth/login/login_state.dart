@@ -1,30 +1,25 @@
 part of 'login_bloc.dart';
 
-@immutable
-abstract class AuthState {}
-
-class AuthInitial extends AuthState {}
-
-class AuthLoading extends AuthState {}
-
-class AuthLoaded extends AuthState {
-  final String? email;
-  final String? password;
-
-  AuthLoaded({
-    this.email,
-    this.password,
-  });
-
-  AuthLoaded copyWith({
-    String? email,
-    String? password,
-  }) {
-    return AuthLoaded(
-      email: email ?? this.email,
-      password: password ?? this.password,
-    );
-  }
+abstract class AuthState {
+  AuthState();
 }
 
-class AuthError extends AuthState {}
+class AuthInitial extends AuthState {
+  AuthInitial() : super();
+}
+
+class AuthLoading extends AuthState {
+  AuthLoading() : super();
+}
+
+class AuthSucess extends AuthState {
+  final AuthModel authModel;
+
+  AuthSucess(this.authModel);
+}
+
+class AuthError extends AuthState {
+  final String message;
+
+  AuthError(this.message);
+}
