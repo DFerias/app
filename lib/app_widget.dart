@@ -18,7 +18,7 @@ class AppWidget extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xFFF7EADC),
           colorScheme: ColorScheme.light(primary: const Color(0xFFFF8D06), secondary: const Color(0xFFF19413), outline: Colors.grey[500]),
           elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF8D06), foregroundColor: Colors.white))),
-      initialRoute: '/login',
+      initialRoute: App.authService.logado ? '/home' : '/login',
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
