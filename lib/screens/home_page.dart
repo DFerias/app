@@ -1,3 +1,4 @@
+import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,11 +20,18 @@ class _HomePageState extends State<HomePage> {
             alignment: Alignment.centerLeft,
             color: const Color(0xFFFE9822),
             constraints: const BoxConstraints.expand(height: 150.0),
-            child: Row(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _circleAvatar(),
-                const SizedBox(width: 10.0),
-                _displayInfoUser(),
+                Row(
+                  children: [
+                    _circleAvatar(),
+                    const SizedBox(width: 10.0),
+                    _displayInfoUser(),
+                  ],
+                ),
+                _buttonLogOut(),
               ],
             ),
           ),
@@ -68,6 +76,40 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         const Text('Desenvolvimento - Bsoft One', style: TextStyle(fontSize: 16.0)),
+      ],
+    );
+  }
+
+  Widget _buttonLogOut() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        GestureDetector(
+          child: Row(
+            children: const [
+              Text(
+                'Sair',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 5.0),
+              Padding(
+                padding: EdgeInsets.only(right: 12.0),
+                child: Icon(Icons.logout_outlined, color: Colors.white),
+              ),
+            ],
+          ),
+          onTap: () {
+            Dialogs.showLoadingDialog(mensagem: 'Saindo...');
+            Future.delayed(
+              const Duration(milliseconds: 500),
+              () {
+                Dialogs.close();
+                App.authService.logOut();
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+              },
+            );
+          },
+        ),
       ],
     );
   }

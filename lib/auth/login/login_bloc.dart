@@ -1,5 +1,5 @@
-import 'package:app/data/models/authModel.dart';
 import 'package:app/data/repositories/auth_repository.dart';
+import 'package:app/index.dart';
 import 'package:bloc/bloc.dart';
 
 part 'login_event.dart';
@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final data = await authRepository.login(event.email!, event.password!);
 
         if (data is AuthModel) {
+          App.authService.atualizarSessao(token: data.token);
           emit(AuthSucess(data));
         } else {
           emit(AuthInitial());
