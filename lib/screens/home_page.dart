@@ -1,4 +1,5 @@
 import 'package:app/index.dart';
+import 'package:app/shared/modal_solicitacao.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -275,7 +276,7 @@ class _HomePageState extends State<HomePage> {
         'Nova Solicitação',
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () => ModalSheetSolicitacao.showModalSheetSolicitacao(),
     );
   }
 
