@@ -1,15 +1,18 @@
-import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:app/index.dart';
+
 class DatePickerWidget extends StatefulWidget {
   final DateTime? date;
-  final bool dataInicio;
+  final bool? dataInicio;
+  final String? label;
 
   const DatePickerWidget({
     Key? key,
     this.date,
-    required this.dataInicio,
+    this.dataInicio,
+    this.label,
   }) : super(key: key);
 
   @override
@@ -19,7 +22,11 @@ class DatePickerWidget extends StatefulWidget {
 class _DatePickerWidgetState extends State<DatePickerWidget> {
   @override
   Widget build(BuildContext context) {
-    String label = widget.dataInicio ? 'Data Inicial' : 'Data Final';
+    String? label = widget.dataInicio == null
+        ? widget.label
+        : widget.dataInicio != null && widget.dataInicio == true
+            ? 'Data Inicial'
+            : 'Data Final';
     String? dataSelecionada = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse((widget.date ?? DateTime.now()).toString()));
 
     return Container(
@@ -32,7 +39,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            widget.date != null ? dataSelecionada : label,
+            widget.date != null ? dataSelecionada : label ?? '',
             style: const TextStyle(
               color: Color(0xFF3F3F3F),
               fontSize: 18.0,
@@ -50,8 +57,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 }
 
 class DateTimePicker {
-  Future picker() async {
-    DateTime? data = await DateDialog.show(DateTime.now());
+  Future picker(DateTime? firstDate) async {
+    DateTime? data = await DateDialog.show(DateTime.now(), firstDate);
     if (data == null) return;
 
     TimeOfDay? time = TimeOfDay.now();

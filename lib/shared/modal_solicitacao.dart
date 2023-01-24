@@ -83,7 +83,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
     return GestureDetector(
       child: DatePickerWidget(dataInicio: true, date: _solicitacaoBloc.state.dataInicial),
       onTap: () {
-        DateTimePicker().picker().then((value) {
+        DateTimePicker().picker(null).then((value) {
           _solicitacaoBloc.add(SelectDataInicialEvent(dataInicio: value));
         });
       },
@@ -94,7 +94,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
     return GestureDetector(
       child: DatePickerWidget(dataInicio: false, date: _solicitacaoBloc.state.dataFinal),
       onTap: () {
-        DateTimePicker().picker().then((value) {
+        DateTimePicker().picker(null).then((value) {
           _solicitacaoBloc.add(SelectDataFinalEvent(dataFinal: value));
         });
       },
