@@ -1,4 +1,6 @@
 import 'package:app/index.dart';
+import 'package:app/shared/modal_cadastro_funcionario.dart';
+import 'package:app/shared/modal_solicitacao.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,7 +37,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 8.0),
           Expanded(
             flex: 2,
             child: _listIconButtons(),
@@ -275,167 +277,177 @@ class _HomePageState extends State<HomePage> {
         'Nova Solicitação',
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () => ModalSheetSolicitacao.showModalSheetSolicitacao(),
     );
   }
 
   Widget _botaoHistorico() {
-    return Column(
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12.0),
-            backgroundColor: const Color(0xFFFE9822),
-            foregroundColor: const Color(0xFFF7A94F),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(12.0),
+              backgroundColor: const Color(0xFFFE9822),
+              foregroundColor: const Color(0xFFF7A94F),
+            ),
+            child: const Icon(
+              Icons.history,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () {},
           ),
-          child: const Icon(
-            Icons.history,
-            color: Colors.white,
-            size: 30.0,
+          const SizedBox(
+            height: 8.0,
           ),
-          onPressed: () {},
-        ),
-        const SizedBox(
-          height: 8.0,
-        ),
-        const Text(
-          'Histórico',
-          style: TextStyle(fontSize: 12.0, color: Colors.black),
-        ),
-      ],
+          const Text(
+            'Histórico',
+            style: TextStyle(fontSize: 12.0, color: Colors.black),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _botaoQuadroFerias() {
-    return Column(
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12.0),
-            backgroundColor: const Color(0xFFFE9822),
-            foregroundColor: const Color(0xFFF7A94F),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(12.0),
+              backgroundColor: const Color(0xFFFE9822),
+              foregroundColor: const Color(0xFFF7A94F),
+            ),
+            child: const Icon(
+              Icons.calendar_month_outlined,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () {},
           ),
-          child: const Icon(
-            Icons.calendar_month_outlined,
-            color: Colors.white,
-            size: 30.0,
+          const SizedBox(
+            height: 8.0,
           ),
-          onPressed: () {},
-        ),
-        const SizedBox(
-          height: 8.0,
-        ),
-        const Text(
-          'Quadro \nde Férias',
-          style: TextStyle(
-            fontSize: 12.0,
-            color: Colors.black,
+          const Text(
+            'Quadro \nde Férias',
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.clip,
           ),
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.clip,
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _botaoSolicitacoes() {
-    return Column(
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12.0),
-            backgroundColor: const Color(0xFFFE9822),
-            foregroundColor: const Color(0xFFF7A94F),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(12.0),
+              backgroundColor: const Color(0xFFFE9822),
+              foregroundColor: const Color(0xFFF7A94F),
+            ),
+            child: const Icon(
+              Icons.checklist_outlined,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () {},
           ),
-          child: const Icon(
-            Icons.checklist_outlined,
-            color: Colors.white,
-            size: 30.0,
+          const SizedBox(
+            height: 8.0,
           ),
-          onPressed: () {},
-        ),
-        const SizedBox(
-          height: 8.0,
-        ),
-        const Text(
-          'Solicitações',
-          style: TextStyle(
-            fontSize: 12.0,
-            color: Colors.black,
+          const Text(
+            'Solicitações',
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.clip,
           ),
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.clip,
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _botaoCadastrarSetor() {
-    return Column(
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12.0),
-            backgroundColor: const Color(0xFFFE9822),
-            foregroundColor: const Color(0xFFF7A94F),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(12.0),
+              backgroundColor: const Color(0xFFFE9822),
+              foregroundColor: const Color(0xFFF7A94F),
+            ),
+            child: const Icon(
+              Icons.group_add_outlined,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () {},
           ),
-          child: const Icon(
-            Icons.group_add_outlined,
-            color: Colors.white,
-            size: 30.0,
+          const SizedBox(
+            height: 8.0,
           ),
-          onPressed: () {},
-        ),
-        const SizedBox(
-          height: 8.0,
-        ),
-        const Text(
-          'Cadastrar \nSetor',
-          style: TextStyle(
-            fontSize: 12.0,
-            color: Colors.black,
+          const Text(
+            'Cadastrar \nSetor',
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.clip,
           ),
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.clip,
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _botaoCadastrarFuncionario() {
-    return Column(
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12.0),
-            backgroundColor: const Color(0xFFFE9822),
-            foregroundColor: const Color(0xFFF7A94F),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(12.0),
+              backgroundColor: const Color(0xFFFE9822),
+              foregroundColor: const Color(0xFFF7A94F),
+            ),
+            child: const Icon(
+              Icons.person_add_outlined,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () => ModalSheetCadastroFuncionario.showModalSheetCadastroFuncionario(),
           ),
-          child: const Icon(
-            Icons.person_add_outlined,
-            color: Colors.white,
-            size: 30.0,
+          const SizedBox(
+            height: 8.0,
           ),
-          onPressed: () {},
-        ),
-        const SizedBox(
-          height: 8.0,
-        ),
-        const Text(
-          'Cadastrar \nFuncionário',
-          style: TextStyle(
-            fontSize: 12.0,
-            color: Colors.black,
+          const Text(
+            'Cadastrar \nFuncionário',
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.clip,
           ),
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.clip,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

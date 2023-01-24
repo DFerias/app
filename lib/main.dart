@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => DataSolicitacaoBloc()),
       ],
       child: const AppWidget(),
     );

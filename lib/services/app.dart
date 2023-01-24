@@ -8,6 +8,7 @@ class App {
   static SharedPreferences? cache;
   static AuthService authService = AuthService.instance;
   static final authBloc = AuthBloc.instance;
+  static final dataSolicitacao = DataSolicitacaoBloc.instance;
 
   static BuildContext context = navigator.currentState!.overlay!.context;
 
