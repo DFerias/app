@@ -1,7 +1,13 @@
+import 'package:app/bloc/listar_ferias_bloc/listar_ferias_bloc.dart';
+import 'package:app/data/models/lista_ferias_geral_model.dart';
 import 'package:app/index.dart';
+import 'package:app/shared/loading.dart';
 import 'package:app/shared/modal_cadastro_funcionario.dart';
+import 'package:app/shared/modal_cadastro_setor.dart';
 import 'package:app/shared/modal_solicitacao.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +17,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<List<SolicitacaoFeriasGeralModel>>? future;
+  late ListarFeriasBloc _listarFeriasBloc;
+  late SolicitacaoFeriasGeralModel solFerias;
+
+  @override
+  void initState() {
+    _listarFeriasBloc = ListarFeriasBloc();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _listarFeriasBloc.add(LoadListEvent());
+    });
+    super.initState();
+  }
+
+  Future<void> onRefresh() async {
+    _listarFeriasBloc.add(LoadListEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,12 +171,29 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 5.0),
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(0),
-                physics: const PageScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return _cardFerias();
+              child: NotificationListener<ScrollNotification>(
+                child: Scrollbar(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      _listarFeriasBloc.add(RefreshListEvent());
+                      _listarFeriasBloc.refresh = true;
+                    },
+                    child: BlocBuilder<ListarFeriasBloc, ListarFeriasState>(
+                      bloc: _listarFeriasBloc,
+                      builder: (context, state) {
+                        return _loadingSolicitacoes(state);
+                      },
+                    ),
+                  ),
+                ),
+                onNotification: (notification) {
+                  if (_listarFeriasBloc.carregando == false && _listarFeriasBloc.continuarCarregando && notification.metrics.extentAfter == 0.0) {
+                    _listarFeriasBloc
+                      ..carregando = true
+                      ..add(LoadListEvent());
+                  }
+
+                  return false;
                 },
               ),
             ),
@@ -163,7 +203,78 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _cardFerias() {
+  _loadingSolicitacoes(ListarFeriasState state) {
+    if (state is ListarFeriasInitialState || state is LoadingListState && _listarFeriasBloc.listaGeral.isEmpty) {
+      return const Loading(
+        texto: 'Aguarde, carregando dados...',
+      );
+    } else if (state is RefreshListState) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is SuccessListState && _listarFeriasBloc.listaGeral.isNotEmpty) {
+      if (_listarFeriasBloc.carregando) {
+        _listarFeriasBloc.carregando = false;
+      } else if (_listarFeriasBloc.refresh) {
+        _listarFeriasBloc.refresh = false;
+      }
+    } else if (_listarFeriasBloc.listaGeral.isEmpty && _listarFeriasBloc.carregando == false) {
+      return SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Opacity(
+                opacity: Theme.of(context).brightness == Brightness.light ? 0.6 : 0.8,
+                child: Image.asset(
+                  'assets/empty_folder.png',
+                  scale: 2.0,
+                ),
+              ),
+              Text(
+                'Nenhum Documento Encontrado',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.grey[500],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return _listViewFerias();
+  }
+
+  _listViewFerias() {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(0),
+            physics: const BouncingScrollPhysics(),
+            itemCount: _listarFeriasBloc.carregando == true ? _listarFeriasBloc.listaGeral.length + 1 : _listarFeriasBloc.listaGeral.length,
+            itemBuilder: (context, index) {
+              if (_listarFeriasBloc.listaGeral.length == index) {
+                if (_listarFeriasBloc.carregando == true && _listarFeriasBloc.continuarCarregando) {
+                  return const Loading();
+                } else {
+                  Container();
+                }
+              }
+
+              solFerias = _listarFeriasBloc.listaGeral[index % _listarFeriasBloc.listaGeral.length];
+
+              return _cardFerias(solFerias);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _cardFerias(SolicitacaoFeriasGeralModel solFerias) {
     return Card(
       elevation: 2.0,
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -183,9 +294,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     children: [
-                      TextSpan(
+                      const TextSpan(
                         text: 'Dept.: ',
                         style: TextStyle(
                           fontSize: 16.0,
@@ -194,8 +305,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       TextSpan(
-                        text: 'Desenvolvimento',
-                        style: TextStyle(
+                        text: solFerias.idFuncionario.toString(),
+                        style: const TextStyle(
                           fontSize: 16.0,
                           color: Color(0xFF3F3F3F),
                         ),
@@ -207,9 +318,9 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: [
-                          TextSpan(
+                          const TextSpan(
                             text: 'Início: ',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -218,8 +329,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           TextSpan(
-                            text: '12/12/2022',
-                            style: TextStyle(
+                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.inicio.toString())),
+                            style: const TextStyle(
                               fontSize: 16.0,
                               color: Color(0xFF3F3F3F),
                             ),
@@ -228,9 +339,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: [
-                          TextSpan(
+                          const TextSpan(
                             text: 'Fim: ',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -239,8 +350,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           TextSpan(
-                            text: '10/01/2023',
-                            style: TextStyle(
+                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.fim.toString())),
+                            style: const TextStyle(
                               fontSize: 16.0,
                               color: Color(0xFF3F3F3F),
                             ),
@@ -397,7 +508,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               size: 30.0,
             ),
-            onPressed: () {},
+            onPressed: () => ModalSheetCadastroSetor.showModalSheetCadastroSetor(),
           ),
           const SizedBox(
             height: 8.0,

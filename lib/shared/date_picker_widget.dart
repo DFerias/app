@@ -32,7 +32,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: const BoxDecoration(
-        color: Color(0xFFF1E1C8),
+        color: Color.fromARGB(255, 229, 218, 204),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       child: Row(

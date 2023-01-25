@@ -45,7 +45,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
         return ClipRRect(
           borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
           child: Container(
-            color: const Color(0xFFFFCD98),
+            color: const Color(0xFFF7EADC),
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             child: SingleChildScrollView(
               child: Column(

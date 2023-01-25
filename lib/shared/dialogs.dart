@@ -45,8 +45,7 @@ class Dialogs {
           child: Dialog(
             child: Padding(
               padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
