@@ -3,7 +3,7 @@ import 'package:app/data/models/lista_ferias_geral_model.dart';
 import 'package:app/index.dart';
 import 'package:app/shared/loading.dart';
 import 'package:app/shared/modal_cadastro_funcionario.dart';
-import 'package:app/shared/modal_cadastro_setor.dart';
+import 'package:app/shared/modal_cadastro_equipe.dart';
 import 'package:app/shared/modal_solicitacao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,14 +93,14 @@ class _HomePageState extends State<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
-          text: const TextSpan(
+          text: TextSpan(
             children: [
-              TextSpan(text: 'Bem-vindo(a), ', style: TextStyle(fontSize: 16.0)),
-              TextSpan(text: 'Renê!', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+              const TextSpan(text: 'Bem-vindo(a), ', style: TextStyle(fontSize: 16.0)),
+              TextSpan(text: App.authService.usuario?.nome, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
-        const Text('Desenvolvimento - Bsoft One', style: TextStyle(fontSize: 16.0)),
+        Text('${App.authService.usuario?.modalidade} - Bsoft One', style: const TextStyle(fontSize: 16.0)),
       ],
     );
   }
@@ -364,7 +364,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          onTap: () {},
         ),
       ),
     );
@@ -479,7 +478,7 @@ class _HomePageState extends State<HomePage> {
             height: 8.0,
           ),
           const Text(
-            'Solicitações',
+            'Solicitações \nPendentes',
             style: TextStyle(
               fontSize: 12.0,
               color: Colors.black,
@@ -508,13 +507,13 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               size: 30.0,
             ),
-            onPressed: () => ModalSheetCadastroSetor.showModalSheetCadastroSetor(),
+            onPressed: () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
           ),
           const SizedBox(
             height: 8.0,
           ),
           const Text(
-            'Cadastrar \nSetor',
+            'Cadastrar \nEquipe',
             style: TextStyle(
               fontSize: 12.0,
               color: Colors.black,

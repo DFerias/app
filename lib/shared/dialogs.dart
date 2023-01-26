@@ -66,7 +66,7 @@ class Dialogs {
     );
   }
 
-  static showAlertDialog(String? message, String? titulo) {
+  static Future showAlertDialog(String? message, String? titulo) {
     return showDialog(
       context: App.context,
       builder: (context) {

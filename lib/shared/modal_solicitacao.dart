@@ -81,7 +81,21 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
 
   Widget _dataInicio() {
     return GestureDetector(
-      child: DatePickerWidget(dataInicio: true, date: _solicitacaoBloc.state.dataInicial),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Data Inicial',
+            style: TextStyle(
+              color: Color(0xFF3F3F3F),
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 2.0),
+          DatePickerWidget(dataInicio: true, date: _solicitacaoBloc.state.dataInicial)
+        ],
+      ),
       onTap: () {
         DateTimePicker().picker(null).then((value) {
           _solicitacaoBloc.add(SelectDataInicialEvent(dataInicio: value));
@@ -92,7 +106,21 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
 
   Widget _dataFim() {
     return GestureDetector(
-      child: DatePickerWidget(dataInicio: false, date: _solicitacaoBloc.state.dataFinal),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Data Final',
+            style: TextStyle(
+              color: Color(0xFF3F3F3F),
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 2.0),
+          DatePickerWidget(dataInicio: false, date: _solicitacaoBloc.state.dataFinal),
+        ],
+      ),
       onTap: () {
         DateTimePicker().picker(null).then((value) {
           _solicitacaoBloc.add(SelectDataFinalEvent(dataFinal: value));
@@ -106,7 +134,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
       constraints: const BoxConstraints(minWidth: double.infinity),
       child: ElevatedButton(
         child: const Text(
-          'Finalizar Solicitação',
+          'Enviar Solicitação',
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
         onPressed: () {

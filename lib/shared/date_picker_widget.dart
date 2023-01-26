@@ -6,13 +6,11 @@ import 'package:app/index.dart';
 class DatePickerWidget extends StatefulWidget {
   final DateTime? date;
   final bool? dataInicio;
-  final String? label;
 
   const DatePickerWidget({
     Key? key,
     this.date,
     this.dataInicio,
-    this.label,
   }) : super(key: key);
 
   @override
@@ -22,26 +20,22 @@ class DatePickerWidget extends StatefulWidget {
 class _DatePickerWidgetState extends State<DatePickerWidget> {
   @override
   Widget build(BuildContext context) {
-    String? label = widget.dataInicio == null
-        ? widget.label
-        : widget.dataInicio != null && widget.dataInicio == true
-            ? 'Data Inicial'
-            : 'Data Final';
+    String? label = 'DD/MM/YYYY';
     String? dataSelecionada = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse((widget.date ?? DateTime.now()).toString()));
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 229, 218, 204),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        borderRadius: BorderRadius.all(Radius.circular(6.0)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            widget.date != null ? dataSelecionada : label ?? '',
-            style: const TextStyle(
-              color: Color(0xFF3F3F3F),
+            widget.date != null ? dataSelecionada : label,
+            style: TextStyle(
+              color: widget.date != null ? const Color(0xFF3F3F3F) : const Color(0x913F3F3F),
               fontSize: 18.0,
             ),
           ),

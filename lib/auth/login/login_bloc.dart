@@ -18,7 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final data = await authRepository.login(event.email!, event.password!);
 
         if (data is AuthModel) {
-          App.authService.atualizarSessao(token: data.token);
+          App.authService.atualizarSessao(token: data.token, usuario: data.funcionario);
           emit(AuthSucess(data));
         } else {
           emit(AuthInitial());

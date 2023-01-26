@@ -216,7 +216,21 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
 
   Widget _dataAdmissao() {
     return GestureDetector(
-      child: DatePickerWidget(label: 'Data de Admissão', date: _dataAdmis),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Data de Admissão',
+            style: TextStyle(
+              color: Color(0xFF3F3F3F),
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 2.0),
+          DatePickerWidget(date: _dataAdmis),
+        ],
+      ),
       onTap: () {
         DateTimePicker().picker(DateTime(2005)).then((value) {
           setState(() {
