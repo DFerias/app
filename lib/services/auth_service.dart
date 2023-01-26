@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:app/index.dart';
 
 class AuthService {

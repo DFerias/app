@@ -1,7 +1,5 @@
 import 'package:app/index.dart';
-import 'package:app/shared/date_picker_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ModalSheetSolicitacao extends StatefulWidget {
   const ModalSheetSolicitacao({super.key});
@@ -23,59 +21,49 @@ class ModalSheetSolicitacao extends StatefulWidget {
 }
 
 class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
-  late DataSolicitacaoBloc _solicitacaoBloc;
-
-  @override
-  void initState() {
-    _solicitacaoBloc = DataSolicitacaoBloc();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _solicitacaoBloc.add(CleanEvent());
-    super.dispose();
-  }
+  final _formKey = GlobalKey<FormState>();
+  DateTime? _inicio;
+  DateTime? _fim;
+  bool? _inicialValido;
+  bool? _finalValido;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DataSolicitacaoBloc, DataSolicitacaoState>(
-      bloc: _solicitacaoBloc,
-      builder: (context, state) {
-        return ClipRRect(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-          child: Container(
-            color: const Color(0xFFF7EADC),
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    height: 5.0,
-                    width: 75.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      color: Colors.grey[700],
-                    ),
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+      child: Container(
+        color: const Color(0xFFF7EADC),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 5.0,
+                  width: 75.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50.0),
+                    color: Colors.grey[700],
                   ),
-                  const SizedBox(height: 8.0),
-                  const Text(
-                    'Nova Solicitação',
-                    style: TextStyle(color: Color(0xFF3F3F3F), fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20.0),
-                  _dataInicio(),
-                  const SizedBox(height: 10.0),
-                  _dataFim(),
-                  const SizedBox(height: 30.0),
-                  _buttonFinalizar()
-                ],
-              ),
+                ),
+                const SizedBox(height: 8.0),
+                const Text(
+                  'Nova Solicitação',
+                  style: TextStyle(color: Color(0xFF3F3F3F), fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20.0),
+                _dataInicio(),
+                const SizedBox(height: 10.0),
+                _dataFim(),
+                const SizedBox(height: 30.0),
+                _buttonFinalizar()
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -93,12 +81,15 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
             ),
           ),
           const SizedBox(height: 2.0),
-          DatePickerWidget(dataInicio: true, date: _solicitacaoBloc.state.dataInicial)
+          DatePickerWidget(date: _inicio, dataInicialValid: _inicialValido),
         ],
       ),
       onTap: () {
         DateTimePicker().picker(null).then((value) {
-          _solicitacaoBloc.add(SelectDataInicialEvent(dataInicio: value));
+          setState(() {
+            _inicio = value;
+            _inicialValido = true;
+          });
         });
       },
     );
@@ -118,12 +109,15 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
             ),
           ),
           const SizedBox(height: 2.0),
-          DatePickerWidget(dataInicio: false, date: _solicitacaoBloc.state.dataFinal),
+          DatePickerWidget(date: _fim, dataFinalValid: _finalValido),
         ],
       ),
       onTap: () {
         DateTimePicker().picker(null).then((value) {
-          _solicitacaoBloc.add(SelectDataFinalEvent(dataFinal: value));
+          setState(() {
+            _fim = value;
+            _finalValido = true;
+          });
         });
       },
     );
@@ -138,9 +132,42 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          Navigator.pop(context);
+          _validarDataInicial();
+          _validarDataFinal();
+
+          if ((_inicialValido != null && _inicialValido == true) && (_finalValido != null && _finalValido == true)) {
+            Dialogs.showLoadingDialog();
+            SolicitacaoFeriasRepository().solicitacaoFeriasRepo(_inicio, _fim).then((value) {
+              if (value is SolicitacaoFeriasModel) {
+                Dialogs.showAlertDialog('Cadastro realizado: \n\n${value.id} - ${value.status}', 'Sucesso').then((_) {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                });
+              }
+            });
+          }
         },
       ),
     );
+  }
+
+  _validarDataInicial() {
+    setState(() {
+      if (_inicio != null) {
+        _inicialValido = true;
+      } else {
+        _inicialValido = false;
+      }
+    });
+  }
+
+  _validarDataFinal() {
+    setState(() {
+      if (_fim != null) {
+        _finalValido = true;
+      } else {
+        _finalValido = false;
+      }
+    });
   }
 }

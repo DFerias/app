@@ -1,11 +1,12 @@
-import 'package:app/data/models/lista_ferias_geral_model.dart';
-import 'package:app/data/repositories/listar_ferias_repository.dart';
+import 'package:app/index.dart';
 import 'package:bloc/bloc.dart';
 
 part 'listar_ferias_event.dart';
 part 'listar_ferias_state.dart';
 
 class ListarFeriasBloc extends Bloc<ListarFeriasEvent, ListarFeriasState> {
+  static final ListarFeriasBloc instance = ListarFeriasBloc();
+
   final _listarFeriasRepo = ListarFeriasRepository();
   int page = 1;
   bool carregando = false;

@@ -1,5 +1,4 @@
 import 'package:app/index.dart';
-import 'package:app/shared/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 
 class ModalSheetCadastroFuncionario extends StatefulWidget {

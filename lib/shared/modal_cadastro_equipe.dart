@@ -1,7 +1,4 @@
 // ignore_for_file: deprecated_member_use
-
-import 'package:app/data/models/equipe_model.dart';
-import 'package:app/data/repositories/cadastro_equipe_repository.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

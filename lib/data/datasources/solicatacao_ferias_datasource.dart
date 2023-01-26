@@ -2,22 +2,19 @@ import 'dart:convert';
 import 'package:app/index.dart';
 import 'package:http/http.dart' as http;
 
-class CadastroEquipeDatasource {
-  static final CadastroEquipeDatasource instance = CadastroEquipeDatasource();
+class SolicitacaoFeriasDatasource {
+  static final SolicitacaoFeriasDatasource instance = SolicitacaoFeriasDatasource();
 
-  Future cadastroEquipe(int? id, String? nome, String? cor) async {
+  Future enviarSolicitacao(String? dataInicial, String? dataFinal) async {
     Map<String, dynamic> params = {
-      "nome": nome,
-      "cor": cor,
+      'idFuncionario': App.authService.usuario?.id,
+      'inicio': dataInicial,
+      'fim': dataFinal,
     };
-
-    if (id != null) {
-      params.addAll({'id': id});
-    }
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/equipe'),
+        Uri.parse('http://10.0.2.2:8000/api/ferias'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': '${App().token}',
@@ -29,7 +26,7 @@ class CadastroEquipeDatasource {
         return {'statusCode': response.statusCode, 'erro': json.decode(response.body)};
       }
 
-      return {'statusCode': response.statusCode, 'data': json.decode(response.body)};
+      return {'statusCode': response.statusCode, 'data': response.body};
     } catch (e) {
       return {'statusCode': 500, 'erro': App().getMessage(e)};
     }

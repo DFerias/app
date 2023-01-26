@@ -1,5 +1,3 @@
-import 'package:app/data/datasources/listar_ferias_datasource.dart';
-import 'package:app/data/models/lista_ferias_geral_model.dart';
 import 'package:app/index.dart';
 
 class ListarFeriasRepository {

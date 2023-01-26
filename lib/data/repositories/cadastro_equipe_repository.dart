@@ -1,5 +1,3 @@
-import 'package:app/data/datasources/cadastro_equipe_datasource.dart';
-import 'package:app/data/models/equipe_model.dart';
 import 'package:app/index.dart';
 
 class CadastroEquipeRepository {

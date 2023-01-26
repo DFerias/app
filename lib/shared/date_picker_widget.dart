@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:app/index.dart';
 
 class DatePickerWidget extends StatefulWidget {
   final DateTime? date;
-  final bool? dataInicio;
+  final bool? dataInicialValid;
+  final bool? dataFinalValid;
 
   const DatePickerWidget({
     Key? key,
     this.date,
-    this.dataInicio,
+    this.dataInicialValid,
+    this.dataFinalValid,
   }) : super(key: key);
 
   @override
@@ -23,29 +24,47 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     String? label = 'DD/MM/YYYY';
     String? dataSelecionada = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse((widget.date ?? DateTime.now()).toString()));
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 229, 218, 204),
-        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            widget.date != null ? dataSelecionada : label,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE5DACC),
+            borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+            border: Border.all(color: (widget.dataInicialValid != null && widget.dataInicialValid == false) || (widget.dataFinalValid != null && widget.dataFinalValid == false) ? Colors.red : const Color(0xFFE5DACC)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.date != null ? dataSelecionada : label,
+                style: TextStyle(
+                  color: widget.date != null ? const Color(0xFF3F3F3F) : const Color(0x913F3F3F),
+                  fontSize: 18.0,
+                ),
+              ),
+              const Icon(
+                Icons.calendar_month,
+                color: Color(0xFF3F3F3F),
+                size: 30.0,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 2.0),
+        Visibility(
+          visible: (widget.dataInicialValid != null && widget.dataInicialValid == false) || (widget.dataFinalValid != null && widget.dataFinalValid == false),
+          child: const Text(
+            'Campo obrigatório *',
             style: TextStyle(
-              color: widget.date != null ? const Color(0xFF3F3F3F) : const Color(0x913F3F3F),
-              fontSize: 18.0,
+              color: Colors.red,
+              fontSize: 12.0,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const Icon(
-            Icons.calendar_month,
-            color: Color(0xFF3F3F3F),
-            size: 30.0,
-          ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }

@@ -1,10 +1,4 @@
-import 'package:app/bloc/listar_ferias_bloc/listar_ferias_bloc.dart';
-import 'package:app/data/models/lista_ferias_geral_model.dart';
 import 'package:app/index.dart';
-import 'package:app/shared/loading.dart';
-import 'package:app/shared/modal_cadastro_funcionario.dart';
-import 'package:app/shared/modal_cadastro_equipe.dart';
-import 'package:app/shared/modal_solicitacao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -285,9 +279,9 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Fernando Mendes',
-                  style: TextStyle(
+                Text(
+                  solFerias.idFuncionario.toString(),
+                  style: const TextStyle(
                     color: Color(0xFF3F3F3F),
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,

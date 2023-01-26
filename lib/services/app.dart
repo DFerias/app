@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:app/index.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ class App {
   static SharedPreferences? cache;
   static AuthService authService = AuthService.instance;
   static final authBloc = AuthBloc.instance;
-  static final dataSolicitacao = DataSolicitacaoBloc.instance;
+  static final listaFeriasGeral = ListarFeriasBloc.instance;
 
   static BuildContext context = navigator.currentState!.overlay!.context;
   static late Dio dio;
