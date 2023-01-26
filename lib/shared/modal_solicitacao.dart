@@ -139,7 +139,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
             Dialogs.showLoadingDialog();
             SolicitacaoFeriasRepository().solicitacaoFeriasRepo(_inicio, _fim).then((value) {
               if (value is SolicitacaoFeriasModel) {
-                Dialogs.showAlertDialog('Cadastro realizado: \n\n${value.id} - ${value.status}', 'Sucesso').then((_) {
+                Dialogs.showAlertDialog('Cadastro realizado: \n\nSolicitação N.º: ${value.id}\nData inicial: ${value.inicio}\nData final: ${value.fim}', 'Sucesso').then((_) {
                   Navigator.pop(context);
                   Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
                 });
