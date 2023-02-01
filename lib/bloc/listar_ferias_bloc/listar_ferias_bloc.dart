@@ -13,13 +13,13 @@ class ListarFeriasBloc extends Bloc<ListarFeriasEvent, ListarFeriasState> {
   bool continuarCarregando = true;
   bool refresh = false;
 
-  List<SolicitacaoFeriasGeralModel> listaGeral = [];
+  List<SolicitacaoFeriasModel> listaGeral = [];
 
   ListarFeriasBloc() : super(ListarFeriasInitialState()) {
     on<LoadListEvent>((event, emit) async {
       emit(LoadingListState());
 
-      List<SolicitacaoFeriasGeralModel> dados = await _listarFeriasRepo.listarFeriasGeralRepo();
+      List<SolicitacaoFeriasModel> dados = await _listarFeriasRepo.listarFeriasGeralRepo();
       continuarCarregando = dados.length >= 25;
       page++;
 
@@ -32,7 +32,7 @@ class ListarFeriasBloc extends Bloc<ListarFeriasEvent, ListarFeriasState> {
       emit(RefreshListState());
       page = 1;
 
-      List<SolicitacaoFeriasGeralModel> dados = await _listarFeriasRepo.listarFeriasGeralRepo();
+      List<SolicitacaoFeriasModel> dados = await _listarFeriasRepo.listarFeriasGeralRepo();
       continuarCarregando = dados.length >= 25;
       page++;
 

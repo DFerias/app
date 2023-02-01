@@ -6,7 +6,7 @@ class AuthService {
   static final AuthService instance = _cache!.containsKey('token') ? AuthService.fromCache() : AuthService();
 
   String? token;
-  Funcionario? usuario;
+  FuncionarioModel? usuario;
 
   AuthService({
     this.token,
@@ -17,7 +17,7 @@ class AuthService {
     return token != null;
   }
 
-  void atualizarSessao({String? token, Funcionario? usuario}) {
+  void atualizarSessao({String? token, FuncionarioModel? usuario}) {
     if (token != null) {
       this.token = token;
     }
@@ -32,7 +32,7 @@ class AuthService {
   factory AuthService.fromCache() {
     return AuthService(
       token: _cache!.getString('token'),
-      usuario: Funcionario.fromCache(),
+      usuario: FuncionarioModel.fromCache(),
     );
   }
 

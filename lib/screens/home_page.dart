@@ -11,9 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<List<SolicitacaoFeriasGeralModel>>? future;
+  Future<List<SolicitacaoFeriasModel>>? future;
   late ListarFeriasBloc _listarFeriasBloc;
-  late SolicitacaoFeriasGeralModel solFerias;
+  late SolicitacaoFeriasModel solFerias;
 
   @override
   void initState() {
@@ -268,7 +268,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _cardFerias(SolicitacaoFeriasGeralModel solFerias) {
+  Widget _cardFerias(SolicitacaoFeriasModel solFerias) {
     return Card(
       elevation: 2.0,
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -280,7 +280,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  solFerias.idFuncionario.toString(),
+                  solFerias.funcionario!.nome.toString(),
                   style: const TextStyle(
                     color: Color(0xFF3F3F3F),
                     fontSize: 18.0,
@@ -299,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       TextSpan(
-                        text: solFerias.idFuncionario.toString(),
+                        text: solFerias.funcionario!.idEquipe.toString(),
                         style: const TextStyle(
                           fontSize: 16.0,
                           color: Color(0xFF3F3F3F),
@@ -323,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           TextSpan(
-                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.inicio.toString())),
+                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.ferias!.inicio.toString())),
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: Color(0xFF3F3F3F),
@@ -344,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           TextSpan(
-                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.fim.toString())),
+                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.ferias!.fim.toString())),
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: Color(0xFF3F3F3F),

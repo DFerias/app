@@ -210,7 +210,7 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
           Dialogs.showLoadingDialog();
-          final data = await CadastroEquipeRepository().cadastroEquipeRepo(_idLider.text, _nomeEquipe.text, currentColor.toString());
+          final data = await CadastroEquipeRepository().cadastrarEquipeRepo(_idLider.text, _nomeEquipe.text, currentColor.toString());
           if (data is EquipeModel) {
             Dialogs.showAlertDialog('Cadastro realizado: \n\n${data.id} - ${data.nome}', 'Sucesso').then((_) => Navigator.pop(context));
           }

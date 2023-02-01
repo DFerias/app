@@ -2,13 +2,13 @@ import 'package:app/index.dart';
 
 class ListarFeriasRepository {
   final ListarFeriasDatasource _api = ListarFeriasDatasource();
-  List<SolicitacaoFeriasGeralModel>? listaGeral;
+  List<SolicitacaoFeriasModel>? listaGeral;
 
   Future listarFeriasGeralRepo() async {
     await _api.listarFeriasGeral().then((value) {
       try {
         if (value['statusCode'] == 200) {
-          listaGeral = List<SolicitacaoFeriasGeralModel>.from(value['data'].map((i) => SolicitacaoFeriasGeralModel.fromJson(i)));
+          listaGeral = List<SolicitacaoFeriasModel>.from(value['data'].map((i) => SolicitacaoFeriasModel.fromJson(i)));
         }
       } catch (e) {
         Dialogs.showAlertDialog(e.toString(), 'Atenção!');

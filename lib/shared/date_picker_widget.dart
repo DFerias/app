@@ -32,7 +32,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           decoration: BoxDecoration(
             color: const Color(0xFFE5DACC),
             borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-            border: Border.all(color: (widget.dataInicialValid != null && widget.dataInicialValid == false) || (widget.dataFinalValid != null && widget.dataFinalValid == false) ? Colors.red : const Color(0xFFE5DACC)),
+            border: Border.all(color: widget.dataInicialValid == false || widget.dataFinalValid == false ? Colors.red : const Color(0xFFE5DACC)),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,7 +54,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         ),
         const SizedBox(height: 2.0),
         Visibility(
-          visible: (widget.dataInicialValid != null && widget.dataInicialValid == false) || (widget.dataFinalValid != null && widget.dataFinalValid == false),
+          visible: widget.dataInicialValid == false || widget.dataFinalValid == false,
           child: const Text(
             'Campo obrigatório *',
             style: TextStyle(

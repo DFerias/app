@@ -1,5 +1,8 @@
+import 'package:app/data/repositories/listar_modalidade_repository.dart';
 import 'package:app/index.dart';
+import 'package:app/shared/drop_down_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ModalSheetCadastroFuncionario extends StatefulWidget {
   const ModalSheetCadastroFuncionario({super.key});
@@ -21,7 +24,29 @@ class ModalSheetCadastroFuncionario extends StatefulWidget {
 }
 
 class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncionario> {
-  DateTime? _dataAdmis;
+  final _formKey = GlobalKey<FormState>();
+  final _nome = TextEditingController();
+  final _email = TextEditingController();
+  final _senha = TextEditingController();
+  final _cidade = TextEditingController();
+  final _idEquipe = TextEditingController();
+  // DateTime? _dataAdmis;
+  bool? _ufValida;
+
+  Map<String, String>? _listaModalidades;
+
+  final _cadFuncionarioBloc = CadastrarFuncionarioBloc();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ListarModalidadeRepository().listarModalidadeRepo().then((value) {
+        _listaModalidades = {for (var e in value) e.name: e.id.toString()};
+        setState(() {});
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,50 +67,16 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
               ),
               backgroundColor: const Color(0xFFF7EADC),
             ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _nomeField(),
-                    const SizedBox(height: 12.0),
-                    _emailField(),
-                    const SizedBox(height: 12.0),
-                    _senhaField(),
-                    const SizedBox(height: 12.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 8,
-                          child: _cidadeField(),
-                        ),
-                        const SizedBox(width: 12.0),
-                        Expanded(
-                          flex: 2,
-                          child: _ufField(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: _idEquipeField(),
-                        ),
-                        const SizedBox(width: 12.0),
-                        Expanded(
-                          flex: 7,
-                          child: _modalidadeField(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12.0),
-                    _dataAdmissao(),
-                  ],
-                ),
-              ),
+            body: BlocBuilder<CadastrarFuncionarioBloc, CadastrarFuncionarioState>(
+              bloc: _cadFuncionarioBloc,
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+                    child: _form(state),
+                  ),
+                );
+              },
             ),
             bottomNavigationBar: _botaoCadastrar(),
           ),
@@ -94,96 +85,116 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
     );
   }
 
-  Widget _nomeField() {
-    return TextFormField(
-      controller: null,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        isDense: true,
-        label: const Text('Nome'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
+  Widget _form(CadastrarFuncionarioState state) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _nomeField(),
+          const SizedBox(height: 12.0),
+          _emailField(),
+          const SizedBox(height: 12.0),
+          _senhaField(state),
+          const SizedBox(height: 12.0),
+          Row(
+            children: [
+              Expanded(
+                flex: 8,
+                child: _cidadeField(),
+              ),
+              const SizedBox(width: 12.0),
+              Expanded(
+                flex: 2,
+                child: _ufField(),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12.0),
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: _idEquipeField(),
+              ),
+              const SizedBox(width: 12.0),
+              Expanded(
+                flex: 7,
+                child: _modalidadeField(),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12.0),
+          _dataAdmissao(),
+        ],
       ),
+    );
+  }
+
+  Widget _nomeField() {
+    return TextFieldWidget(
+      controllerField: _nome,
+      keyBoardType: TextInputType.name,
+      label: 'Nome',
+      textInputAction: TextInputAction.next,
+      messageValitador: 'Informe um nome *',
     );
   }
 
   Widget _emailField() {
-    return TextFormField(
-      controller: null,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        isDense: true,
-        label: const Text('E-mail'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
-      ),
+    return TextFieldWidget(
+      controllerField: _email,
+      keyBoardType: TextInputType.emailAddress,
+      label: 'Email',
+      textInputAction: TextInputAction.next,
+      messageValitador: 'Informe um email *',
     );
   }
 
-  Widget _senhaField() {
-    return TextFormField(
-      controller: null,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        isDense: true,
-        label: const Text('Senha'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
+  Widget _senhaField(CadastrarFuncionarioState state) {
+    return TextFieldWidget(
+      controllerField: _senha,
+      keyBoardType: TextInputType.text,
+      label: 'Senha',
+      textInputAction: TextInputAction.next,
+      messageValitador: 'Informe uma senha *',
+      obscureText: !state.passVisible!,
+      suffixIcon: GestureDetector(
+        child: state.passVisible ?? false ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+        onTap: () => _cadFuncionarioBloc.add(PassVisibleEvent()),
       ),
     );
   }
 
   Widget _cidadeField() {
-    return TextFormField(
-      controller: null,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        isDense: true,
-        label: const Text('Cidade'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
-      ),
+    return TextFieldWidget(
+      controllerField: _cidade,
+      keyBoardType: TextInputType.name,
+      label: 'Cidade',
+      textInputAction: TextInputAction.next,
+      messageValitador: 'Informe uma cidade *',
     );
   }
 
   Widget _ufField() {
-    return TextFormField(
-      controller: null,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        isDense: true,
-        label: const Text('UF'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
-      ),
+    return DropDownButton(
+      label: 'UF',
+      lista: _cadFuncionarioBloc.state.listaUfs,
+      value: _cadFuncionarioBloc.state.uf,
+      validate: _cadFuncionarioBloc.state.validarUf,
+      onChanged: (value) {
+        _cadFuncionarioBloc.add(SelectUfEvent(uf: value));
+        _cadFuncionarioBloc.add(ValidarUfEvent());
+      },
     );
   }
 
   Widget _idEquipeField() {
     return TextFormField(
-      controller: null,
+      controller: _idEquipe,
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(color: Colors.grey[700]),
+      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         isDense: true,
         label: const Text('ID'),
@@ -193,23 +204,26 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
           borderSide: BorderSide(color: Colors.orange),
         ),
       ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Informe o ID da equipe *';
+        }
+
+        return null;
+      },
     );
   }
 
   Widget _modalidadeField() {
-    return TextFormField(
-      controller: null,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        isDense: true,
-        label: const Text('Modalidade'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
-      ),
+    return DropDownButton(
+      label: 'Modalidade',
+      lista: _listaModalidades,
+      value: _cadFuncionarioBloc.state.modalidade,
+      validate: _cadFuncionarioBloc.state.validarModalidade,
+      onChanged: (value) {
+        _cadFuncionarioBloc.add(SelectModalidadeEvent(modalidade: value));
+        _cadFuncionarioBloc.add(ValidarModalidadeEvent());
+      },
     );
   }
 
@@ -227,13 +241,15 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
             ),
           ),
           const SizedBox(height: 2.0),
-          DatePickerWidget(date: _dataAdmis),
+          DatePickerWidget(date: _cadFuncionarioBloc.state.dataAdmissao, dataFinalValid: _cadFuncionarioBloc.state.validarData),
         ],
       ),
       onTap: () {
         DateTimePicker().picker(DateTime(2005)).then((value) {
           setState(() {
-            _dataAdmis = value;
+            primaryFocus!.unfocus();
+            _cadFuncionarioBloc.add(SelectDataAdmissaoEvent(dataAdmissao: value));
+            _cadFuncionarioBloc.add(ValidarDataEvent());
           });
         });
       },
@@ -258,9 +274,31 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
         'Cadastrar',
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
-      onPressed: () {
-        Navigator.pop(context);
+      onPressed: () async {
+        _cadFuncionarioBloc.add(FinalizarCadastroEvent(
+          funcionario: FuncionarioModel(
+            formKey: _formKey,
+            nome: _nome.text,
+            email: _email.text,
+            senha: _senha.text,
+            cidade: _cidade.text,
+            idEquipe: _idEquipe.text.isNotEmpty ? int.parse(_idEquipe.text) : null,
+            uf: _cadFuncionarioBloc.state.uf,
+            modalidade: _cadFuncionarioBloc.state.modalidade,
+            dataAdmissao: _cadFuncionarioBloc.state.dataAdmissao,
+          ),
+        ));
       },
     );
+  }
+
+  _validarUf() {
+    setState(() {
+      if (_ufValida != null) {
+        _ufValida = true;
+      } else {
+        _ufValida = false;
+      }
+    });
   }
 }

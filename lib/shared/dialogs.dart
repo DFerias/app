@@ -78,7 +78,7 @@ class Dialogs {
           content: SingleChildScrollView(
             child: Text(
               message!,
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black, fontSize: 16.0),
             ),
           ),
           actions: <Widget>[

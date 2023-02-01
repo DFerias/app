@@ -1,4 +1,5 @@
 import 'package:app/app_widget.dart';
+
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => CadastrarFuncionarioBloc()),
         BlocProvider(create: (context) => ListarFeriasBloc()),
       ],
       child: const AppWidget(),

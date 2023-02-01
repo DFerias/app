@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class CadastroEquipeDatasource {
   static final CadastroEquipeDatasource instance = CadastroEquipeDatasource();
 
-  Future cadastroEquipe(int? id, String? nome, String? cor) async {
+  Future cadastrarEquipe(int? id, String? nome, String? cor) async {
     Map<String, dynamic> params = {
       "nome": nome,
       "cor": cor,
