@@ -8,11 +8,11 @@ class SolicitacaoFeriasModel {
   });
 
   FuncionarioModel? funcionario;
-  Ferias? ferias;
+  FeriasModel? ferias;
 
   factory SolicitacaoFeriasModel.fromMap(Map<String, dynamic> json) => SolicitacaoFeriasModel(
         funcionario: json["funcionario"] == null ? null : FuncionarioModel.fromMap(json["funcionario"]),
-        ferias: json["ferias"] == null ? null : Ferias.fromMap(json["ferias"]),
+        ferias: json["ferias"] == null ? null : FeriasModel.fromMap(json["ferias"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -25,7 +25,7 @@ class SolicitacaoFeriasModel {
   String toJson() => json.encode(toMap());
 }
 
-class Ferias {
+class FeriasModel {
   int? id;
   int? idFuncionario;
   int? idRh;
@@ -36,7 +36,7 @@ class Ferias {
   String? observacoesRh;
   String? observacoesLider;
 
-  Ferias({
+  FeriasModel({
     this.id,
     this.idFuncionario,
     this.idRh,
@@ -48,11 +48,11 @@ class Ferias {
     this.observacoesLider,
   });
 
-  factory Ferias.fromJson(String str) => Ferias.fromMap(json.decode(str));
+  factory FeriasModel.fromJson(str) => FeriasModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Ferias.fromMap(Map<String, dynamic> json) => Ferias(
+  factory FeriasModel.fromMap(Map<String, dynamic> json) => FeriasModel(
         id: json["id"],
         idFuncionario: json["idFuncionario"],
         idRh: json["idRh"],

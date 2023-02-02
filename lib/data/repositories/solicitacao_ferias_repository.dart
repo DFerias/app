@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 class SolicitacaoFeriasRepository {
   final SolicitacaoFeriasDatasource _api = SolicitacaoFeriasDatasource();
-  SolicitacaoFeriasModel? dados;
+  FeriasModel? dados;
 
   Future solicitacaoFeriasRepo(DateTime? inicio, DateTime? fim) async {
     String? dataInicial = DateFormat('yyyy-MM-dd').format(DateFormat('yyyy-MM-dd').parse(inicio.toString()));
@@ -12,7 +12,7 @@ class SolicitacaoFeriasRepository {
     await _api.enviarSolicitacao(dataInicial, dataFinal).then((value) {
       try {
         if (value['statusCode'] == 201) {
-          dados = SolicitacaoFeriasModel.fromJson(value['data']);
+          dados = FeriasModel.fromJson(value['data']);
           Dialogs.close();
         } else {
           Dialogs.close();

@@ -292,7 +292,7 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
     );
   }
 
-  _validarUf() {
+  /* _validarUf() {
     setState(() {
       if (_ufValida != null) {
         _ufValida = true;
@@ -300,5 +300,5 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
         _ufValida = false;
       }
     });
-  }
+  } */
 }
