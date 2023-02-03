@@ -8,7 +8,7 @@ class CadastroFuncionarioDatasource {
   Future cadastrarFuncionario(FuncionarioModel funcionario) async {
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/user/new'),
+        Uri.parse('$urlApi/api/user/new'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': '${App().token}',

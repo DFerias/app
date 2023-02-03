@@ -14,7 +14,12 @@ class AppWidget extends StatelessWidget {
           useMaterial3: true,
           textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white),
           scaffoldBackgroundColor: const Color(0xFFF7EADC),
-          colorScheme: ColorScheme.light(primary: const Color(0xFFFF8D06), secondary: const Color(0xFFF19413), outline: Colors.grey[500]),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFFE5DACC),
+            primary: const Color(0xFFFF8D06),
+            secondary: const Color(0xFFF19413),
+            outline: Colors.grey[500],
+          ),
           elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF8D06), foregroundColor: Colors.white))),
       initialRoute: App.authService.logado ? '/home' : '/login',
       routes: {

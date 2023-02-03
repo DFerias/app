@@ -34,6 +34,7 @@ class TextFieldWidget extends StatelessWidget {
         label: Text(label ?? ''),
         floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
         filled: true,
+        fillColor: const Color(0xFFE5DACC),
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.orange),
         ),

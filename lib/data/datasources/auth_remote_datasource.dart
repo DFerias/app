@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:app/shared/constantes.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRemoteDatasource {
@@ -8,7 +9,7 @@ class AuthRemoteDatasource {
   Future<dynamic> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/auth'),
+        Uri.parse('$urlApi/api/auth'),
         headers: {
           'Content-Type': 'application/json',
         },

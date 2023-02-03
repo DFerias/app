@@ -17,7 +17,7 @@ class ListarFeriasDatasource {
   Future listarFeriasGeral() async {
     try {
       final response = await App.dio.get(
-        'http://10.0.2.2:8000/api/ferias',
+        '$urlApi/api/ferias',
         options: App().cacheOptions(),
       );
 

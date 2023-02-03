@@ -1,4 +1,4 @@
-import 'package:app/services/app.dart';
+import 'package:app/index.dart';
 
 class ListarModalidadesDatasource {
   static final ListarModalidadesDatasource instance = ListarModalidadesDatasource();
@@ -6,7 +6,7 @@ class ListarModalidadesDatasource {
   Future listarModalidade() async {
     try {
       final response = await App.dio.get(
-        'http://10.0.2.2:8000/api/perfil',
+        '$urlApi/api/perfil',
         options: App().cacheOptions(),
       );
 

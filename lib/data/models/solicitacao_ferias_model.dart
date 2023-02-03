@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app/data/models/funcionario_model.dart';
+import 'package:intl/intl.dart';
 
 class SolicitacaoFeriasModel {
   SolicitacaoFeriasModel({
@@ -30,8 +31,8 @@ class FeriasModel {
   int? idFuncionario;
   int? idRh;
   int? idLider;
-  DateTime? inicio;
-  DateTime? fim;
+  String? inicio;
+  String? fim;
   String? status;
   String? observacoesRh;
   String? observacoesLider;
@@ -57,8 +58,8 @@ class FeriasModel {
         idFuncionario: json["idFuncionario"],
         idRh: json["idRh"],
         idLider: json["idLider"],
-        inicio: json["inicio"] == null ? null : DateTime.parse(json["inicio"]),
-        fim: json["fim"] == null ? null : DateTime.parse(json["fim"]),
+        inicio: json['inicio'] == null ? null : DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json['inicio'])),
+        fim: json['fim'] == null ? null : DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json['fim'])),
         status: json["status"],
         observacoesRh: json["observacoesRh"],
         observacoesLider: json["observacoesLider"],
@@ -69,8 +70,8 @@ class FeriasModel {
         "idFuncionario": idFuncionario,
         "idRh": idRh,
         "idLider": idLider,
-        "inicio": "${inicio!.year.toString().padLeft(4, '0')}-${inicio!.month.toString().padLeft(2, '0')}-${inicio!.day.toString().padLeft(2, '0')}",
-        "fim": "${fim!.year.toString().padLeft(4, '0')}-${fim!.month.toString().padLeft(2, '0')}-${fim!.day.toString().padLeft(2, '0')}",
+        "inicio": inicio,
+        "fim": fim,
         "status": status,
         "observacoesRh": observacoesRh,
         "observacoesLider": observacoesLider,

@@ -29,9 +29,9 @@ class _DropDownButtonState extends State<DropDownButton> {
       children: [
         Container(
           width: double.infinity,
-          height: 52.0,
+          height: 46.1,
           decoration: BoxDecoration(
-            color: const Color(0xFFEDE1D3),
+            color: const Color(0xFFE5DACC),
             border: Border(bottom: BorderSide(color: widget.validate == false ? Colors.red : const Color(0xFF3F3F3F))),
           ),
           child: DropdownButtonHideUnderline(

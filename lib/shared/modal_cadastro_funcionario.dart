@@ -30,8 +30,6 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
   final _senha = TextEditingController();
   final _cidade = TextEditingController();
   final _idEquipe = TextEditingController();
-  // DateTime? _dataAdmis;
-  bool? _ufValida;
 
   Map<String, String>? _listaModalidades;
 
@@ -112,6 +110,7 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
           ),
           const SizedBox(height: 12.0),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
                 flex: 3,
@@ -200,6 +199,7 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
         label: const Text('ID'),
         floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
         filled: true,
+        fillColor: const Color(0xFFE5DACC),
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.orange),
         ),
@@ -291,14 +291,4 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
       },
     );
   }
-
-  /* _validarUf() {
-    setState(() {
-      if (_ufValida != null) {
-        _ufValida = true;
-      } else {
-        _ufValida = false;
-      }
-    });
-  } */
 }

@@ -1,7 +1,6 @@
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -323,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           TextSpan(
-                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.ferias!.inicio.toString())),
+                            text: solFerias.ferias!.inicio,
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: Color(0xFF3F3F3F),
@@ -344,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           TextSpan(
-                            text: DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(solFerias.ferias!.fim.toString())),
+                            text: solFerias.ferias!.fim,
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: Color(0xFF3F3F3F),

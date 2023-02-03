@@ -26,6 +26,7 @@ export 'package:app/screens/login_page.dart';
 export 'package:app/services/app.dart';
 export 'package:app/services/auth_service.dart';
 
+export 'package:app/shared/constantes.dart';
 export 'package:app/shared/date_picker_widget.dart';
 export 'package:app/shared/dialogs.dart';
 export 'package:app/shared/loading.dart';
