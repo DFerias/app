@@ -3,20 +3,24 @@ import 'package:app/index.dart';
 
 class CadastroFuncionarioRepository {
   final CadastroFuncionarioDatasource _api = CadastroFuncionarioDatasource();
+  dynamic result;
 
   Future cadastrarFuncionarioRepo(FuncionarioModel funcionario) async {
-    await _api.cadastrarFuncionario(funcionario).then((value) {
-      try {
+    try {
+      await _api.cadastrarFuncionario(funcionario).then((value) {
         if (value['statusCode'] == 200) {
-          return;
+          result = FuncionarioModel.fromJson(value['data']);
+        } else if (value['statusCode'] == 500) {
+          result = value['erro'];
         } else {
-          Dialogs.close();
-          Dialogs.showAlertDialog(value['erro'], 'Atenção!');
+          result = value['erro'];
         }
-      } catch (e) {
-        Dialogs.close();
-        Dialogs.showAlertDialog(e.toString(), 'Atenção!');
-      }
-    });
+      });
+
+      return result;
+    } catch (e) {
+      Dialogs.close();
+      Dialogs.showAlertDialog(e.toString(), 'Atenção!');
+    }
   }
 }

@@ -68,7 +68,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
   }
 
   Widget _dataInicio() {
-    return GestureDetector(
+    return /* GestureDetector(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -81,9 +81,23 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
             ),
           ),
           const SizedBox(height: 2.0),
-          DatePickerWidget(date: _inicio, dataInicialValid: _inicialValido),
+          // DatePickerWidget(date: _inicio, dataInicialValid: _inicialValido),
+          
         ],
       ),
+      onTap: () {
+        DateTimePicker().picker(null).then((value) {
+          setState(() {
+            _inicio = value;
+            _inicialValido = true;
+          });
+        });
+      },
+    ); */
+        DatePickerWidget(
+      label: 'Data Inicial',
+      date: _inicio,
+      dataInicialValid: _inicialValido,
       onTap: () {
         DateTimePicker().picker(null).then((value) {
           setState(() {
@@ -96,22 +110,10 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
   }
 
   Widget _dataFim() {
-    return GestureDetector(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Data Final',
-            style: TextStyle(
-              color: Color(0xFF3F3F3F),
-              fontSize: 18.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 2.0),
-          DatePickerWidget(date: _fim, dataFinalValid: _finalValido),
-        ],
-      ),
+    return DatePickerWidget(
+      label: 'Data Final',
+      date: _fim,
+      dataFinalValid: _finalValido,
       onTap: () {
         DateTimePicker().picker(null).then((value) {
           setState(() {

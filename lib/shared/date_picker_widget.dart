@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:app/index.dart';
 
 class DatePickerWidget extends StatefulWidget {
+  final String label;
   final DateTime? date;
   final bool? dataInicialValid;
   final bool? dataFinalValid;
+  final GestureTapCallback onTap;
 
   const DatePickerWidget({
     Key? key,
+    required this.label,
     this.date,
     this.dataInicialValid,
     this.dataFinalValid,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -24,47 +29,59 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     String? label = 'DD/MM/YYYY';
     String? dataSelecionada = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse((widget.date ?? DateTime.now()).toString()));
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            color: const Color(0xFFE5DACC),
-            borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-            border: Border.all(color: widget.dataInicialValid == false || widget.dataFinalValid == false ? Colors.red : const Color(0xFFE5DACC)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                widget.date != null ? dataSelecionada : label,
-                style: TextStyle(
-                  color: widget.date != null ? const Color(0xFF3F3F3F) : const Color(0x913F3F3F),
-                  fontSize: 18.0,
-                ),
-              ),
-              const Icon(
-                Icons.calendar_month,
-                color: Color(0xFF3F3F3F),
-                size: 30.0,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 2.0),
-        Visibility(
-          visible: widget.dataInicialValid == false || widget.dataFinalValid == false,
-          child: const Text(
-            'Campo obrigatório *',
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 12.0,
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.label,
+            style: const TextStyle(
+              color: Color(0xFF3F3F3F),
+              fontSize: 18.0,
               fontWeight: FontWeight.w500,
             ),
           ),
-        )
-      ],
+          const SizedBox(height: 2.0),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE5DACC),
+              borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+              border: Border.all(color: widget.dataInicialValid == false || widget.dataFinalValid == false ? Colors.red[900]! : const Color(0xFFE5DACC)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.date != null ? dataSelecionada : label,
+                  style: TextStyle(
+                    color: widget.date != null ? const Color(0xFF3F3F3F) : const Color(0x913F3F3F),
+                    fontSize: 18.0,
+                  ),
+                ),
+                const Icon(
+                  Icons.calendar_month,
+                  color: Color(0xFF3F3F3F),
+                  size: 30.0,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 2.0),
+          Visibility(
+            visible: widget.dataInicialValid == false || widget.dataFinalValid == false,
+            child: Text(
+              'Campo obrigatório *',
+              style: TextStyle(
+                color: Colors.red[900],
+                fontSize: 12.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

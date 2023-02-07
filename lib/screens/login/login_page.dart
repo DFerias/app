@@ -1,6 +1,7 @@
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:validatorless/validatorless.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -40,23 +41,25 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/d_ferias_logo.png'),
-                const SizedBox(height: 17.0),
-                Text(
-                  'Bem-vindo(a)!',
-                  style: TextStyle(fontSize: 20.0, color: Colors.grey[700]),
-                ),
-                const SizedBox(height: 20.0),
-                _loginForm(),
-                const SizedBox(height: 25.0),
-                _loginButton(),
-                const SizedBox(height: 25.0),
-                _resetPasswordButton(),
-              ],
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/d_ferias_logo.png'),
+                  const SizedBox(height: 17.0),
+                  Text(
+                    'Bem-vindo(a)!',
+                    style: TextStyle(fontSize: 20.0, color: Colors.grey[700]),
+                  ),
+                  const SizedBox(height: 20.0),
+                  _loginForm(),
+                  const SizedBox(height: 25.0),
+                  _loginButton(),
+                  const SizedBox(height: 25.0),
+                  _resetPasswordButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -69,59 +72,31 @@ class _LoginPageState extends State<LoginPage> {
       key: _formKey,
       child: Column(
         children: [
-          _emailField(),
+          TextFieldWidget(
+            controllerField: _email,
+            keyBoardType: TextInputType.emailAddress,
+            label: 'E-mail',
+            textInputAction: TextInputAction.next,
+            prefixIcon: Icons.person_outline_rounded,
+            validator: Validatorless.required('E-mail Obrigatória *'),
+          ),
           const SizedBox(height: 15.0),
-          _passwordField(),
+          TextFieldWidget(
+            controllerField: _password,
+            keyBoardType: TextInputType.text,
+            label: 'Senha',
+            obscureText: !_enableSenha,
+            textInputAction: TextInputAction.done,
+            prefixIcon: Icons.lock_outline,
+            suffixIcon: GestureDetector(
+              child: !_enableSenha ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
+              onTap: () {
+                _visualizarSenha();
+              },
+            ),
+            validator: Validatorless.required('Senha Obrigatória *'),
+          ),
         ],
-      ),
-    );
-  }
-
-  Widget _emailField() {
-    return TextFormField(
-      controller: _email,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        label: const Text('E-mail'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        prefixIcon: const Icon(
-          Icons.person_outline_rounded,
-          color: Colors.orange,
-          size: 30.0,
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
-      ),
-    );
-  }
-
-  Widget _passwordField() {
-    return TextFormField(
-      controller: _password,
-      keyboardType: TextInputType.text,
-      obscureText: !_enableSenha,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        label: const Text('Senha'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        prefixIcon: const Icon(
-          Icons.lock_outline,
-          color: Colors.orange,
-          size: 25.0,
-        ),
-        suffixIcon: GestureDetector(
-          child: !_enableSenha ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
-          onTap: () {
-            _visualizarSenha();
-          },
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
       ),
     );
   }
@@ -136,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(fontSize: 20.0),
         ),
         onPressed: () {
-          if (_formKey.currentState!.validate()) {
+          if (_formKey.currentState?.validate() ?? false) {
             _authBloc.add(LoginEvent(email: _email.text, password: _password.text));
           }
         },

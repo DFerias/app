@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class DropDownButton extends StatefulWidget {
-  final Map<String, String>? lista;
-  final String? label;
+  final Map<String, String> lista;
+  final String label;
   final dynamic value;
   final bool? validate;
+  final String messageValidate;
   final ValueChanged onChanged;
 
   const DropDownButton({
     Key? key,
-    this.lista,
-    this.label,
+    required this.lista,
+    required this.label,
     this.value,
     this.validate,
+    required this.messageValidate,
     required this.onChanged,
   }) : super(key: key);
 
@@ -28,11 +30,12 @@ class _DropDownButtonState extends State<DropDownButton> {
     return Column(
       children: [
         Container(
+          padding: const EdgeInsets.only(bottom: 0.0),
           width: double.infinity,
-          height: 46.1,
+          height: 54.0,
           decoration: BoxDecoration(
             color: const Color(0xFFE5DACC),
-            border: Border(bottom: BorderSide(color: widget.validate == false ? Colors.red : const Color(0xFF3F3F3F))),
+            border: Border(bottom: BorderSide(color: widget.validate == false ? Colors.red[900]! : const Color(0xFF3F3F3F))),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<dynamic>(
@@ -40,10 +43,14 @@ class _DropDownButtonState extends State<DropDownButton> {
               isExpanded: true,
               hint: Padding(
                 padding: const EdgeInsets.only(left: 5.0),
-                child: Text(widget.label ?? '', overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.grey[700])),
+                child: Text(
+                  widget.label,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: widget.validate == false ? Colors.red[900] : Colors.grey[800], fontWeight: FontWeight.w500, fontSize: 15.0),
+                ),
               ),
               value: widget.value,
-              items: widget.lista?.entries.map((MapEntry<String, String> item) {
+              items: widget.lista.entries.map((MapEntry<String, String> item) {
                 return DropdownMenuItem(
                   value: item.key,
                   child: Tooltip(
@@ -68,12 +75,12 @@ class _DropDownButtonState extends State<DropDownButton> {
           child: Container(
             padding: const EdgeInsets.only(left: 2.0, top: 8.0),
             alignment: Alignment.topLeft,
-            child: const Text(
-              'UF *',
+            child: Text(
+              widget.messageValidate,
               style: TextStyle(
-                color: Colors.red,
-                fontSize: 10.0,
-                fontWeight: FontWeight.w600,
+                color: Colors.red[900],
+                fontSize: 12.0,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
