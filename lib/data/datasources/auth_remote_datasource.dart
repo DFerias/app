@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:app/shared/constantes.dart';
+import 'package:app/core/ui/widget/constantes.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRemoteDatasource {

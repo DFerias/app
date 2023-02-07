@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:app/core/errors/failure.dart';
 import 'package:app/index.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,12 +17,16 @@ class CadastroFuncionarioDatasource {
       );
 
       if (response.statusCode != 200) {
-        return {'statusCode': response.statusCode, 'erro': json.decode(response.body)};
+        if (response.statusCode == 403) {
+          throw const Failure(erroAutorizacao);
+        } else {
+          throw const Failure(erroRequisicao);
+        }
       }
 
-      return {'statusCode': response.statusCode, 'data': response.body};
+      return FuncionarioModel.fromJson(response.body);
     } catch (e) {
-      return {'statusCode': 500, 'erro': App().getMessage(e)};
+      throw HttpError('$e');
     }
   }
 }
