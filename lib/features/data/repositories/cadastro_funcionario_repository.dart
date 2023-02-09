@@ -1,5 +1,4 @@
 import 'package:app/core/errors/failure.dart';
-import 'package:app/data/datasources/cadastro_funcionario_datasource.dart';
 import 'package:app/index.dart';
 
 class CadastroFuncionarioRepository {

@@ -1,17 +1,19 @@
 import 'dart:convert';
 
-class EquipeModel {
-  int? id;
-  int? idLider;
-  String? nome;
-  String? cor;
+import 'package:app/features/domain/entities/equipe.dart';
 
-  EquipeModel({
-    this.id,
-    this.idLider,
-    this.nome,
-    this.cor,
-  });
+class EquipeModel extends Equipe {
+  const EquipeModel({
+    int? id,
+    int? idLider,
+    String? nome,
+    String? cor,
+  }) : super(
+          id: id,
+          idLider: idLider,
+          nome: nome,
+          cor: cor,
+        );
 
   factory EquipeModel.fromMap(Map<String, dynamic> json) => EquipeModel(
         id: json["id"],

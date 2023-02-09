@@ -1,8 +1,8 @@
 // ignore_for_file: unrelated_type_equality_checks
 
-import 'package:app/data/repositories/listar_modalidade_repository.dart';
+import 'package:app/features/data/repositories/listar_modalidade_repository.dart';
 import 'package:app/index.dart';
-import 'package:app/shared/drop_down_button.dart';
+import 'package:app/features/pages/shared/drop_down_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
@@ -250,7 +250,6 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
         _cadFuncionarioBloc.add(
           FinalizarCadastroEvent(
             funcionario: FuncionarioModel(
-              formKey: _formKey,
               nome: _nome.text,
               email: _email.text,
               senha: _senha.text,

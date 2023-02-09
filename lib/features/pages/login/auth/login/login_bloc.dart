@@ -1,4 +1,4 @@
-import 'package:app/data/repositories/auth_repository.dart';
+import 'package:app/features/data/repositories/auth_repository.dart';
 import 'package:app/index.dart';
 import 'package:bloc/bloc.dart';
 

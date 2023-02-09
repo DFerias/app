@@ -1,15 +1,17 @@
 import 'dart:convert';
 
-class ModalidadeModel {
-  int? id;
-  String? name;
-  String? authority;
+import 'package:app/features/domain/entities/modalidade.dart';
 
-  ModalidadeModel({
-    this.id,
-    this.name,
-    this.authority,
-  });
+class ModalidadeModel extends Modalidade {
+  const ModalidadeModel({
+    int? id,
+    String? name,
+    String? authority,
+  }) : super(
+          id: id,
+          name: name,
+          authority: authority,
+        );
 
   factory ModalidadeModel.fromMap(Map<String, dynamic> json) => ModalidadeModel(
         id: json["id"],

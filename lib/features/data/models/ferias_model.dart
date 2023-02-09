@@ -1,30 +1,6 @@
 import 'dart:convert';
-import 'package:app/data/models/funcionario_model.dart';
+
 import 'package:intl/intl.dart';
-
-class SolicitacaoFeriasModel {
-  SolicitacaoFeriasModel({
-    this.funcionario,
-    this.ferias,
-  });
-
-  FuncionarioModel? funcionario;
-  FeriasModel? ferias;
-
-  factory SolicitacaoFeriasModel.fromMap(Map<String, dynamic> json) => SolicitacaoFeriasModel(
-        funcionario: json["funcionario"] == null ? null : FuncionarioModel.fromMap(json["funcionario"]),
-        ferias: json["ferias"] == null ? null : FeriasModel.fromMap(json["ferias"]),
-      );
-
-  Map<String, dynamic> toMap() => {
-        "funcionario": funcionario?.toMap(),
-        "ferias": ferias?.toMap(),
-      };
-
-  factory SolicitacaoFeriasModel.fromJson(str) => SolicitacaoFeriasModel.fromMap(str);
-
-  String toJson() => json.encode(toMap());
-}
 
 class FeriasModel {
   int? id;
