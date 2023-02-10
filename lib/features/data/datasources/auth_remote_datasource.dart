@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:app/core/errors/failure.dart';
+import 'package:app/features/data/dto/auth_dto.dart';
 import 'package:app/index.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AuthRemoteDatasource {
-  Future<FuncionarioModel?> login(String email, String password);
+  Future<AuthDto> login(String email, String password);
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
@@ -13,7 +14,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   AuthRemoteDatasourceImpl({required this.client});
 
   @override
-  Future<FuncionarioModel?> login(String email, String password) async {
+  Future<AuthDto> login(String email, String password) async {
     try {
       final response = await http.post(
         Uri.parse('$urlApi/api/auth'),
@@ -27,18 +28,19 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       );
 
       if (response.statusCode == 200) {
-        return FuncionarioModel.fromJson(response.body);
+        return AuthDto.fromJson(response.body);
       } else {
         if (response.statusCode == 400) {
-          throw const Failure(erroRequisicao);
+          throw const HttpError(erroRequisicao);
         }
         if (response.statusCode == 403) {
-          throw const Failure(erroAutorizacao);
+          throw const HttpError(erroAutorizacao);
+        } else {
+          throw const HttpError(erroRequisicao);
         }
       }
     } catch (e) {
-      throw Exception(e);
+      throw HttpError(e.toString());
     }
-    return null;
   }
 }

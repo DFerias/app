@@ -1,31 +1,32 @@
 import 'dart:convert';
 
+import 'package:app/features/domain/entities/ferias.dart';
 import 'package:intl/intl.dart';
 
-class FeriasModel {
-  int? id;
-  int? idFuncionario;
-  int? idRh;
-  int? idLider;
-  String? inicio;
-  String? fim;
-  String? status;
-  String? observacoesRh;
-  String? observacoesLider;
+class FeriasModel extends Ferias {
+  const FeriasModel({
+    int? id,
+    int? idFuncionario,
+    int? idRh,
+    int? idLider,
+    String? inicio,
+    String? fim,
+    String? status,
+    String? observacoesRh,
+    String? observacoesLider,
+  }) : super(
+          id: id,
+          idFuncionario: idFuncionario,
+          idRh: idRh,
+          idLider: idLider,
+          inicio: inicio,
+          fim: fim,
+          status: status,
+          observacoesRh: observacoesRh,
+          observacoesLider: observacoesLider,
+        );
 
-  FeriasModel({
-    this.id,
-    this.idFuncionario,
-    this.idRh,
-    this.idLider,
-    this.inicio,
-    this.fim,
-    this.status,
-    this.observacoesRh,
-    this.observacoesLider,
-  });
-
-  factory FeriasModel.fromJson(str) => FeriasModel.fromMap(json.decode(str));
+  factory FeriasModel.fromJson(str) => FeriasModel.fromMap(str);
 
   String toJson() => json.encode(toMap());
 

@@ -1,3 +1,4 @@
+import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,9 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<List<SolicitacaoFeriasModel>>? future;
+  Future<List<SolicitacaoFeriasDto>>? future;
   late ListarFeriasBloc _listarFeriasBloc;
-  late SolicitacaoFeriasModel solFerias;
+  late SolicitacaoFeriasDto solFerias;
 
   @override
   void initState() {
@@ -267,7 +268,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _cardFerias(SolicitacaoFeriasModel solFerias) {
+  Widget _cardFerias(SolicitacaoFeriasDto solFerias) {
     return Card(
       elevation: 2.0,
       clipBehavior: Clip.antiAliasWithSaveLayer,

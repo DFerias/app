@@ -3,21 +3,17 @@ export 'package:app/features/pages/home/bloc/listar_ferias_bloc/listar_ferias_bl
 export 'package:app/features/pages/login/auth/login/login_bloc.dart';
 
 export 'package:app/features/data/datasources/auth_remote_datasource.dart';
-export 'package:app/features/data/datasources/cadastro_equipe_remote_datasource.dart';
-export 'package:app/features/data/datasources/listar_feriars_remote_datasource.dart';
-export 'package:app/features/data/datasources/listar_modalidades_remote_datasource.dart';
-export 'package:app/features/data/datasources/solicatacao_ferias_remote_datasource.dart';
+export 'package:app/features/data/datasources/equipe_remote_datasource.dart';
+export 'package:app/features/data/datasources/ferias_remote_datasource.dart';
+export 'package:app/features/data/datasources/modalidade_remote_datasource.dart';
 
-export 'package:app/features/data/models/authModel.dart';
 export 'package:app/features/data/models/equipe_model.dart';
 export 'package:app/features/data/models/funcionario_model.dart';
 export 'package:app/features/data/models/modalidade_model.dart';
-export 'package:app/features/data/models/solicitacao_ferias_model.dart';
 
-export 'package:app/features/data/repositories/listar_ferias_repository.dart';
-export 'package:app/features/data/repositories/cadastro_equipe_repository.dart';
-export 'package:app/features/data/repositories/cadastro_funcionario_repository.dart';
-export 'package:app/features/data/repositories/solicitacao_ferias_repository.dart';
+export 'package:app/features/data/repositories/ferias_repository_impl.dart';
+export 'package:app/features/data/repositories/equipe_repository_impl.dart';
+export 'package:app/features/data/repositories/funcionario_repository_impl.dart';
 
 export 'package:app/features/pages/home/home_page.dart';
 export 'package:app/features/pages/login/login_page.dart';

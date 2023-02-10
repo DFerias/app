@@ -208,13 +208,13 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
       onPressed: () async {
-        if (_formKey.currentState!.validate()) {
+        /* if (_formKey.currentState!.validate()) {
           Dialogs.showLoadingDialog();
           final data = await CadastroEquipeRepository().cadastrarEquipeRepo(_idLider.text, _nomeEquipe.text, currentColor.toString());
           if (data is EquipeModel) {
             Dialogs.showAlertDialog('Cadastro realizado: \n\n${data.id} - ${data.nome}', 'Sucesso').then((_) => Navigator.pop(context));
           }
-        }
+        } */
       },
     );
   }

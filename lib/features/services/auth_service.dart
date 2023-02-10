@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app/features/domain/entities/funcionario.dart';
 import 'package:app/index.dart';
 
 class AuthService {
@@ -6,7 +7,7 @@ class AuthService {
   static final AuthService instance = _cache!.containsKey('token') ? AuthService.fromCache() : AuthService();
 
   String? token;
-  FuncionarioModel? usuario;
+  Funcionario? usuario;
 
   AuthService({
     this.token,
@@ -17,7 +18,7 @@ class AuthService {
     return token != null;
   }
 
-  void atualizarSessao({String? token, FuncionarioModel? usuario}) {
+  void atualizarSessao({String? token, Funcionario? usuario}) {
     if (token != null) {
       this.token = token;
     }

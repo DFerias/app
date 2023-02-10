@@ -1,4 +1,3 @@
-import 'package:app/index.dart';
 import 'package:bloc/bloc.dart';
 
 part 'listar_ferias_event.dart';

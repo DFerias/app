@@ -1,26 +1,27 @@
 import 'dart:convert';
 import 'package:app/core/errors/failure.dart';
+import 'package:app/features/domain/entities/equipe.dart';
 import 'package:app/index.dart';
 import 'package:http/http.dart' as http;
 
-abstract class CadastroEquipeRemoteDatasource {
-  Future<EquipeModel?> cadastrarEquipe(int? id, String? nome, String? cor);
+abstract class EquipeRemoteDatasource {
+  Future<EquipeModel?> cadastrarEquipe(Equipe equipe);
 }
 
-class CadastroEquipeRemoteDataSourceImpl implements CadastroEquipeRemoteDatasource {
+class EquipeRemoteDataSourceImpl implements EquipeRemoteDatasource {
   final http.Client client;
 
-  CadastroEquipeRemoteDataSourceImpl({required this.client});
+  EquipeRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<EquipeModel?> cadastrarEquipe(int? id, String? nome, String? cor) async {
+  Future<EquipeModel?> cadastrarEquipe(Equipe equipe) async {
     Map<String, dynamic> params = {
-      "nome": nome,
-      "cor": cor,
+      "nome": equipe.nome,
+      "cor": equipe.cor,
     };
 
-    if (id != null) {
-      params.addAll({'id': id});
+    if (equipe.id != null) {
+      params.addAll({'id': equipe.id});
     }
 
     try {
@@ -39,7 +40,7 @@ class CadastroEquipeRemoteDataSourceImpl implements CadastroEquipeRemoteDatasour
         if (response.statusCode == 403) {
           throw const HttpError(erroAutorizacao);
         }
-        if (response.statusCode == 403) {
+        if (response.statusCode == 400) {
           throw const HttpError(erroRequisicao);
         } else {
           throw const HttpError('Erro não catalogado');

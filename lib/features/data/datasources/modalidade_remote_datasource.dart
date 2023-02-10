@@ -1,33 +1,30 @@
-// ignore_for_file: depend_on_referenced_packages
 import 'package:app/core/errors/failure.dart';
-import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/index.dart';
-import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 
-abstract class ListarFeriasRemoteDatasource {
-  Future<List<SolicitacaoFeriasDto?>?> listarFeriasGeral();
+abstract class ModalidadeRemoteDatasource {
+  Future<List<ModalidadeModel>?> listarModalidade();
 }
 
-class ListarFeriasDatasourceImpl implements ListarFeriasRemoteDatasource {
+class ModalidadeRemoteDatasourceImpl implements ModalidadeRemoteDatasource {
   static late DioCacheManager dioCacheManager;
 
-  ListarFeriasDatasourceImpl() {
+  ModalidadeRemoteDatasourceImpl() {
     App().dioConfig();
   }
 
   get token => 'Bearer ${App.authService.token!}';
 
   @override
-  Future<List<SolicitacaoFeriasDto?>?> listarFeriasGeral() async {
+  Future<List<ModalidadeModel>?> listarModalidade() async {
     try {
       final response = await App.dio.get(
-        '$urlApi/api/ferias',
+        '$urlApi/api/perfil',
         options: App().cacheOptions(),
       );
 
       if (response.statusCode == 200) {
-        return List<SolicitacaoFeriasDto>.from(response.data.map((i) => SolicitacaoFeriasDto.fromJson(i))).toList();
+        return List<ModalidadeModel>.from(response.data.map((i) => ModalidadeModel.fromJson(i))).toList();
       } else {
         if (response.statusCode == 204) {
           throw const HttpError('Desculpe não há conteúdo a ser exibido');
@@ -38,13 +35,8 @@ class ListarFeriasDatasourceImpl implements ListarFeriasRemoteDatasource {
           throw const HttpError(erroRequisicao);
         }
       }
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.other) {
-        throw const HttpError(erroRequisicao);
-      }
     } catch (e) {
       throw HttpError(e.toString());
     }
-    return null;
   }
 }

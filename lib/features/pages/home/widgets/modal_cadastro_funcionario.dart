@@ -1,6 +1,5 @@
 // ignore_for_file: unrelated_type_equality_checks
 
-import 'package:app/features/data/repositories/listar_modalidade_repository.dart';
 import 'package:app/index.dart';
 import 'package:app/features/pages/shared/drop_down_button.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +40,10 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ListarModalidadeRepository().listarModalidadeRepo().then((value) {
+      /* await ModalidadeRepository().listarModalidadeRepo().then((value) {
         _listaModalidades = {for (var e in value) e.name: e.id.toString()};
         setState(() {});
-      });
+      }); */
     });
     super.initState();
   }

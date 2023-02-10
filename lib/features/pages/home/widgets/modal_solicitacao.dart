@@ -146,14 +146,14 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
 
     if ((_inicialValido != null && _inicialValido == true) && (_finalValido != null && _finalValido == true)) {
       Dialogs.showLoadingDialog();
-      SolicitacaoFeriasRepository().solicitacaoFeriasRepo(_inicio, _fim).then((value) {
+      /* SolicitacaoFeriasRepository().solicitacaoFeriasRepo(_inicio, _fim).then((value) {
         if (value is FeriasModel) {
           Dialogs.showAlertDialog('Cadastro realizado: \n\nSolicitação N.º: ${value.id}\nData inicial: ${value.inicio}\nData final: ${value.fim}', 'Sucesso').then((_) {
             Navigator.pop(context);
             Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
           });
         }
-      });
+      }); */
     }
   }
 

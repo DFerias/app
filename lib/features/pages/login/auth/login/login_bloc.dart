@@ -1,5 +1,4 @@
-import 'package:app/features/data/repositories/auth_repository.dart';
-import 'package:app/index.dart';
+import 'package:app/features/domain/entities/auth.dart';
 import 'package:bloc/bloc.dart';
 
 part 'login_event.dart';
@@ -7,22 +6,22 @@ part 'login_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   static final AuthBloc instance = AuthBloc();
-  AuthRepository authRepository = AuthRepository();
+  // AuthRepositoryImpl authRepository = AuthRepositoryImpl();
 
   AuthBloc() : super(AuthInitial()) {
     on<LoginEvent>((event, emit) async {
       if (event.email!.isEmpty || event.password!.isEmpty) {
         emit(AuthError('Ocorreu um erro, verifique e tente novamente!'));
       } else {
-        emit(AuthLoading());
+        /* emit(AuthLoading());
         final data = await authRepository.login(event.email!, event.password!);
 
-        if (data is AuthModel) {
+        if (data is Auth) {
           App.authService.atualizarSessao(token: data.token, usuario: data.funcionario);
           emit(AuthSucess(data));
         } else {
           emit(AuthInitial());
-        }
+        } */
       }
     });
   }

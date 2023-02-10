@@ -22,7 +22,4 @@ class SolicitacaoFeriasDto {
   factory SolicitacaoFeriasDto.fromJson(str) => SolicitacaoFeriasDto.fromMap(str);
 
   String toJson() => json.encode(toMap());
-
-  @override
-  List<Object> get props => [];
 }

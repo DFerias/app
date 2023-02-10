@@ -13,9 +13,9 @@ class AuthLoading extends AuthState {
 }
 
 class AuthSucess extends AuthState {
-  final AuthModel authModel;
+  final Auth auth;
 
-  AuthSucess(this.authModel);
+  AuthSucess(this.auth);
 }
 
 class AuthError extends AuthState {
