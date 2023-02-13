@@ -1,14 +1,28 @@
 import 'package:app/features/domain/entities/auth.dart';
+import 'package:app/features/domain/usecases/auth_usecase.dart';
 import 'package:bloc/bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  static final AuthBloc instance = AuthBloc();
-  // AuthRepositoryImpl authRepository = AuthRepositoryImpl();
+class AuthController extends Cubit<AuthState> {
+  final AuthUsecase _usecase;
 
-  AuthBloc() : super(AuthInitial()) {
+  AuthController(
+    this._usecase,
+  ) : super(AuthInitial());
+
+  Future<void> auth(String email, String password) async {
+    try {
+      emit(AuthLoading());
+
+      var teste = _usecase.call(email, password);
+    } catch (e) {
+      emit(AuthInitial());
+    }
+  }
+
+  /* {
     on<LoginEvent>((event, emit) async {
       if (event.email!.isEmpty || event.password!.isEmpty) {
         emit(AuthError('Ocorreu um erro, verifique e tente novamente!'));
@@ -24,5 +38,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } */
       }
     });
-  }
+  } */
 }

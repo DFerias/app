@@ -12,10 +12,10 @@ abstract class FeriasRemoteDatasource {
   Future<FeriasModel?> cadastrarFerias(Ferias ferias);
 }
 
-class FeriasDatasourceImpl implements FeriasRemoteDatasource {
+class FeriasRemoteDatasourceImpl implements FeriasRemoteDatasource {
   static late DioCacheManager dioCacheManager;
 
-  FeriasDatasourceImpl() {
+  FeriasRemoteDatasourceImpl() {
     App().dioConfig();
   }
 

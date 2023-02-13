@@ -1,9 +1,11 @@
 import 'package:app/app_widget.dart';
+import 'package:app/core/injections/injection.dart';
 
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +14,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  Injection().init();
 
   await App.instance.inicializar();
 
@@ -26,8 +30,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthBloc()),
-        BlocProvider(create: (context) => CadastrarFuncionarioBloc()),
-        BlocProvider(create: (context) => ListarFeriasBloc()),
+        BlocProvider(create: (context) => CadastrarFuncionarioController(GetIt.instance(), GetIt.instance())),
+        BlocProvider(create: (context) => ListarFeriasController(GetIt.instance())),
       ],
       child: const AppWidget(),
     );

@@ -7,34 +7,35 @@ enum CadastrarFuncionarioStatus {
   error,
 }
 
-// ignore: must_be_immutable
 class CadastrarFuncionarioState extends Equatable {
   final CadastrarFuncionarioStatus status;
-  String? errorMessage;
+  final String? errorMessage;
 
-  Map<String, String>? listaUfs;
-  FuncionarioModel? funcionario;
-  String? uf;
-  String? modalidade;
-  DateTime? dataAdmissao;
-  bool? passVisible = false;
-  bool? validarData = false;
-  bool? validarUf;
-  bool? validarModalidade;
+  final Map<String, String>? listaUfs;
+  final FuncionarioModel? funcionario;
+  final String? uf;
+  final String? modalidade;
+  final List<Modalidade> listaModalidades;
+  final DateTime? dataAdmissao;
+  final bool? passVisible;
+  final bool? validarData;
+  final bool? validarUf;
+  final bool? validarModalidade;
 
-  CadastrarFuncionarioState({
-    required this.status,
+  const CadastrarFuncionarioState(
+    this.status,
     this.errorMessage,
     this.listaUfs,
     this.funcionario,
     this.uf,
     this.modalidade,
+    this.listaModalidades,
     this.dataAdmissao,
     this.passVisible,
     this.validarData,
     this.validarUf,
     this.validarModalidade,
-  });
+  );
 
   CadastrarFuncionarioState.initial()
       : status = CadastrarFuncionarioStatus.initial,
@@ -43,9 +44,10 @@ class CadastrarFuncionarioState extends Equatable {
         funcionario = null,
         uf = null,
         modalidade = null,
+        listaModalidades = [],
         dataAdmissao = null,
         passVisible = false,
-        validarData = null,
+        validarData = false,
         validarUf = null,
         validarModalidade = null;
 
@@ -57,6 +59,7 @@ class CadastrarFuncionarioState extends Equatable {
         funcionario,
         uf,
         modalidade,
+        listaModalidades,
         dataAdmissao,
         passVisible,
         validarData,
@@ -71,6 +74,7 @@ class CadastrarFuncionarioState extends Equatable {
     FuncionarioModel? funcionario,
     String? uf,
     String? modalidade,
+    List<Modalidade>? listaModalidades,
     DateTime? dataAdmissao,
     bool? passVisible,
     bool? validarData,
@@ -78,17 +82,18 @@ class CadastrarFuncionarioState extends Equatable {
     bool? validarModalidade,
   }) {
     return CadastrarFuncionarioState(
-      status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
-      listaUfs: listaUfs ?? this.listaUfs,
-      funcionario: funcionario ?? this.funcionario,
-      uf: uf ?? this.uf,
-      modalidade: modalidade ?? this.modalidade,
-      dataAdmissao: dataAdmissao ?? this.dataAdmissao,
-      passVisible: passVisible ?? this.passVisible,
-      validarData: validarData ?? this.validarData,
-      validarUf: validarUf ?? this.validarUf,
-      validarModalidade: validarModalidade ?? this.validarModalidade,
+      status ?? this.status,
+      errorMessage ?? this.errorMessage,
+      listaUfs ?? this.listaUfs,
+      funcionario ?? this.funcionario,
+      uf ?? this.uf,
+      modalidade ?? this.modalidade,
+      listaModalidades ?? this.listaModalidades,
+      dataAdmissao ?? this.dataAdmissao,
+      passVisible ?? this.passVisible,
+      validarData ?? this.validarData,
+      validarUf ?? this.validarUf,
+      validarModalidade ?? this.validarModalidade,
     );
   }
 }

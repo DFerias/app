@@ -13,7 +13,6 @@ class App {
   static SharedPreferences? cache;
   static AuthService authService = AuthService.instance;
   static final authBloc = AuthBloc.instance;
-  static final listaFeriasGeral = ListarFeriasBloc.instance;
 
   static BuildContext context = navigator.currentState!.overlay!.context;
   static late Dio dio;

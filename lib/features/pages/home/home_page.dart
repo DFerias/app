@@ -1,3 +1,4 @@
+import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
@@ -10,23 +11,20 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
   Future<List<SolicitacaoFeriasDto>>? future;
-  late ListarFeriasBloc _listarFeriasBloc;
   late SolicitacaoFeriasDto solFerias;
 
   @override
-  void initState() {
-    _listarFeriasBloc = ListarFeriasBloc();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _listarFeriasBloc.add(LoadListEvent());
-    });
-    super.initState();
+  void onReady() {
+    super.onReady();
+
+    controller.loadFerias();
   }
 
-  Future<void> onRefresh() async {
-    _listarFeriasBloc.add(LoadListEvent());
-  }
+  // Future<void> onRefresh() async {
+  //   _listarFeriasBloc.add(LoadListEvent());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -169,11 +167,10 @@ class _HomePageState extends State<HomePage> {
                 child: Scrollbar(
                   child: RefreshIndicator(
                     onRefresh: () async {
-                      _listarFeriasBloc.add(RefreshListEvent());
-                      _listarFeriasBloc.refresh = true;
+                      // _listarFeriasBloc.add(RefreshListEvent());
+                      // _listarFeriasBloc.refresh = true;
                     },
-                    child: BlocBuilder<ListarFeriasBloc, ListarFeriasState>(
-                      bloc: _listarFeriasBloc,
+                    child: BlocBuilder<ListarFeriasController, ListarFeriasState>(
                       builder: (context, state) {
                         return _loadingSolicitacoes(state);
                       },
@@ -181,11 +178,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 onNotification: (notification) {
-                  if (_listarFeriasBloc.carregando == false && _listarFeriasBloc.continuarCarregando && notification.metrics.extentAfter == 0.0) {
+                  /* if (_listarFeriasBloc.carregando == false && _listarFeriasBloc.continuarCarregando && notification.metrics.extentAfter == 0.0) {
                     _listarFeriasBloc
                       ..carregando = true
                       ..add(LoadListEvent());
-                  }
+                  } */
 
                   return false;
                 },
@@ -198,19 +195,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   _loadingSolicitacoes(ListarFeriasState state) {
-    if (state is ListarFeriasInitialState || state is LoadingListState && _listarFeriasBloc.listaGeral.isEmpty) {
+    if (state.status == ListaFeriasStatus.initial || state.status == ListaFeriasStatus.loading && state.ferias.isEmpty) {
       return const Loading(
         texto: 'Aguarde, carregando dados...',
       );
-    } else if (state is RefreshListState) {
+    } else if (state.status == ListaFeriasStatus.refresh) {
       return const Center(child: CircularProgressIndicator());
-    } else if (state is SuccessListState && _listarFeriasBloc.listaGeral.isNotEmpty) {
-      if (_listarFeriasBloc.carregando) {
-        _listarFeriasBloc.carregando = false;
-      } else if (_listarFeriasBloc.refresh) {
+    } else if (state.status == ListaFeriasStatus.loaded && state.ferias.isNotEmpty) {
+      if (state.carregando) {
+        state.copyWith(carregando: false);
+      } /* else if (_listarFeriasBloc.refresh) {
         _listarFeriasBloc.refresh = false;
-      }
-    } else if (_listarFeriasBloc.listaGeral.isEmpty && _listarFeriasBloc.carregando == false) {
+      } */
+    } else if (state.ferias.isEmpty && state.carregando == false) {
       return SingleChildScrollView(
         child: Center(
           child: Column(
@@ -236,10 +233,10 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }
-    return _listViewFerias();
+    return _listViewFerias(state);
   }
 
-  _listViewFerias() {
+  _listViewFerias(ListarFeriasState state) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -248,17 +245,17 @@ class _HomePageState extends State<HomePage> {
             shrinkWrap: true,
             padding: const EdgeInsets.all(0),
             physics: const BouncingScrollPhysics(),
-            itemCount: _listarFeriasBloc.carregando == true ? _listarFeriasBloc.listaGeral.length + 1 : _listarFeriasBloc.listaGeral.length,
+            itemCount: state.carregando == true ? state.ferias.length + 1 : state.ferias.length,
             itemBuilder: (context, index) {
-              if (_listarFeriasBloc.listaGeral.length == index) {
-                if (_listarFeriasBloc.carregando == true && _listarFeriasBloc.continuarCarregando) {
+              if (state.ferias.length == index) {
+                if (state.carregando == true && state.continuarCarregando) {
                   return const Loading();
                 } else {
                   Container();
                 }
               }
 
-              solFerias = _listarFeriasBloc.listaGeral[index % _listarFeriasBloc.listaGeral.length];
+              solFerias = state.ferias[index % state.ferias.length];
 
               return _cardFerias(solFerias);
             },

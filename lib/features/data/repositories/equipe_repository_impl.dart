@@ -10,7 +10,7 @@ class EquipeRepositoryImpl extends EquipeRepository {
   EquipeRepositoryImpl(this._datasource);
 
   @override
-  Future<Either<Failure, Equipe>> call(Equipe equipe) async {
+  Future<Either<Failure, Equipe>> addEquipe(Equipe equipe) async {
     try {
       final result = _datasource.cadastrarEquipe(equipe);
 

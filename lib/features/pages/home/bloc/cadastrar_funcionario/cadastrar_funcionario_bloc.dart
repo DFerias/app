@@ -1,3 +1,7 @@
+import 'package:app/features/domain/entities/funcionario.dart';
+import 'package:app/features/domain/entities/modalidade.dart';
+import 'package:app/features/domain/usecases/funcionario_usecase.dart';
+import 'package:app/features/domain/usecases/modalidade_usecase.dart';
 import 'package:app/index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -5,10 +9,35 @@ import 'package:equatable/equatable.dart';
 part 'cadastrar_funcionario_event.dart';
 part 'cadastrar_funcionario_state.dart';
 
-class CadastrarFuncionarioBloc extends Bloc<CadastrarFuncionarioEvent, CadastrarFuncionarioState> {
-  static final CadastrarFuncionarioBloc instance = CadastrarFuncionarioBloc();
+class CadastrarFuncionarioController extends Cubit<CadastrarFuncionarioState> {
+  final FuncionarioUsecase _funcionarioUsecase;
+  final ModalidadeUsecase _modalidadeUsecase;
 
-  CadastrarFuncionarioBloc() : super(CadastrarFuncionarioState.initial()) {
+  CadastrarFuncionarioController(
+    this._funcionarioUsecase,
+    this._modalidadeUsecase,
+  ) : super(CadastrarFuncionarioState.initial());
+
+  Future<void> addFuncionario(Funcionario funcionario) async {
+    emit(state);
+  }
+
+  Future<void> listarModalidades() async {
+    emit(state.copyWith(status: CadastrarFuncionarioStatus.loading));
+
+    try {
+      await _modalidadeUsecase.call().then((modalidades) {
+        modalidades.fold(
+          (l) => emit(state.copyWith(status: CadastrarFuncionarioStatus.error, errorMessage: l.message)),
+          (r) => emit(state.copyWith(listaModalidades: r)),
+        );
+      });
+    } catch (e) {
+      emit(state.copyWith(status: CadastrarFuncionarioStatus.error, errorMessage: e.toString()));
+    }
+  }
+
+  /* {
     on<FinalizarCadastroEvent>(
       (event, emit) async {
         if (event.funcionario!.formKey!.currentState!.validate() && state.uf != null && state.modalidade != null /* && state.validarData != null */) {
@@ -73,5 +102,5 @@ class CadastrarFuncionarioBloc extends Bloc<CadastrarFuncionarioEvent, Cadastrar
         }
       },
     );
-  }
+  } */
 }

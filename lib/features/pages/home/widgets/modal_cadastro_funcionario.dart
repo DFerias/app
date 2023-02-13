@@ -1,5 +1,6 @@
 // ignore_for_file: unrelated_type_equality_checks
 
+import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/index.dart';
 import 'package:app/features/pages/shared/drop_down_button.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class ModalSheetCadastroFuncionario extends StatefulWidget {
   ModalSheetCadastroFuncionarioState createState() => ModalSheetCadastroFuncionarioState();
 }
 
-class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncionario> {
+class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFuncionario, CadastrarFuncionarioController> {
   final _formKey = GlobalKey<FormState>();
   final _nome = TextEditingController();
   final _email = TextEditingController();
@@ -33,11 +34,16 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
   final _cidade = TextEditingController();
   final _idEquipe = TextEditingController();
 
-  Map<String, String>? _listaModalidades;
-
-  final _cadFuncionarioBloc = CadastrarFuncionarioBloc();
+  // Map<String, String>? _listaModalidades;
 
   @override
+  void onReady() {
+    super.onReady();
+
+    controller.listarModalidades();
+  }
+
+  /* @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       /* await ModalidadeRepository().listarModalidadeRepo().then((value) {
@@ -46,7 +52,7 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
       }); */
     });
     super.initState();
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +73,7 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
               ),
               backgroundColor: const Color(0xFFF7EADC),
             ),
-            body: BlocConsumer<CadastrarFuncionarioBloc, CadastrarFuncionarioState>(
-              bloc: _cadFuncionarioBloc,
+            body: BlocConsumer<CadastrarFuncionarioController, CadastrarFuncionarioState>(
               listener: (context, state) {
                 if (state.status == CadastrarFuncionarioStatus.loading) {
                   Dialogs.showLoadingDialog();
@@ -139,11 +144,11 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
                             label: 'Senha',
                             textInputAction: TextInputAction.next,
                             validator: Validatorless.required('Senha Obrigatória *'),
-                            obscureText: !_cadFuncionarioBloc.state.passVisible!,
+                            obscureText: !controller.state.passVisible!,
                             suffixIcon: GestureDetector(
-                              child: _cadFuncionarioBloc.state.passVisible ?? false ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+                              child: controller.state.passVisible ?? false ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
                               onTap: () {
-                                _cadFuncionarioBloc.add(PassVisibleEvent());
+                                // controller.add(PassVisibleEvent());
                               },
                             ),
                           ),
@@ -175,12 +180,12 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
                                 child: DropDownButton(
                                   label: 'UF',
                                   lista: utilListaUFs,
-                                  value: _cadFuncionarioBloc.state.uf,
-                                  validate: _cadFuncionarioBloc.state.validarUf,
+                                  value: controller.state.uf,
+                                  validate: controller.state.validarUf,
                                   messageValidate: 'UF Obrigatória *',
                                   onChanged: (value) {
-                                    _cadFuncionarioBloc.add(SelectUfEvent(uf: value));
-                                    _cadFuncionarioBloc.add(ValidarUfEvent());
+                                    // _cadFuncionarioBloc.add(SelectUfEvent(uf: value));
+                                    // _cadFuncionarioBloc.add(ValidarUfEvent());
                                   },
                                 ),
                               ),
@@ -189,26 +194,26 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
                           const SizedBox(height: 12.0),
                           DropDownButton(
                             label: 'Modalidade',
-                            lista: _listaModalidades ?? {},
-                            value: _cadFuncionarioBloc.state.modalidade,
-                            validate: _cadFuncionarioBloc.state.validarModalidade,
+                            lista: {for (var v in controller.state.listaModalidades) v.id.toString(): v.name!},
+                            value: controller.state.modalidade,
+                            validate: controller.state.validarModalidade,
                             messageValidate: 'Modalidade Obrigatória *',
                             onChanged: (value) {
-                              _cadFuncionarioBloc.add(SelectModalidadeEvent(modalidade: value));
-                              _cadFuncionarioBloc.add(ValidarModalidadeEvent());
+                              // _cadFuncionarioBloc.add(SelectModalidadeEvent(modalidade: value));
+                              // _cadFuncionarioBloc.add(ValidarModalidadeEvent());
                             },
                           ),
                           const SizedBox(height: 12.0),
                           DatePickerWidget(
                             label: 'Data de Admissão',
-                            date: _cadFuncionarioBloc.state.dataAdmissao,
-                            dataFinalValid: _cadFuncionarioBloc.state.validarData,
+                            date: controller.state.dataAdmissao,
+                            dataFinalValid: controller.state.validarData,
                             onTap: () {
                               DateTimePicker().picker(DateTime(2005)).then((value) {
                                 setState(() {
                                   primaryFocus!.unfocus();
-                                  _cadFuncionarioBloc.add(SelectDataAdmissaoEvent(dataAdmissao: value));
-                                  _cadFuncionarioBloc.add(ValidarDataEvent());
+                                  // _cadFuncionarioBloc.add(SelectDataAdmissaoEvent(dataAdmissao: value));
+                                  // _cadFuncionarioBloc.add(ValidarDataEvent());
                                 });
                               });
                             },
@@ -246,7 +251,7 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
       onPressed: () async {
-        _cadFuncionarioBloc.add(
+        /* _cadFuncionarioBloc.add(
           FinalizarCadastroEvent(
             funcionario: FuncionarioModel(
               nome: _nome.text,
@@ -259,7 +264,7 @@ class ModalSheetCadastroFuncionarioState extends State<ModalSheetCadastroFuncion
               dataAdmissao: _cadFuncionarioBloc.state.dataAdmissao,
             ),
           ),
-        );
+        ); */
       },
     );
   }
