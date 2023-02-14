@@ -12,7 +12,6 @@ class App {
   static final navigator = GlobalKey<NavigatorState>();
   static SharedPreferences? cache;
   static AuthService authService = AuthService.instance;
-  static final authBloc = AuthBloc.instance;
 
   static BuildContext context = navigator.currentState!.overlay!.context;
   static late Dio dio;

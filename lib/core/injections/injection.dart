@@ -11,36 +11,37 @@ import 'package:app/features/domain/usecases/equipe_usecase.dart';
 import 'package:app/features/domain/usecases/ferias_usecase.dart';
 import 'package:app/features/domain/usecases/funcionario_usecase.dart';
 import 'package:app/features/domain/usecases/modalidade_usecase.dart';
+import 'package:http/http.dart' as http;
 import 'package:app/index.dart';
 import 'package:get_it/get_it.dart';
 
-class Injection {
-  GetIt getIt = GetIt.instance;
+final getIt = GetIt.instance;
 
-  Future<void> init() async {
-    //Datasources
-    getIt.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(client: getIt()));
-    getIt.registerLazySingleton<EquipeRemoteDatasource>(() => EquipeRemoteDataSourceImpl(client: getIt()));
-    getIt.registerLazySingleton<FeriasRemoteDatasource>(() => FeriasRemoteDatasourceImpl());
-    getIt.registerLazySingleton<FuncionarioRemoteDatasource>(() => FuncionarioRemoteDatasourceImpl(client: getIt()));
-    getIt.registerLazySingleton<ModalidadeRemoteDatasource>(() => ModalidadeRemoteDatasourceImpl());
+Future<void> init() async {
+  //Repositories
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authRemoteDatasource: getIt<AuthRemoteDatasource>()));
+  getIt.registerLazySingleton<EquipeRepository>(() => EquipeRepositoryImpl(getIt<EquipeRemoteDatasource>()));
+  getIt.registerLazySingleton<FeriasRepository>(() => FeriasRepositoryImpl(getIt<FeriasRemoteDatasource>()));
+  getIt.registerLazySingleton<FuncionarioRepository>(() => FuncionarioRepositoryImpl(getIt<FuncionarioRemoteDatasource>()));
+  getIt.registerLazySingleton<ModalidadeRepository>(() => ModalidadeRepositoryImpl(getIt<ModalidadeRemoteDatasource>()));
 
-    //Repositories
-    getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(getIt()));
-    getIt.registerLazySingleton<EquipeRepository>(() => EquipeRepositoryImpl(getIt()));
-    getIt.registerLazySingleton<FeriasRepository>(() => FeriasRepositoryImpl(getIt()));
-    getIt.registerLazySingleton<FuncionarioRepository>(() => FuncionarioRepositoryImpl(getIt()));
-    getIt.registerLazySingleton<ModalidadeRepository>(() => ModalidadeRepositoryImpl(getIt()));
+  //usecases
+  getIt.registerLazySingleton(() => AuthUsecase(getIt<AuthRepository>()));
+  getIt.registerLazySingleton(() => EquipeUsecase(getIt<EquipeRepository>()));
+  getIt.registerLazySingleton(() => GetFeriasUsecase(getIt<FeriasRepository>()));
+  getIt.registerLazySingleton(() => AddFeriasUsecase(getIt<FeriasRepository>()));
+  getIt.registerLazySingleton(() => FuncionarioUsecase(getIt<FuncionarioRepository>()));
+  getIt.registerLazySingleton(() => ModalidadeUsecase(getIt<ModalidadeRepository>()));
 
-    //usecases
-    getIt.registerLazySingleton<AuthUsecase>(() => AuthUsecase(getIt()));
-    getIt.registerLazySingleton<EquipeUsecase>(() => EquipeUsecase(getIt()));
-    getIt.registerLazySingleton<GetFeriasUsecase>(() => GetFeriasUsecase(getIt()));
-    getIt.registerLazySingleton<AddFeriasUsecase>(() => AddFeriasUsecase(getIt()));
-    getIt.registerLazySingleton<FuncionarioUsecase>(() => FuncionarioUsecase(getIt()));
-    getIt.registerLazySingleton<ModalidadeUsecase>(() => ModalidadeUsecase(getIt()));
+  //Datasources
+  getIt.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(client: getIt()));
+  getIt.registerLazySingleton<EquipeRemoteDatasource>(() => EquipeRemoteDataSourceImpl(client: getIt()));
+  getIt.registerLazySingleton<FeriasRemoteDatasource>(() => FeriasRemoteDatasourceImpl());
+  getIt.registerLazySingleton<FuncionarioRemoteDatasource>(() => FuncionarioRemoteDatasourceImpl(client: getIt()));
+  getIt.registerLazySingleton<ModalidadeRemoteDatasource>(() => ModalidadeRemoteDatasourceImpl());
 
-    //controller
-    // getIt.registerLazySingleton<ListarFeriasController>(() => ListarFeriasController(getIt()));
-  }
+  getIt.registerLazySingleton(() => http.Client());
+
+  //controller
+  // getIt.registerLazySingleton<ListarFeriasController>(() => ListarFeriasController(getIt()));
 }

@@ -5,16 +5,16 @@ import 'package:app/features/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDatasource _authRemoteDatasource;
+  final AuthRemoteDatasource authRemoteDatasource;
 
-  AuthRepositoryImpl(this._authRemoteDatasource);
+  AuthRepositoryImpl({required this.authRemoteDatasource});
 
   @override
   Future<Either<Failure, Auth>> authLogin(String email, String password) async {
     try {
-      final result = await _authRemoteDatasource.login(email, password);
+      final result = await authRemoteDatasource.login(email, password);
 
-      return Right(result as Auth);
+      return Right(result);
     } on Failure catch (e) {
       return left(e);
     }

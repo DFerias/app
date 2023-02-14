@@ -8,5 +8,5 @@ class EquipeUsecase {
 
   EquipeUsecase(this._repository);
 
-  Future<Either<Failure, Equipe>> call(Equipe equipe) => _repository.addEquipe(equipe);
+  Future<Either<Failure, Equipe>> call(Equipe equipe) async => _repository.addEquipe(equipe);
 }

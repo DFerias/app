@@ -1,21 +1,22 @@
 import 'dart:convert';
 
+import 'package:app/features/domain/entities/auth.dart';
 import 'package:app/index.dart';
 
-class AuthDto {
-  String token;
-  FuncionarioModel funcionarioModel;
-
-  AuthDto({
-    required this.token,
-    required this.funcionarioModel,
-  });
+class AuthDto extends Auth {
+  const AuthDto({
+    String? token,
+    FuncionarioModel? funcionarioM,
+  }) : super(
+          token: token,
+          funcionario: funcionarioM,
+        );
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
     result.addAll({'token': token});
-    result.addAll({'funcionarioModel': funcionarioModel.toMap()});
+    result.addAll({'funcionario': funcionario});
 
     return result;
   }
@@ -23,7 +24,7 @@ class AuthDto {
   factory AuthDto.fromMap(Map<String, dynamic> map) {
     return AuthDto(
       token: map['token'] ?? '',
-      funcionarioModel: FuncionarioModel.fromMap(map['funcionarioModel']),
+      funcionarioM: FuncionarioModel.fromMap(map['funcionario']),
     );
   }
 

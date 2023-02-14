@@ -1,5 +1,6 @@
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/features/domain/usecases/ferias_usecase.dart';
+import 'package:app/core/injections/injection.dart' as di;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,19 +13,19 @@ class ListarFeriasController extends Cubit<ListarFeriasState> {
   bool continuarCarregando = true;
   bool refresh = false;
 
-  final GetFeriasUsecase _usecase;
-
-  ListarFeriasController(this._usecase) : super(ListarFeriasState.initial());
+  ListarFeriasController() : super(ListarFeriasState.initial());
 
   Future<void> loadFerias() async {
     emit(state.copyWith(status: ListaFeriasStatus.loading));
+    final getFerias = di.getIt<GetFeriasUsecase>();
+
     try {
-      _usecase.call().then((ferias) {
-        ferias.fold(
-          (l) => emit(state.copyWith(status: ListaFeriasStatus.error, errorMessage: l.message)),
-          (r) => emit(state.copyWith(status: ListaFeriasStatus.loaded, ferias: r)),
-        );
-      });
+      final response = await getFerias.call();
+
+      response.fold(
+        (l) => emit(state.copyWith(status: ListaFeriasStatus.error, errorMessage: l.message)),
+        (r) => emit(state.copyWith(status: ListaFeriasStatus.loaded, ferias: r)),
+      );
     } catch (e) {
       emit(
         state.copyWith(status: ListaFeriasStatus.error, errorMessage: e.toString()),

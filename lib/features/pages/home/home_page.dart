@@ -204,27 +204,22 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
     } else if (state.status == ListaFeriasStatus.loaded && state.ferias.isNotEmpty) {
       if (state.carregando) {
         state.copyWith(carregando: false);
-      } /* else if (_listarFeriasBloc.refresh) {
-        _listarFeriasBloc.refresh = false;
-      } */
+      }
     } else if (state.ferias.isEmpty && state.carregando == false) {
       return SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Opacity(
-                opacity: Theme.of(context).brightness == Brightness.light ? 0.6 : 0.8,
-                child: Image.asset(
-                  'assets/empty_folder.png',
-                  scale: 2.0,
-                ),
+              Image.asset(
+                'assets/data_empty.gif',
+                scale: 2.0,
               ),
               Text(
                 'Nenhum Documento Encontrado',
                 style: TextStyle(
                   fontSize: 20.0,
-                  color: Colors.grey[500],
+                  color: Colors.grey[700],
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -232,6 +227,8 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
           ),
         ),
       );
+    } else if (state.status == ListaFeriasStatus.error) {
+      Dialogs.showSnackBar(context, state.errorMessage ?? '');
     }
     return _listViewFerias(state);
   }

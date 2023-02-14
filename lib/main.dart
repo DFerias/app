@@ -1,21 +1,20 @@
 import 'package:app/app_widget.dart';
-import 'package:app/core/injections/injection.dart';
+import 'package:app/core/injections/injection.dart' as di;
 
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await di.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
-  Injection().init();
 
   await App.instance.inicializar();
 
@@ -29,9 +28,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AuthBloc()),
-        BlocProvider(create: (context) => CadastrarFuncionarioController(GetIt.instance(), GetIt.instance())),
-        BlocProvider(create: (context) => ListarFeriasController(GetIt.instance())),
+        BlocProvider(create: (context) => AuthController()),
+        BlocProvider(create: (context) => CadastrarFuncionarioController()),
+        BlocProvider(create: (context) => ListarFeriasController()),
       ],
       child: const AppWidget(),
     );

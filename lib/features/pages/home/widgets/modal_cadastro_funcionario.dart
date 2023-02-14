@@ -84,29 +84,37 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                   Dialogs.showAlertDialog('Usuário ${state.funcionario?.nome} foi cadastrado com sucesso!', 'Sucesso!');
                 }
 
+                /* if (state.status == CadastrarFuncionarioStatus.loaded) {
+                  Dialogs.close();
+                } */
+
                 if (state.status == CadastrarFuncionarioStatus.error) {
-                  // Dialogs.close();
+                  Dialogs.close();
                   Dialogs.showAlertDialog(state.errorMessage, 'Atenção!').then((_) => Dialogs.close());
                 }
               },
               buildWhen: (previous, current) {
-                bool teste = false;
+                bool build = false;
 
                 if (previous != current) {
                   if (current != CadastrarFuncionarioStatus.error) {
-                    teste = true;
+                    build = true;
                   }
 
                   if (current != CadastrarFuncionarioStatus.loading) {
-                    teste = true;
+                    build = true;
                   }
 
                   if (current != CadastrarFuncionarioStatus.sucess) {
-                    teste = true;
+                    build = true;
+                  }
+
+                  if (current != CadastrarFuncionarioStatus.loaded) {
+                    build = true;
                   }
                 }
 
-                return teste;
+                return build;
               },
               builder: (context, state) {
                 return SingleChildScrollView(
@@ -194,7 +202,7 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                           const SizedBox(height: 12.0),
                           DropDownButton(
                             label: 'Modalidade',
-                            lista: {for (var v in controller.state.listaModalidades) v.id.toString(): v.name!},
+                            lista: {for (var v in controller.state.listaModalidades) v.name!: v.id.toString()},
                             value: controller.state.modalidade,
                             validate: controller.state.validarModalidade,
                             messageValidate: 'Modalidade Obrigatória *',
@@ -202,6 +210,10 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                               // _cadFuncionarioBloc.add(SelectModalidadeEvent(modalidade: value));
                               // _cadFuncionarioBloc.add(ValidarModalidadeEvent());
                             },
+                          ),
+                          Visibility(
+                            visible: controller.state.status == CadastrarFuncionarioStatus.update,
+                            child: const LinearProgressIndicator(minHeight: 2.5),
                           ),
                           const SizedBox(height: 12.0),
                           DatePickerWidget(

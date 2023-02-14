@@ -1,24 +1,32 @@
 import 'package:app/features/domain/entities/auth.dart';
 import 'package:app/features/domain/usecases/auth_usecase.dart';
+import 'package:app/core/injections/injection.dart' as di;
+import 'package:app/index.dart';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class AuthController extends Cubit<AuthState> {
-  final AuthUsecase _usecase;
-
-  AuthController(
-    this._usecase,
-  ) : super(AuthInitial());
+  AuthController() : super(const AuthState.initial());
 
   Future<void> auth(String email, String password) async {
     try {
-      emit(AuthLoading());
+      emit(state.copyWith(status: AuthStatus.loading));
+      final useCase = di.getIt<AuthUsecase>();
 
-      var teste = _usecase.call(email, password);
+      var result = await useCase.call(email, password);
+
+      result.fold(
+        (l) => emit(state.copyWith(status: AuthStatus.error, errorMessage: l.message)),
+        (r) {
+          App.authService.atualizarSessao(token: r.token, usuario: r.funcionario);
+          emit(state.copyWith(status: AuthStatus.success, auth: r));
+        },
+      );
     } catch (e) {
-      emit(AuthInitial());
+      emit(state.copyWith(status: AuthStatus.error, errorMessage: e.toString()));
     }
   }
 

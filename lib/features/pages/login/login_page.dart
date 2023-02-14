@@ -1,3 +1,4 @@
+import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,32 +11,28 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  late final AuthBloc _authBloc;
+class _LoginPageState extends BaseState<LoginPage, AuthController> {
   bool _enableSenha = false;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
   @override
-  void initState() {
-    _authBloc = AuthBloc();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      bloc: _authBloc,
+    return BlocListener<AuthController, AuthState>(
       listener: (context, state) {
-        if (state is AuthSucess) {
+        if (state.status == AuthStatus.success) {
           Future.delayed(
             const Duration(milliseconds: 500),
             () => Navigator.pushNamed(context, '/home'),
           );
         }
-        if (state is AuthLoading) {
+        if (state.status == AuthStatus.loading) {
           Dialogs.showLoadingDialog();
+        }
+        if (state.status == AuthStatus.error) {
+          Dialogs.close();
+          Dialogs.showAlertDialog(state.errorMessage, 'Atenção!');
         }
       },
       child: Scaffold(
@@ -112,7 +109,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: () {
           if (_formKey.currentState?.validate() ?? false) {
-            _authBloc.add(LoginEvent(email: _email.text, password: _password.text));
+            controller.auth(_email.text, _password.text);
+            // _authBloc.add(LoginEvent(email: _email.text, password: _password.text));
           }
         },
       ),

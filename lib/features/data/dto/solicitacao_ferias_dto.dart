@@ -10,8 +10,8 @@ class SolicitacaoFeriasDto {
   SolicitacaoFeriasDto({required this.funcionario, required this.ferias});
 
   SolicitacaoFeriasDto.fromMap(Map<String, dynamic> json) {
-    funcionario = json['funcionario'] != null ? FuncionarioModel.fromJson(json['funcionario']) : null;
-    ferias = json['ferias'] != null ? FeriasModel.fromJson(json['ferias']) : null;
+    funcionario = json['funcionario'] != null ? FuncionarioModel.fromMap(json['funcionario']) : null;
+    ferias = json['ferias'] != null ? FeriasModel.fromMap(json['ferias']) : null;
   }
 
   Map<String, dynamic> toMap() => {

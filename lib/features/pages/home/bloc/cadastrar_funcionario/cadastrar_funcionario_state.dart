@@ -3,6 +3,8 @@ part of 'cadastrar_funcionario_bloc.dart';
 enum CadastrarFuncionarioStatus {
   initial,
   loading,
+  update,
+  loaded,
   sucess,
   error,
 }
