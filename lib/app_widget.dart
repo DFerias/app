@@ -25,6 +25,7 @@ class AppWidget extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
+        // '/cadastrarFuncionario': (context) => CadastroFuncionarioRoutes.page,
       },
     );
   }

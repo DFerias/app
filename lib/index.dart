@@ -7,6 +7,8 @@ export 'package:app/features/data/datasources/equipe_remote_datasource.dart';
 export 'package:app/features/data/datasources/ferias_remote_datasource.dart';
 export 'package:app/features/data/datasources/modalidade_remote_datasource.dart';
 
+export 'package:app/features/domain/usecases/usecases.dart';
+
 export 'package:app/features/data/models/equipe_model.dart';
 export 'package:app/features/data/models/funcionario_model.dart';
 export 'package:app/features/data/models/modalidade_model.dart';

@@ -9,8 +9,6 @@ import 'package:app/features/domain/repositories/modalidade_repository.dart';
 import 'package:app/features/domain/usecases/auth_usecase.dart';
 import 'package:app/features/domain/usecases/equipe_usecase.dart';
 import 'package:app/features/domain/usecases/ferias_usecase.dart';
-import 'package:app/features/domain/usecases/funcionario_usecase.dart';
-import 'package:app/features/domain/usecases/modalidade_usecase.dart';
 import 'package:http/http.dart' as http;
 import 'package:app/index.dart';
 import 'package:get_it/get_it.dart';

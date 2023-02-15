@@ -9,22 +9,22 @@ enum CadastrarFuncionarioStatus {
   error,
 }
 
+// ignore: must_be_immutable
 class CadastrarFuncionarioState extends Equatable {
-  final CadastrarFuncionarioStatus status;
-  final String? errorMessage;
+  CadastrarFuncionarioStatus? status;
+  String? errorMessage;
+  Map<String, String>? listaUfs;
+  Funcionario? funcionario;
+  String? uf;
+  String? modalidade;
+  List<Modalidade>? listaModalidades;
+  DateTime? dataAdmissao;
+  bool? passVisible;
+  bool? validarData;
+  bool? validarUf;
+  bool? validarModalidade;
 
-  final Map<String, String>? listaUfs;
-  final FuncionarioModel? funcionario;
-  final String? uf;
-  final String? modalidade;
-  final List<Modalidade> listaModalidades;
-  final DateTime? dataAdmissao;
-  final bool? passVisible;
-  final bool? validarData;
-  final bool? validarUf;
-  final bool? validarModalidade;
-
-  const CadastrarFuncionarioState(
+  CadastrarFuncionarioState({
     this.status,
     this.errorMessage,
     this.listaUfs,
@@ -37,7 +37,7 @@ class CadastrarFuncionarioState extends Equatable {
     this.validarData,
     this.validarUf,
     this.validarModalidade,
-  );
+  });
 
   CadastrarFuncionarioState.initial()
       : status = CadastrarFuncionarioStatus.initial,
@@ -49,7 +49,7 @@ class CadastrarFuncionarioState extends Equatable {
         listaModalidades = [],
         dataAdmissao = null,
         passVisible = false,
-        validarData = false,
+        validarData = null,
         validarUf = null,
         validarModalidade = null;
 
@@ -73,7 +73,7 @@ class CadastrarFuncionarioState extends Equatable {
     CadastrarFuncionarioStatus? status,
     String? errorMessage,
     Map<String, String>? listaUfs,
-    FuncionarioModel? funcionario,
+    Funcionario? funcionario,
     String? uf,
     String? modalidade,
     List<Modalidade>? listaModalidades,
@@ -84,18 +84,18 @@ class CadastrarFuncionarioState extends Equatable {
     bool? validarModalidade,
   }) {
     return CadastrarFuncionarioState(
-      status ?? this.status,
-      errorMessage ?? this.errorMessage,
-      listaUfs ?? this.listaUfs,
-      funcionario ?? this.funcionario,
-      uf ?? this.uf,
-      modalidade ?? this.modalidade,
-      listaModalidades ?? this.listaModalidades,
-      dataAdmissao ?? this.dataAdmissao,
-      passVisible ?? this.passVisible,
-      validarData ?? this.validarData,
-      validarUf ?? this.validarUf,
-      validarModalidade ?? this.validarModalidade,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+      listaUfs: listaUfs ?? this.listaUfs,
+      funcionario: funcionario ?? this.funcionario,
+      uf: uf ?? this.uf,
+      modalidade: modalidade ?? this.modalidade,
+      listaModalidades: listaModalidades ?? this.listaModalidades,
+      dataAdmissao: dataAdmissao ?? this.dataAdmissao,
+      passVisible: passVisible ?? this.passVisible,
+      validarData: validarData ?? this.validarData,
+      validarUf: validarUf ?? this.validarUf,
+      validarModalidade: validarModalidade ?? this.validarModalidade,
     );
   }
 }

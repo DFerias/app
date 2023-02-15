@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:app/features/domain/entities/funcionario.dart';
 import 'package:app/index.dart';
 
 class AuthService {

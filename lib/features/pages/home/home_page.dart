@@ -530,7 +530,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
               color: Colors.white,
               size: 30.0,
             ),
-            onPressed: () => ModalSheetCadastroFuncionario.showModalSheetCadastroFuncionario(),
+            onPressed: () => ModalSheetCadastroFuncionario.showModalSheetCadastroFuncionario() /* Navigator.pushNamed(context, '/cadastrarFuncionario') */,
           ),
           const SizedBox(
             height: 8.0,

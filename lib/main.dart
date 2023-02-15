@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthController()),
-        BlocProvider(create: (context) => CadastrarFuncionarioController()),
+        // BlocProvider(create: (context) => CadastrarFuncionarioController()),
         BlocProvider(create: (context) => ListarFeriasController()),
       ],
       child: const AppWidget(),
