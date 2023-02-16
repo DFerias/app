@@ -68,33 +68,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
   }
 
   Widget _dataInicio() {
-    return /* GestureDetector(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Data Inicial',
-            style: TextStyle(
-              color: Color(0xFF3F3F3F),
-              fontSize: 18.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 2.0),
-          // DatePickerWidget(date: _inicio, dataInicialValid: _inicialValido),
-          
-        ],
-      ),
-      onTap: () {
-        DateTimePicker().picker(null).then((value) {
-          setState(() {
-            _inicio = value;
-            _inicialValido = true;
-          });
-        });
-      },
-    ); */
-        DatePickerWidget(
+    return DatePickerWidget(
       label: 'Data Inicial',
       date: _inicio,
       dataInicialValid: _inicialValido,

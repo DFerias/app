@@ -29,6 +29,7 @@ class TextFieldWidget extends StatelessWidget {
       keyboardType: keyBoardType,
       style: TextStyle(color: Colors.grey[700]),
       textInputAction: textInputAction,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
         label: Text(label),

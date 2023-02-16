@@ -3,7 +3,7 @@ import 'package:app/index.dart';
 import 'package:http/http.dart' as http;
 
 abstract class FuncionarioRemoteDatasource {
-  Future<FuncionarioModel?> cadastrarFuncionario(FuncionarioModel? funcionario);
+  Future<String> cadastrarFuncionario(Funcionario? funcionario);
 }
 
 class FuncionarioRemoteDatasourceImpl implements FuncionarioRemoteDatasource {
@@ -12,7 +12,7 @@ class FuncionarioRemoteDatasourceImpl implements FuncionarioRemoteDatasource {
   FuncionarioRemoteDatasourceImpl({required this.client});
 
   @override
-  Future<FuncionarioModel?> cadastrarFuncionario(FuncionarioModel? funcionario) async {
+  Future<String> cadastrarFuncionario(Funcionario? funcionario) async {
     try {
       final response = await client.post(
         Uri.parse('$urlApi/api/user/new'),
@@ -20,11 +20,11 @@ class FuncionarioRemoteDatasourceImpl implements FuncionarioRemoteDatasource {
           'Content-Type': 'application/json',
           'Authorization': '${App().token}',
         },
-        body: funcionario?.toJson(),
+        body: (funcionario as FuncionarioModel).toJson(),
       );
 
       if (response.statusCode == 200) {
-        return FuncionarioModel.fromJson(response.body);
+        return response.body;
       } else {
         if (response.statusCode == 403) {
           throw const HttpError(erroAutorizacao);
@@ -32,8 +32,8 @@ class FuncionarioRemoteDatasourceImpl implements FuncionarioRemoteDatasource {
           throw const HttpError(erroRequisicao);
         }
       }
-    } catch (e) {
-      throw HttpError('$e');
+    } on Failure catch (e) {
+      throw HttpError(e.message);
     }
   }
 }

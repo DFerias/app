@@ -49,19 +49,3 @@ class ListarFeriasState extends Equatable {
     );
   }
 }
-
-/* class ListarFeriasInitialState extends ListarFeriasState {
-  ListarFeriasInitialState() : super();
-}
-
-class SuccessListState extends ListarFeriasState {
-  SuccessListState() : super();
-}
-
-class LoadingListState extends ListarFeriasState {
-  LoadingListState();
-}
-
-class RefreshListState extends ListarFeriasState {}
-
-class ErrorListState extends ListarFeriasState {} */

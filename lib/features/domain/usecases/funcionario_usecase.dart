@@ -8,5 +8,5 @@ class FuncionarioUsecase {
 
   FuncionarioUsecase(this._repository);
 
-  Future<Either<Failure, Funcionario>> call(Funcionario funcionario) async => _repository.addFuncionario(funcionario);
+  Future<Either<Failure, String>> call(Funcionario funcionario) async => _repository.addFuncionario(funcionario);
 }

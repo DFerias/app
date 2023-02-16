@@ -49,9 +49,9 @@ class CadastrarFuncionarioState extends Equatable {
         listaModalidades = [],
         dataAdmissao = null,
         passVisible = false,
-        validarData = null,
-        validarUf = null,
-        validarModalidade = null;
+        validarData = true,
+        validarUf = true,
+        validarModalidade = true;
 
   @override
   List<Object?> get props => [
@@ -92,10 +92,10 @@ class CadastrarFuncionarioState extends Equatable {
       modalidade: modalidade ?? this.modalidade,
       listaModalidades: listaModalidades ?? this.listaModalidades,
       dataAdmissao: dataAdmissao ?? this.dataAdmissao,
-      passVisible: passVisible ?? this.passVisible,
-      validarData: validarData ?? this.validarData,
-      validarUf: validarUf ?? this.validarUf,
-      validarModalidade: validarModalidade ?? this.validarModalidade,
+      passVisible: passVisible ?? (this.passVisible ?? false),
+      validarData: validarData ?? (this.validarData ?? false),
+      validarUf: validarUf ?? (this.validarUf ?? false),
+      validarModalidade: validarModalidade ?? (this.validarModalidade ?? false),
     );
   }
 }

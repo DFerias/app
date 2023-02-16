@@ -205,7 +205,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
       if (state.carregando) {
         state.copyWith(carregando: false);
       }
-    } else if (state.ferias.isEmpty && state.carregando == false) {
+    } else if (state.ferias.isNotEmpty && state.carregando == false) {
       return SingleChildScrollView(
         child: Center(
           child: Column(
