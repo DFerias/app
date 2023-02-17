@@ -13,6 +13,7 @@ class Funcionario extends Equatable {
   final String? uf;
   final bool? enabled;
   final String? username;
+  final bool? rh;
 
   const Funcionario({
     this.id,
@@ -27,6 +28,7 @@ class Funcionario extends Equatable {
     this.uf,
     this.enabled,
     this.username,
+    this.rh,
   });
 
   @override
@@ -43,5 +45,6 @@ class Funcionario extends Equatable {
         uf,
         enabled,
         username,
+        rh,
       ];
 }

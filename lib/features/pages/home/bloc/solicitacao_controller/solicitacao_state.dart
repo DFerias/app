@@ -9,14 +9,14 @@ enum SolicitacaoStatus {
 
 class SolicitacaoState extends Equatable {
   final SolicitacaoStatus? status;
-  final Ferias? ferias;
+  final String? successMessage;
   final DateTime? dataInicial;
   final DateTime? dataFinal;
   final String? errorMessage;
 
   const SolicitacaoState(
     this.status,
-    this.ferias,
+    this.successMessage,
     this.dataInicial,
     this.dataFinal,
     this.errorMessage,
@@ -24,24 +24,30 @@ class SolicitacaoState extends Equatable {
 
   const SolicitacaoState.initial()
       : status = SolicitacaoStatus.initial,
-        ferias = null,
+        successMessage = null,
         dataInicial = null,
         dataFinal = null,
         errorMessage = null;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        status,
+        successMessage,
+        dataInicial,
+        dataFinal,
+        errorMessage,
+      ];
 
   SolicitacaoState copyWith({
     SolicitacaoStatus? status,
-    Ferias? ferias,
+    String? successMessage,
     DateTime? dataInicial,
     DateTime? dataFinal,
     String? errorMessage,
   }) {
     return SolicitacaoState(
       status ?? this.status,
-      ferias ?? this.ferias,
+      successMessage ?? this.successMessage,
       dataInicial ?? this.dataInicial,
       dataFinal ?? this.dataFinal,
       errorMessage ?? this.errorMessage,

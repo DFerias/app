@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/features/data/models/authority_model.dart';
 import 'package:app/features/domain/entities/auth.dart';
 import 'package:app/index.dart';
 
@@ -7,9 +8,11 @@ class AuthDto extends Auth {
   const AuthDto({
     String? token,
     FuncionarioModel? funcionarioM,
+    List<AuthorityModel>? authorityM,
   }) : super(
           token: token,
           funcionario: funcionarioM,
+          authority: authorityM,
         );
 
   Map<String, dynamic> toMap() {
@@ -17,6 +20,7 @@ class AuthDto extends Auth {
 
     result.addAll({'token': token});
     result.addAll({'funcionario': funcionario});
+    result.addAll({'authority': authority});
 
     return result;
   }
@@ -25,10 +29,11 @@ class AuthDto extends Auth {
     return AuthDto(
       token: map['token'] ?? '',
       funcionarioM: FuncionarioModel.fromMap(map['funcionario']),
+      authorityM: List<AuthorityModel>.from(map['funcionario']['authorities'].map((i) => AuthorityModel.fromMap(i))).toList(),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory AuthDto.fromJson(String source) => AuthDto.fromMap(json.decode(source));
+  factory AuthDto.fromJson(source) => AuthDto.fromMap(source);
 }

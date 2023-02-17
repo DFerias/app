@@ -1,5 +1,9 @@
+import 'package:app/core/ui/base_state/base_state.dart';
+import 'package:app/features/domain/entities/ferias.dart';
+import 'package:app/features/pages/home/bloc/solicitacao_controller/solicitacao_controller.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ModalSheetSolicitacao extends StatefulWidget {
   const ModalSheetSolicitacao({super.key});
@@ -12,7 +16,10 @@ class ModalSheetSolicitacao extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
       ),
-      builder: (context) => const ModalSheetSolicitacao(),
+      builder: (context) => BlocProvider(
+        create: (context) => SolicitacaoController(),
+        child: const ModalSheetSolicitacao(),
+      ),
     );
   }
 
@@ -20,7 +27,7 @@ class ModalSheetSolicitacao extends StatefulWidget {
   ModalSheetSolicitacaoState createState() => ModalSheetSolicitacaoState();
 }
 
-class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
+class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, SolicitacaoController> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _inicio;
   DateTime? _fim;
@@ -29,37 +36,55 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-      child: Container(
-        color: const Color(0xFFF7EADC),
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 5.0,
-                  width: 75.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50.0),
-                    color: Colors.grey[700],
+    return BlocListener<SolicitacaoController, SolicitacaoState>(
+      listener: (context, state) {
+        if (state.status == SolicitacaoStatus.loading) {
+          Dialogs.showLoadingDialog();
+        }
+
+        if (state.status == SolicitacaoStatus.error) {
+          Dialogs.showAlertDialog(state.errorMessage, 'Atenção!').then((_) => Dialogs.close());
+        }
+
+        if (state.status == SolicitacaoStatus.success) {
+          Dialogs.showAlertDialog(state.successMessage, 'Atenção!').then((_) {
+            Navigator.pop(context);
+            Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+          });
+        }
+      },
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        child: Container(
+          color: const Color(0xFFF7EADC),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 5.0,
+                    width: 75.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      color: Colors.grey[700],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8.0),
-                const Text(
-                  'Nova Solicitação',
-                  style: TextStyle(color: Color(0xFF3F3F3F), fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20.0),
-                _dataInicio(),
-                const SizedBox(height: 10.0),
-                _dataFim(),
-                const SizedBox(height: 30.0),
-                _buttonFinalizar()
-              ],
+                  const SizedBox(height: 8.0),
+                  const Text(
+                    'Nova Solicitação',
+                    style: TextStyle(color: Color(0xFF3F3F3F), fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20.0),
+                  _dataInicio(),
+                  const SizedBox(height: 10.0),
+                  _dataFim(),
+                  const SizedBox(height: 30.0),
+                  _buttonFinalizar()
+                ],
+              ),
             ),
           ),
         ),
@@ -119,7 +144,8 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
     _validarDataFinal();
 
     if ((_inicialValido != null && _inicialValido == true) && (_finalValido != null && _finalValido == true)) {
-      Dialogs.showLoadingDialog();
+      controller.addSolicitacao(Ferias(inicio: _inicio.toString(), fim: _fim.toString()));
+      /* Dialogs.showLoadingDialog();
       /* SolicitacaoFeriasRepository().solicitacaoFeriasRepo(_inicio, _fim).then((value) {
         if (value is FeriasModel) {
           Dialogs.showAlertDialog('Cadastro realizado: \n\nSolicitação N.º: ${value.id}\nData inicial: ${value.inicio}\nData final: ${value.fim}', 'Sucesso').then((_) {
@@ -127,7 +153,7 @@ class ModalSheetSolicitacaoState extends State<ModalSheetSolicitacao> {
             Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
           });
         }
-      }); */
+      }); */ */
     }
   }
 

@@ -21,7 +21,7 @@ class AuthController extends Cubit<AuthState> {
       result.fold(
         (l) => emit(state.copyWith(status: AuthStatus.error, errorMessage: l.message)),
         (r) {
-          App.authService.atualizarSessao(token: r.token, usuario: r.funcionario);
+          App.authService.atualizarSessao(token: r.token, usuario: r.funcionario, authRh: r.authority?.any((element) => element.authority?.contains('RH') ?? false));
           emit(state.copyWith(status: AuthStatus.success, auth: r));
         },
       );

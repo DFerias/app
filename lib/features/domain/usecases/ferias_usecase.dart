@@ -17,5 +17,5 @@ class AddFeriasUsecase {
 
   AddFeriasUsecase(this._repository);
 
-  Future<Either<Failure, Ferias>> call(Ferias ferias) async => _repository.addFerias(ferias);
+  Future<Either<Failure, String>> call(Ferias ferias) async => _repository.addFerias(ferias);
 }

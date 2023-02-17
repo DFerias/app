@@ -1,6 +1,5 @@
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/core/errors/failure.dart';
-import 'package:app/features/domain/entities/ferias.dart';
 import 'package:app/features/domain/repositories/ferias_repository.dart';
 import 'package:app/index.dart';
 import 'package:dartz/dartz.dart';
@@ -22,11 +21,11 @@ class FeriasRepositoryImpl implements FeriasRepository {
   }
 
   @override
-  Future<Either<Failure, Ferias>> addFerias(ferias) async {
+  Future<Either<Failure, String>> addFerias(ferias) async {
     try {
       final result = await _datasource.cadastrarFerias(ferias);
 
-      return Right(result as Ferias);
+      return Right(result);
     } on Failure catch (e) {
       return Left(e);
     }

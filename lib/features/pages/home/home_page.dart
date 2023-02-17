@@ -14,17 +14,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
   Future<List<SolicitacaoFeriasDto>>? future;
   late SolicitacaoFeriasDto solFerias;
+  List<Widget> listaBotoes = [];
 
   @override
   void onReady() {
     super.onReady();
 
     controller.loadFerias();
+    teste();
   }
 
   // Future<void> onRefresh() async {
   //   _listarFeriasBloc.add(LoadListEvent());
   // }
+
+  List<Widget> teste() {
+    if (listaBotoes.isEmpty) {
+      listaBotoes.addAll([_botaoHistorico(), _botaoQuadroFerias()]);
+    }
+    if (AuthService.instance.authRh == true) {
+      listaBotoes.add(_botaoCadastrarSetor());
+      listaBotoes.add(_botaoSolicitacoes());
+      listaBotoes.add(_botaoCadastrarFuncionario());
+    }
+
+    return listaBotoes;
+
+    // setState(() {});
+  }
+
+  @override
+  void dispose() {
+    listaBotoes = [];
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +111,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
           text: TextSpan(
             children: [
               const TextSpan(text: 'Bem-vindo(a), ', style: TextStyle(fontSize: 16.0)),
-              TextSpan(text: App.authService.usuario?.nome, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+              TextSpan(text: App.authService.usuario?.nome.toString(), style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -133,16 +156,18 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
 
   Widget _listIconButtons() {
     return ListView(
-      itemExtent: 75.0,
-      scrollDirection: Axis.horizontal,
-      children: [
+        itemExtent: 75.0,
+        // shrinkWrap: true,
+        // cacheExtent: 100.0,
+        scrollDirection: Axis.horizontal,
+        children: teste() /* [
         _botaoHistorico(),
         _botaoQuadroFerias(),
         _botaoSolicitacoes(),
-        _botaoCadastrarSetor(),
+        AuthService.instance.usuario?.modalidade != 'RH' ? Container() : _botaoCadastrarSetor(),
         _botaoCadastrarFuncionario(),
-      ],
-    );
+      ], */
+        );
   }
 
   Widget _quadroGeralFerias() {

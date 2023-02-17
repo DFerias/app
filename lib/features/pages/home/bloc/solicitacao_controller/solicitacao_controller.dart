@@ -20,7 +20,7 @@ class SolicitacaoController extends Cubit<SolicitacaoState> {
 
       response.fold(
         (l) => emit(state.copyWith(status: SolicitacaoStatus.error, errorMessage: l.message)),
-        (r) => emit(state.copyWith(status: SolicitacaoStatus.success, ferias: r)),
+        (r) => emit(state.copyWith(status: SolicitacaoStatus.success, successMessage: r)),
       );
     } on Failure catch (e) {
       emit(state.copyWith(status: SolicitacaoStatus.error, errorMessage: e.message));

@@ -16,6 +16,8 @@ class FuncionarioModel extends Funcionario {
     String? uf,
     bool? enabled,
     String? username,
+    bool? rh,
+    // bool? lider,
   }) : super(
           id: id,
           idEquipe: idEquipe,
@@ -29,6 +31,7 @@ class FuncionarioModel extends Funcionario {
           uf: uf,
           enabled: enabled,
           username: username,
+          rh: rh,
         );
 
   factory FuncionarioModel.fromMap(Map<String, dynamic> json) => FuncionarioModel(
@@ -44,6 +47,7 @@ class FuncionarioModel extends Funcionario {
         uf: json["uf"],
         enabled: json["enabled"],
         username: json["username"],
+        rh: (json['perfis']).toString().contains('RH') ? true : false,
       );
 
   Map<String, dynamic> toMap() => {

@@ -1,32 +1,32 @@
 // ignore_for_file: depend_on_referenced_packages
+import 'dart:convert';
+
+import 'package:app/core/client/client.dart';
 import 'package:app/core/errors/failure.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
-import 'package:app/features/data/models/ferias_model.dart';
 import 'package:app/features/domain/entities/ferias.dart';
 import 'package:app/index.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:intl/intl.dart';
 
 abstract class FeriasRemoteDatasource {
   Future<List<SolicitacaoFeriasDto>?> listarFeriasGeral();
-  Future<FeriasModel?> cadastrarFerias(Ferias ferias);
+  Future<String> cadastrarFerias(Ferias ferias);
 }
 
 class FeriasRemoteDatasourceImpl implements FeriasRemoteDatasource {
-  static late DioCacheManager dioCacheManager;
+  final Client _client;
 
-  FeriasRemoteDatasourceImpl() {
-    App().dioConfig();
-  }
+  FeriasRemoteDatasourceImpl(this._client);
 
-  get token => 'Bearer ${App.authService.token!}';
+  get token => App.authService.token!;
 
   @override
   Future<List<SolicitacaoFeriasDto>?> listarFeriasGeral() async {
     try {
-      final response = await App.dio.get(
+      final response = await _client.dio.get(
         '$urlApi/api/ferias',
-        options: App().cacheOptions(),
+        options: _client.cacheOptions(),
       );
 
       if (response.statusCode == 200) {
@@ -52,20 +52,22 @@ class FeriasRemoteDatasourceImpl implements FeriasRemoteDatasource {
   }
 
   @override
-  Future<FeriasModel?> cadastrarFerias(Ferias ferias) async {
+  Future<String> cadastrarFerias(Ferias ferias) async {
     try {
-      final response = await App.dio.post(
+      final response = await _client.dio.post(
         '$urlApi/api/ferias',
-        options: App().cacheOptions(),
-        queryParameters: {
-          'idFuncionario': App.authService.usuario?.id,
-          'inicio': ferias.inicio,
-          'fim': ferias.fim,
-        },
+        options: _client.cacheOptions(),
+        data: json.encode(
+          {
+            'idFuncionario': App.authService.usuario?.id,
+            'inicio': DateFormat('yyyy-MM-dd').format(DateFormat('yyyy-MM-dd').parse(ferias.inicio!)) /* DateFormat('yyyy-MM-dd').format() */,
+            'fim': DateFormat('yyyy-MM-dd').format(DateFormat('yyyy-MM-dd').parse(ferias.fim!)) /* DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy').parse(ferias.fim!)) */,
+          },
+        ),
       );
 
       if (response.statusCode == 201) {
-        return FeriasModel.fromJson(response.data);
+        return 'Ferias cadastradas com Sucesso!';
       } else {
         if (response.statusCode == 403) {
           throw const HttpError(erroAutorizacao);
@@ -76,10 +78,11 @@ class FeriasRemoteDatasourceImpl implements FeriasRemoteDatasource {
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {
         throw const HttpError(erroRequisicao);
+      } else {
+        throw HttpError(_client.getMessage(e.response?.data));
       }
-    } catch (e) {
-      throw HttpError(e.toString());
+    } on Failure catch (e) {
+      throw HttpError(e.message);
     }
-    return null;
   }
 }

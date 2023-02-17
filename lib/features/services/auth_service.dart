@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:app/index.dart';
 
 class AuthService {
@@ -7,23 +8,29 @@ class AuthService {
 
   String? token;
   Funcionario? usuario;
+  bool? authRh = false;
 
   AuthService({
     this.token,
     this.usuario,
+    this.authRh,
   });
 
   bool get logado {
     return token != null;
   }
 
-  void atualizarSessao({String? token, Funcionario? usuario}) {
+  void atualizarSessao({String? token, Funcionario? usuario, bool? authRh}) {
     if (token != null) {
       this.token = token;
     }
 
     if (usuario != null) {
       this.usuario = usuario;
+    }
+
+    if (authRh != null) {
+      this.authRh = authRh;
     }
 
     gravarCache();
@@ -33,12 +40,14 @@ class AuthService {
     return AuthService(
       token: _cache!.getString('token'),
       usuario: FuncionarioModel.fromCache(),
+      authRh: _cache!.getBool('auth_rh'),
     );
   }
 
   void logOut() {
     token = null;
     usuario = null;
+
     _cache!.clear();
   }
 
@@ -49,6 +58,10 @@ class AuthService {
 
     if (usuario != null) {
       _cache?.setString('usuario', json.encode(usuario));
+    }
+
+    if (authRh != null) {
+      _cache?.setBool('auth_rh', authRh!);
     }
   }
 }

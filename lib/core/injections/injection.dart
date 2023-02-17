@@ -1,3 +1,4 @@
+import 'package:app/core/client/client.dart';
 import 'package:app/features/data/datasources/funcionario_remote_datasource.dart';
 import 'package:app/features/data/repositories/auth_repository_impl.dart';
 import 'package:app/features/data/repositories/modalidades_repository_impl.dart';
@@ -32,13 +33,14 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => ModalidadeUsecase(getIt<ModalidadeRepository>()));
 
   //Datasources
-  getIt.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(client: getIt()));
+  getIt.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(getIt()));
   getIt.registerLazySingleton<EquipeRemoteDatasource>(() => EquipeRemoteDataSourceImpl(client: getIt()));
-  getIt.registerLazySingleton<FeriasRemoteDatasource>(() => FeriasRemoteDatasourceImpl());
+  getIt.registerLazySingleton<FeriasRemoteDatasource>(() => FeriasRemoteDatasourceImpl(getIt()));
   getIt.registerLazySingleton<FuncionarioRemoteDatasource>(() => FuncionarioRemoteDatasourceImpl(client: getIt()));
   getIt.registerLazySingleton<ModalidadeRemoteDatasource>(() => ModalidadeRemoteDatasourceImpl());
 
   getIt.registerLazySingleton(() => http.Client());
+  getIt.registerLazySingleton<Client>(() => Client());
 
   //controller
   // getIt.registerLazySingleton<ListarFeriasController>(() => ListarFeriasController(getIt()));
