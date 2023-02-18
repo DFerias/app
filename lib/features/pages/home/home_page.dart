@@ -1,5 +1,6 @@
 import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
+import 'package:app/features/pages/shared/rounded_button_widget.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
     super.onReady();
 
     controller.loadFerias();
-    teste();
+    // teste();
   }
 
   // Future<void> onRefresh() async {
@@ -33,8 +34,8 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
       listaBotoes.addAll([_botaoHistorico(), _botaoQuadroFerias()]);
     }
     if (AuthService.instance.authRh == true) {
-      listaBotoes.add(_botaoCadastrarSetor());
       listaBotoes.add(_botaoSolicitacoes());
+      listaBotoes.add(_botaoCadastrarSetor());
       listaBotoes.add(_botaoCadastrarFuncionario());
     }
 
@@ -48,6 +49,21 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
     listaBotoes = [];
     super.dispose();
   }
+
+  List<Map<String, dynamic>> listFuncionario = [
+    {
+      'icone': Icons.history_outlined,
+      'label': 'Histórico',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+    {
+      'icone': Icons.calendar_month,
+      'label': 'Quadro \nde Férias',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -154,20 +170,87 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
     );
   }
 
+  List<Map<String, dynamic>> listLider = [
+    {
+      'icone': Icons.history_outlined,
+      'label': 'Histórico',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+    {
+      'icone': Icons.calendar_month,
+      'label': 'Quadro \nde Férias',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+    {
+      'icone': Icons.checklist_outlined,
+      'label': 'Solicitações',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+  ];
+
+  List<Map<String, dynamic>> listRh = [
+    {
+      'icone': Icons.history_outlined,
+      'label': 'Histórico',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+    {
+      'icone': Icons.calendar_month,
+      'label': 'Quadro \nde Férias',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+    {
+      'icone': Icons.checklist_outlined,
+      'label': 'Solicitações',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+    {
+      'icone': Icons.group_outlined,
+      'label': 'Equipes',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': true,
+    },
+    {
+      'icone': Icons.person,
+      'label': 'Funcionarios',
+      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
+      'authRh': false,
+    },
+  ];
+
   Widget _listIconButtons() {
-    return ListView(
-        itemExtent: 75.0,
-        // shrinkWrap: true,
-        // cacheExtent: 100.0,
-        scrollDirection: Axis.horizontal,
-        children: teste() /* [
-        _botaoHistorico(),
-        _botaoQuadroFerias(),
-        _botaoSolicitacoes(),
-        AuthService.instance.usuario?.modalidade != 'RH' ? Container() : _botaoCadastrarSetor(),
-        _botaoCadastrarFuncionario(),
-      ], */
+    List listTeste = [];
+
+    switch (AuthService.instance.authRh) {
+      case false:
+        listTeste = listFuncionario;
+        break;
+      case true:
+        listTeste = listRh;
+        break;
+      default:
+    }
+
+    return ListView.builder(
+      itemCount: listTeste.length,
+      itemExtent: 75.0,
+      // shrinkWrap: true,
+      // cacheExtent: 100.0,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return RoundedButtonWidget(
+          icone: listTeste[index]['icone'],
+          label: listTeste[index]['label'],
+          onPressed: listTeste[index]['onPressed'],
         );
+      },
+    );
   }
 
   Widget _quadroGeralFerias() {

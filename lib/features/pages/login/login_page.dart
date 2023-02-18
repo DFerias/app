@@ -83,7 +83,7 @@ class _LoginPageState extends BaseState<LoginPage, AuthController> {
             keyBoardType: TextInputType.text,
             label: 'Senha',
             obscureText: !_enableSenha,
-            textInputAction: TextInputAction.done,
+            textInputAction: TextInputAction.send,
             prefixIcon: Icons.lock_outline,
             suffixIcon: GestureDetector(
               child: !_enableSenha ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),

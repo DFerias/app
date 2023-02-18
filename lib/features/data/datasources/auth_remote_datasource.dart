@@ -3,6 +3,7 @@ import 'package:app/core/client/client.dart';
 import 'package:app/core/errors/failure.dart';
 import 'package:app/features/data/dto/auth_dto.dart';
 import 'package:app/index.dart';
+import 'package:dio/dio.dart';
 
 abstract class AuthRemoteDatasource {
   Future<AuthDto> login(String email, String password);
@@ -36,6 +37,12 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
         } else {
           throw const HttpError(erroRequisicao);
         }
+      }
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.other) {
+        throw const HttpError(erroRequisicao);
+      } else {
+        throw HttpError(_client.getMessage(e.response?.data));
       }
     } on Failure catch (e) {
       throw HttpError(e.message);
