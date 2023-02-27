@@ -4,4 +4,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class EquipeRepository {
   Future<Either<Failure, Equipe>> addEquipe(Equipe equipe);
+  Future<Either<Failure, List<Equipe>>> getEquipes();
 }

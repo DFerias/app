@@ -11,6 +11,7 @@ enum ListaFeriasStatus {
 class ListarFeriasState extends Equatable {
   final ListaFeriasStatus status;
   final List<SolicitacaoFeriasDto> ferias;
+  final List<Equipe> equipes;
   final bool carregando;
   final bool continuarCarregando;
   final String? errorMessage;
@@ -18,6 +19,7 @@ class ListarFeriasState extends Equatable {
   const ListarFeriasState(
     this.status,
     this.ferias,
+    this.equipes,
     this.carregando,
     this.continuarCarregando,
     this.errorMessage,
@@ -26,16 +28,18 @@ class ListarFeriasState extends Equatable {
   ListarFeriasState.initial()
       : status = ListaFeriasStatus.initial,
         ferias = [],
+        equipes = [],
         carregando = false,
         continuarCarregando = true,
         errorMessage = null;
 
   @override
-  List<Object?> get props => [status, ferias, errorMessage];
+  List<Object?> get props => [status, ferias, equipes, carregando, continuarCarregando, errorMessage];
 
   ListarFeriasState copyWith({
     ListaFeriasStatus? status,
     List<SolicitacaoFeriasDto>? ferias,
+    List<Equipe>? equipes,
     bool? carregando,
     bool? continuarCarregando,
     String? errorMessage,
@@ -43,6 +47,7 @@ class ListarFeriasState extends Equatable {
     return ListarFeriasState(
       status ?? this.status,
       ferias ?? this.ferias,
+      equipes ?? this.equipes,
       carregando ?? this.carregando,
       continuarCarregando ?? this.continuarCarregando,
       errorMessage ?? this.errorMessage,

@@ -5,10 +5,11 @@ class TextFieldWidget extends StatelessWidget {
   final TextInputType keyBoardType;
   final TextInputAction textInputAction;
   final String label;
-  final FormFieldValidator<String> validator;
+  final FormFieldValidator<String>? validator;
   final bool? obscureText;
   final Widget? suffixIcon;
   final IconData? prefixIcon;
+  final ValueChanged<String>? onFieldSubmited;
 
   const TextFieldWidget({
     Key? key,
@@ -16,10 +17,11 @@ class TextFieldWidget extends StatelessWidget {
     required this.keyBoardType,
     required this.textInputAction,
     required this.label,
-    required this.validator,
+    this.validator,
     this.obscureText,
     this.suffixIcon,
     this.prefixIcon,
+    this.onFieldSubmited,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class TextFieldWidget extends StatelessWidget {
             : null,
       ),
       validator: validator,
+      onFieldSubmitted: onFieldSubmited,
     );
   }
 }

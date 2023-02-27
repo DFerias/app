@@ -12,6 +12,30 @@ class GetFeriasUsecase {
   Future<Either<Failure, List<SolicitacaoFeriasDto>>> call() async => _repository.getFerias();
 }
 
+class GetHistoricoFerias {
+  final FeriasRepository _repository;
+
+  GetHistoricoFerias(this._repository);
+
+  Future<Either<Failure, List<Ferias>>> call(int id) async => _repository.getHistoricoFerias(id);
+}
+
+class ChangeStatusFeriasUseCase {
+  final FeriasRepository _repository;
+
+  ChangeStatusFeriasUseCase(this._repository);
+
+  Future<Either<Failure, String>> call(int idSolicitacao, String status) async => _repository.changeStatusFerias(idSolicitacao, status);
+}
+
+class GetFeriasEquipeUseCase {
+  final FeriasRepository _repository;
+
+  GetFeriasEquipeUseCase(this._repository);
+
+  Future<Either<Failure, List<SolicitacaoFeriasDto>>> call() async => _repository.getFeriasEquipe();
+}
+
 class AddFeriasUsecase {
   final FeriasRepository _repository;
 

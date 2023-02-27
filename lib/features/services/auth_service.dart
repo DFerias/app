@@ -8,11 +8,13 @@ class AuthService {
 
   String? token;
   Funcionario? usuario;
+  bool? isLider;
   bool? authRh = false;
 
   AuthService({
     this.token,
     this.usuario,
+    this.isLider,
     this.authRh,
   });
 
@@ -20,13 +22,17 @@ class AuthService {
     return token != null;
   }
 
-  void atualizarSessao({String? token, Funcionario? usuario, bool? authRh}) {
+  void atualizarSessao({String? token, Funcionario? usuario, bool? isLider, bool? authRh}) {
     if (token != null) {
       this.token = token;
     }
 
     if (usuario != null) {
       this.usuario = usuario;
+    }
+
+    if (isLider != null) {
+      this.isLider = isLider;
     }
 
     if (authRh != null) {
@@ -40,6 +46,7 @@ class AuthService {
     return AuthService(
       token: _cache!.getString('token'),
       usuario: FuncionarioModel.fromCache(),
+      isLider: _cache!.getBool('lider'),
       authRh: _cache!.getBool('auth_rh'),
     );
   }
@@ -47,6 +54,8 @@ class AuthService {
   void logOut() {
     token = null;
     usuario = null;
+    authRh = null;
+    isLider = null;
 
     _cache!.clear();
   }
@@ -58,6 +67,10 @@ class AuthService {
 
     if (usuario != null) {
       _cache?.setString('usuario', json.encode(usuario));
+    }
+
+    if (isLider != null) {
+      _cache?.setBool('lider', isLider!);
     }
 
     if (authRh != null) {

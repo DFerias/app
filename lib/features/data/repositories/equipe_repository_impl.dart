@@ -12,11 +12,22 @@ class EquipeRepositoryImpl extends EquipeRepository {
   @override
   Future<Either<Failure, Equipe>> addEquipe(Equipe equipe) async {
     try {
-      final result = _datasource.cadastrarEquipe(equipe);
+      final result = await _datasource.cadastrarEquipe(equipe);
 
-      return Right(result as Equipe);
+      return Right(result);
     } on Failure catch (e) {
-      return left(e);
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Equipe>>> getEquipes() async {
+    try {
+      final result = await _datasource.getEquipes();
+
+      return Right(result);
+    } on Failure catch (e) {
+      return Left(e);
     }
   }
 }

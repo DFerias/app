@@ -92,6 +92,11 @@ class _LoginPageState extends BaseState<LoginPage, AuthController> {
               },
             ),
             validator: Validatorless.required('Senha Obrigatória *'),
+            onFieldSubmited: (_) {
+              if (_formKey.currentState?.validate() ?? false) {
+                controller.auth(_email.text, _password.text);
+              }
+            },
           ),
         ],
       ),
@@ -110,7 +115,6 @@ class _LoginPageState extends BaseState<LoginPage, AuthController> {
         onPressed: () {
           if (_formKey.currentState?.validate() ?? false) {
             controller.auth(_email.text, _password.text);
-            // _authBloc.add(LoginEvent(email: _email.text, password: _password.text));
           }
         },
       ),

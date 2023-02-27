@@ -9,10 +9,12 @@ class AuthDto extends Auth {
     String? token,
     FuncionarioModel? funcionarioM,
     List<AuthorityModel>? authorityM,
+    bool? isLider,
   }) : super(
           token: token,
           funcionario: funcionarioM,
           authority: authorityM,
+          isLider: isLider,
         );
 
   Map<String, dynamic> toMap() {
@@ -21,6 +23,7 @@ class AuthDto extends Auth {
     result.addAll({'token': token});
     result.addAll({'funcionario': funcionario});
     result.addAll({'authority': authority});
+    result.addAll({'lider': isLider});
 
     return result;
   }
@@ -30,6 +33,7 @@ class AuthDto extends Auth {
       token: map['token'] ?? '',
       funcionarioM: FuncionarioModel.fromMap(map['funcionario']),
       authorityM: List<AuthorityModel>.from(map['funcionario']['authorities'].map((i) => AuthorityModel.fromMap(i))).toList(),
+      isLider: map['lider'],
     );
   }
 

@@ -93,4 +93,71 @@ class Dialogs {
       },
     );
   }
+
+  static Future showConfirmDialog(String? message, String? titulo) {
+    return showDialog(
+      context: App.context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            titulo!,
+            style: const TextStyle(color: Colors.black),
+          ),
+          content: SingleChildScrollView(
+            child: Text(
+              message!,
+              style: const TextStyle(color: Colors.black, fontSize: 16.0),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Não'),
+              onPressed: () => Navigator.pop(context, false),
+            ),
+            TextButton(
+              child: const Text('Sim'),
+              onPressed: () => Navigator.pop(context, true),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future showTextDialog(BuildContext context, String titulo, String texto, double alturaTela, double larguraTela) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            titulo,
+            style: const TextStyle(color: Colors.black),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: alturaTela * 0.4, maxWidth: double.maxFinite),
+              child: Scrollbar(
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  child: Text(
+                    texto,
+                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Fechar'),
+              onPressed: () {
+                Dialogs.close();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

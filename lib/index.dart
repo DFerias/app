@@ -1,4 +1,4 @@
-export 'package:app/features/pages/home/bloc/cadastrar_funcionario/cadastrar_funcionario_bloc.dart';
+export 'package:app/features/pages/funcionario/cubit/cadastrar_funcionario/cadastrar_funcionario_bloc.dart';
 export 'package:app/features/pages/home/bloc/listar_ferias_bloc/listar_ferias_bloc.dart';
 export 'package:app/features/pages/login/auth/login/login_bloc.dart';
 
@@ -27,7 +27,7 @@ export 'package:app/core/ui/widget/constantes.dart';
 export 'package:app/features/pages/shared/date_picker_widget.dart';
 export 'package:app/features/pages/shared/dialogs.dart';
 export 'package:app/features/pages/shared/loading.dart';
-export 'package:app/features/pages/home/widgets/modal_cadastro_funcionario.dart';
+export 'package:app/features/pages/funcionario/widgets/modal_cadastro_funcionario.dart';
 export 'package:app/features/pages/home/widgets/modal_cadastro_equipe.dart';
 export 'package:app/features/pages/home/widgets/modal_solicitacao.dart';
 export 'package:app/features/pages/shared/text_field_widget.dart';

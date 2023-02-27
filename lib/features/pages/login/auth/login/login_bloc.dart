@@ -21,7 +21,12 @@ class AuthController extends Cubit<AuthState> {
       result.fold(
         (l) => emit(state.copyWith(status: AuthStatus.error, errorMessage: l.message)),
         (r) {
-          App.authService.atualizarSessao(token: r.token, usuario: r.funcionario, authRh: r.authority?.any((element) => element.authority?.contains('RH') ?? false));
+          App.authService.atualizarSessao(
+            token: r.token,
+            usuario: r.funcionario,
+            isLider: r.isLider,
+            authRh: r.authority?.any((element) => element.authority?.contains('RH') ?? false),
+          );
           emit(state.copyWith(status: AuthStatus.success, auth: r));
         },
       );
@@ -29,22 +34,4 @@ class AuthController extends Cubit<AuthState> {
       emit(state.copyWith(status: AuthStatus.error, errorMessage: e.toString()));
     }
   }
-
-  /* {
-    on<LoginEvent>((event, emit) async {
-      if (event.email!.isEmpty || event.password!.isEmpty) {
-        emit(AuthError('Ocorreu um erro, verifique e tente novamente!'));
-      } else {
-        /* emit(AuthLoading());
-        final data = await authRepository.login(event.email!, event.password!);
-
-        if (data is Auth) {
-          App.authService.atualizarSessao(token: data.token, usuario: data.funcionario);
-          emit(AuthSucess(data));
-        } else {
-          emit(AuthInitial());
-        } */
-      }
-    });
-  } */
 }

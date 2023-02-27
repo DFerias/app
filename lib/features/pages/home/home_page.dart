@@ -1,5 +1,6 @@
 import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
+import 'package:app/features/domain/entities/equipe.dart';
 import 'package:app/features/pages/shared/rounded_button_widget.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
@@ -22,48 +23,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
     super.onReady();
 
     controller.loadFerias();
-    // teste();
   }
-
-  // Future<void> onRefresh() async {
-  //   _listarFeriasBloc.add(LoadListEvent());
-  // }
-
-  List<Widget> teste() {
-    if (listaBotoes.isEmpty) {
-      listaBotoes.addAll([_botaoHistorico(), _botaoQuadroFerias()]);
-    }
-    if (AuthService.instance.authRh == true) {
-      listaBotoes.add(_botaoSolicitacoes());
-      listaBotoes.add(_botaoCadastrarSetor());
-      listaBotoes.add(_botaoCadastrarFuncionario());
-    }
-
-    return listaBotoes;
-
-    // setState(() {});
-  }
-
-  @override
-  void dispose() {
-    listaBotoes = [];
-    super.dispose();
-  }
-
-  List<Map<String, dynamic>> listFuncionario = [
-    {
-      'icone': Icons.history_outlined,
-      'label': 'Histórico',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-    {
-      'icone': Icons.calendar_month,
-      'label': 'Quadro \nde Férias',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +40,16 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    _circleAvatar(),
-                    const SizedBox(width: 10.0),
-                    _displayInfoUser(),
-                  ],
+                Expanded(
+                  child: Row(
+                    children: [
+                      _circleAvatar(),
+                      const SizedBox(width: 10.0),
+                      _displayInfoUser(),
+                    ],
+                  ),
                 ),
-                _buttonLogOut(),
+                Expanded(child: _buttonLogOut()),
               ],
             ),
           ),
@@ -140,115 +102,52 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        GestureDetector(
-          child: Row(
-            children: const [
-              Text(
-                'Sair',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(width: 5.0),
-              Padding(
-                padding: EdgeInsets.only(right: 12.0),
-                child: Icon(Icons.logout_outlined, color: Colors.white),
-              ),
-            ],
+        TextButton.icon(
+          label: const Padding(
+            padding: EdgeInsets.only(right: 15.0),
+            child: Text(
+              'Sair',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
           ),
-          onTap: () {
-            Dialogs.showLoadingDialog(mensagem: 'Saindo...');
-            Future.delayed(
-              const Duration(milliseconds: 500),
-              () {
-                Dialogs.close();
-                App.authService.logOut();
-                Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
-              },
-            );
+          icon: const Icon(Icons.logout_outlined, color: Colors.white),
+          onPressed: () {
+            Dialogs.showConfirmDialog('Deseja realmente sair?', 'Sair').then((value) {
+              if (value == true) {
+                Dialogs.showLoadingDialog(mensagem: 'Saindo...');
+                Future.delayed(
+                  const Duration(milliseconds: 500),
+                  () {
+                    Dialogs.close();
+                    App.authService.logOut();
+                    Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                  },
+                );
+              }
+            });
           },
         ),
       ],
     );
   }
 
-  List<Map<String, dynamic>> listLider = [
-    {
-      'icone': Icons.history_outlined,
-      'label': 'Histórico',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-    {
-      'icone': Icons.calendar_month,
-      'label': 'Quadro \nde Férias',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-    {
-      'icone': Icons.checklist_outlined,
-      'label': 'Solicitações',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-  ];
-
-  List<Map<String, dynamic>> listRh = [
-    {
-      'icone': Icons.history_outlined,
-      'label': 'Histórico',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-    {
-      'icone': Icons.calendar_month,
-      'label': 'Quadro \nde Férias',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-    {
-      'icone': Icons.checklist_outlined,
-      'label': 'Solicitações',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-    {
-      'icone': Icons.group_outlined,
-      'label': 'Equipes',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': true,
-    },
-    {
-      'icone': Icons.person,
-      'label': 'Funcionarios',
-      'onPressed': () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-      'authRh': false,
-    },
-  ];
-
   Widget _listIconButtons() {
-    List listTeste = [];
+    List listaBotoes = [];
 
-    switch (AuthService.instance.authRh) {
-      case false:
-        listTeste = listFuncionario;
-        break;
-      case true:
-        listTeste = listRh;
-        break;
-      default:
+    if (AuthService.instance.authRh == true) {
+      listaBotoes = botoesRh();
+    } else if (AuthService.instance.isLider == true) {
+      listaBotoes = botoesLider();
+    } else {
+      listaBotoes = botoesColaborador();
     }
 
     return ListView.builder(
-      itemCount: listTeste.length,
+      itemCount: listaBotoes.length,
       itemExtent: 75.0,
-      // shrinkWrap: true,
-      // cacheExtent: 100.0,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        return RoundedButtonWidget(
-          icone: listTeste[index]['icone'],
-          label: listTeste[index]['label'],
-          onPressed: listTeste[index]['onPressed'],
-        );
+        return listaBotoes[index];
       },
     );
   }
@@ -274,10 +173,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
               child: NotificationListener<ScrollNotification>(
                 child: Scrollbar(
                   child: RefreshIndicator(
-                    onRefresh: () async {
-                      // _listarFeriasBloc.add(RefreshListEvent());
-                      // _listarFeriasBloc.refresh = true;
-                    },
+                    onRefresh: () async {},
                     child: BlocBuilder<ListarFeriasController, ListarFeriasState>(
                       builder: (context, state) {
                         return _loadingSolicitacoes(state);
@@ -286,12 +182,6 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
                   ),
                 ),
                 onNotification: (notification) {
-                  /* if (_listarFeriasBloc.carregando == false && _listarFeriasBloc.continuarCarregando && notification.metrics.extentAfter == 0.0) {
-                    _listarFeriasBloc
-                      ..carregando = true
-                      ..add(LoadListEvent());
-                  } */
-
                   return false;
                 },
               ),
@@ -300,6 +190,37 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
         ),
       ),
     );
+  }
+
+  botoesColaborador() {
+    List<Widget> listaWidget = [
+      RoundedButtonWidget(icone: Icons.history_outlined, label: 'Histórico', onPressed: () => Navigator.pushNamed(context, '/home/historico')),
+      RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
+    ];
+
+    return listaWidget;
+  }
+
+  botoesLider() {
+    List<Widget> listaWidget = [
+      RoundedButtonWidget(icone: Icons.history_outlined, label: 'Histórico', onPressed: () => Navigator.pushNamed(context, '/home/historico')),
+      RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
+      RoundedButtonWidget(icone: Icons.checklist_outlined, label: 'Solicitações', onPressed: () => Navigator.of(context).pushNamed('/home/solicitacao')),
+    ];
+
+    return listaWidget;
+  }
+
+  botoesRh() {
+    List<Widget> listaWidget = [
+      RoundedButtonWidget(icone: Icons.history_outlined, label: 'Histórico', onPressed: () => Navigator.pushNamed(context, '/home/historico')),
+      RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
+      RoundedButtonWidget(icone: Icons.checklist_outlined, label: 'Solicitações', onPressed: () => Navigator.of(context).pushNamed('/home/solicitacao')),
+      RoundedButtonWidget(icone: Icons.group_outlined, label: 'Equipes', onPressed: () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe()),
+      RoundedButtonWidget(icone: Icons.person, label: 'Funcionarios', onPressed: () => Navigator.of(context).pushNamed('/home/funcionario')),
+    ];
+
+    return listaWidget;
   }
 
   _loadingSolicitacoes(ListarFeriasState state) {
@@ -313,7 +234,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
       if (state.carregando) {
         state.copyWith(carregando: false);
       }
-    } else if (state.ferias.isNotEmpty && state.carregando == false) {
+    } else if (state.ferias.isNotEmpty && state.status == ListaFeriasStatus.initial) {
       return SingleChildScrollView(
         child: Center(
           child: Column(
@@ -401,7 +322,9 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
                         ),
                       ),
                       TextSpan(
-                        text: solFerias.funcionario!.idEquipe.toString(),
+                        text: nomeEquipe(
+                          solFerias.funcionario?.idEquipe,
+                        ),
                         style: const TextStyle(
                           fontSize: 16.0,
                           color: Color(0xFF3F3F3F),
@@ -483,177 +406,13 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
         'Nova Solicitação',
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
-      onPressed: () => ModalSheetSolicitacao.showModalSheetSolicitacao(),
+      onPressed: () => ModalSheetSolicitacao.showModalSheetSolicitacao('/home'),
     );
   }
 
-  Widget _botaoHistorico() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(12.0),
-              backgroundColor: const Color(0xFFFE9822),
-              foregroundColor: const Color(0xFFF7A94F),
-            ),
-            child: const Icon(
-              Icons.history,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () {},
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          const Text(
-            'Histórico',
-            style: TextStyle(fontSize: 12.0, color: Colors.black),
-          ),
-        ],
-      ),
-    );
-  }
+  nomeEquipe(int? id) {
+    Equipe equipe = controller.state.equipes.firstWhere((e) => e.id == id);
 
-  Widget _botaoQuadroFerias() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(12.0),
-              backgroundColor: const Color(0xFFFE9822),
-              foregroundColor: const Color(0xFFF7A94F),
-            ),
-            child: const Icon(
-              Icons.calendar_month_outlined,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () {},
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          const Text(
-            'Quadro \nde Férias',
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.black,
-            ),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.clip,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _botaoSolicitacoes() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(12.0),
-              backgroundColor: const Color(0xFFFE9822),
-              foregroundColor: const Color(0xFFF7A94F),
-            ),
-            child: const Icon(
-              Icons.checklist_outlined,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () {},
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          const Text(
-            'Solicitações \nPendentes',
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.black,
-            ),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.clip,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _botaoCadastrarSetor() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(12.0),
-              backgroundColor: const Color(0xFFFE9822),
-              foregroundColor: const Color(0xFFF7A94F),
-            ),
-            child: const Icon(
-              Icons.group_add_outlined,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(),
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          const Text(
-            'Cadastrar \nEquipe',
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.black,
-            ),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.clip,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _botaoCadastrarFuncionario() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(12.0),
-              backgroundColor: const Color(0xFFFE9822),
-              foregroundColor: const Color(0xFFF7A94F),
-            ),
-            child: const Icon(
-              Icons.person_add_outlined,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () => ModalSheetCadastroFuncionario.showModalSheetCadastroFuncionario() /* Navigator.pushNamed(context, '/cadastrarFuncionario') */,
-          ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          const Text(
-            'Cadastrar \nFuncionário',
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.black,
-            ),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.clip,
-          ),
-        ],
-      ),
-    );
+    return equipe.nome;
   }
 }

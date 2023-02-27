@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class BaseState<T extends StatefulWidget, C extends BlocBase> extends State<T> {
+abstract class BaseState<T extends StatefulWidget, C extends BlocBase> extends State<T> with TickerProviderStateMixin {
   late final C controller;
 
   @override

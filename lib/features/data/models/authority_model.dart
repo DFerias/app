@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:app/features/domain/entities/authority.dart';
-import 'package:app/index.dart';
 
 class AuthorityModel extends Authority {
   const AuthorityModel({
@@ -27,14 +26,6 @@ class AuthorityModel extends Authority {
       };
 
   factory AuthorityModel.fromJson(str) => AuthorityModel.fromMap(str);
-
-  factory AuthorityModel.fromCache() {
-    final list = json.decode(App.cache!.getString('authorities')!);
-
-    final listCache = List<Authority>.from(list.map((i) => AuthorityModel.fromJson(i)));
-
-    return list; //authorities
-  }
 
   String toJson() => json.encode(toMap());
 }

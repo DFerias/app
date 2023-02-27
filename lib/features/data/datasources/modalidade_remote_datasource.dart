@@ -1,3 +1,4 @@
+import 'package:app/core/client/client.dart';
 import 'package:app/core/errors/failure.dart';
 import 'package:app/index.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';

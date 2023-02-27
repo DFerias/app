@@ -1,7 +1,10 @@
 // ignore_for_file: deprecated_member_use
+import 'package:app/core/ui/base_state/base_state.dart';
+import 'package:app/features/pages/home/bloc/equipe_controller/equipe_controller.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class ModalSheetCadastroEquipe extends StatefulWidget {
@@ -15,7 +18,10 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
       ),
-      builder: (context) => const ModalSheetCadastroEquipe(),
+      builder: (context) => BlocProvider(
+        create: (context) => EquipeController(),
+        child: const ModalSheetCadastroEquipe(),
+      ),
     );
   }
 
@@ -23,7 +29,7 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
   ModalSheetCadastroEquipeState createState() => ModalSheetCadastroEquipeState();
 }
 
-class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
+class ModalSheetCadastroEquipeState extends BaseState<ModalSheetCadastroEquipe, EquipeController> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nomeEquipe = TextEditingController();
   final TextEditingController _idLider = TextEditingController();
@@ -32,51 +38,67 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      heightFactor: 0.80,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-        child: Container(
-          color: const Color(0xFFF7EADC),
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Cadastrar Equipe'),
-              leading: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+    return BlocListener<EquipeController, EquipeState>(
+      listener: (context, state) {
+        if (state.status == EquipeStatus.loading) {
+          Dialogs.showLoadingDialog();
+        }
+
+        if (state.status == EquipeStatus.loaded) {
+          Dialogs.close();
+          Dialogs.showAlertDialog('Equipe Cadastrada com sucesso.', 'Sucesso!').then((_) => Dialogs.close());
+        }
+
+        if (state.status == EquipeStatus.error) {
+          Dialogs.showAlertDialog(state.errorMessage, 'Atenção!').then((_) => Dialogs.close());
+        }
+      },
+      child: FractionallySizedBox(
+        heightFactor: 0.80,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+          child: Container(
+            color: const Color(0xFFF7EADC),
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text('Cadastrar Equipe'),
+                leading: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                backgroundColor: const Color(0xFFF7EADC),
               ),
-              backgroundColor: const Color(0xFFF7EADC),
-            ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      _nomeField(),
-                      const SizedBox(height: 12.0),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: _idLeaderField(),
-                          ),
-                          const SizedBox(width: 12.0),
-                          Expanded(
-                            flex: 7,
-                            child: _corField(),
-                          ),
-                        ],
-                      )
-                    ],
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        _nomeField(),
+                        const SizedBox(height: 12.0),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: _idLeaderField(),
+                            ),
+                            const SizedBox(width: 12.0),
+                            Expanded(
+                              flex: 7,
+                              child: _corField(),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
+              bottomNavigationBar: _botaoCadastrar(),
             ),
-            bottomNavigationBar: _botaoCadastrar(),
           ),
         ),
       ),
@@ -208,13 +230,14 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
       onPressed: () async {
-        /* if (_formKey.currentState!.validate()) {
-          Dialogs.showLoadingDialog();
+        if (_formKey.currentState!.validate()) {
+          controller.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
+          /* Dialogs.showLoadingDialog();
           final data = await CadastroEquipeRepository().cadastrarEquipeRepo(_idLider.text, _nomeEquipe.text, currentColor.toString());
           if (data is EquipeModel) {
             Dialogs.showAlertDialog('Cadastro realizado: \n\n${data.id} - ${data.nome}', 'Sucesso').then((_) => Navigator.pop(context));
-          }
-        } */
+          } */
+        }
       },
     );
   }

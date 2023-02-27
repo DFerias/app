@@ -26,15 +26,19 @@ Future<void> init() async {
 
   //usecases
   getIt.registerLazySingleton(() => AuthUsecase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => EquipeUsecase(getIt<EquipeRepository>()));
+  getIt.registerLazySingleton(() => AddEquipeUseCase(getIt<EquipeRepository>()));
+  getIt.registerLazySingleton(() => GetEquipesUseCase(getIt<EquipeRepository>()));
   getIt.registerLazySingleton(() => GetFeriasUsecase(getIt<FeriasRepository>()));
+  getIt.registerLazySingleton(() => GetHistoricoFerias(getIt<FeriasRepository>()));
+  getIt.registerLazySingleton(() => ChangeStatusFeriasUseCase(getIt<FeriasRepository>()));
+  getIt.registerLazySingleton(() => GetFeriasEquipeUseCase(getIt<FeriasRepository>()));
   getIt.registerLazySingleton(() => AddFeriasUsecase(getIt<FeriasRepository>()));
   getIt.registerLazySingleton(() => FuncionarioUsecase(getIt<FuncionarioRepository>()));
   getIt.registerLazySingleton(() => ModalidadeUsecase(getIt<ModalidadeRepository>()));
 
   //Datasources
   getIt.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasourceImpl(getIt()));
-  getIt.registerLazySingleton<EquipeRemoteDatasource>(() => EquipeRemoteDataSourceImpl(client: getIt()));
+  getIt.registerLazySingleton<EquipeRemoteDatasource>(() => EquipeRemoteDataSourceImpl(getIt()));
   getIt.registerLazySingleton<FeriasRemoteDatasource>(() => FeriasRemoteDatasourceImpl(getIt()));
   getIt.registerLazySingleton<FuncionarioRemoteDatasource>(() => FuncionarioRemoteDatasourceImpl(client: getIt()));
   getIt.registerLazySingleton<ModalidadeRemoteDatasource>(() => ModalidadeRemoteDatasourceImpl());

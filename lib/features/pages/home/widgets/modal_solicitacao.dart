@@ -1,14 +1,19 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/domain/entities/ferias.dart';
 import 'package:app/features/pages/home/bloc/solicitacao_controller/solicitacao_controller.dart';
 import 'package:app/index.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ModalSheetSolicitacao extends StatefulWidget {
-  const ModalSheetSolicitacao({super.key});
+  final String rota;
+  const ModalSheetSolicitacao({
+    Key? key,
+    required this.rota,
+  }) : super(key: key);
 
-  static Future showModalSheetSolicitacao() async {
+  static Future showModalSheetSolicitacao(String rota) async {
     return showModalBottomSheet(
       context: App.context,
       isScrollControlled: true,
@@ -18,7 +23,7 @@ class ModalSheetSolicitacao extends StatefulWidget {
       ),
       builder: (context) => BlocProvider(
         create: (context) => SolicitacaoController(),
-        child: const ModalSheetSolicitacao(),
+        child: ModalSheetSolicitacao(rota: rota),
       ),
     );
   }
@@ -47,9 +52,13 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
         }
 
         if (state.status == SolicitacaoStatus.success) {
-          Dialogs.showAlertDialog(state.successMessage, 'Atenção!').then((_) {
+          Dialogs.showAlertDialog(state.successMessage, 'Sucesso').then((_) {
             Navigator.pop(context);
-            Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+            if (widget.rota == '/home') {
+              Navigator.of(context).pushNamedAndRemoveUntil(widget.rota, (Route<dynamic> route) => false);
+            } else {
+              Navigator.pop(context, true);
+            }
           });
         }
       },

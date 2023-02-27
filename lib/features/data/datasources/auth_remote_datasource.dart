@@ -42,7 +42,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       if (e.type == DioErrorType.other) {
         throw const HttpError(erroRequisicao);
       } else {
-        throw HttpError(_client.getMessage(e.response?.data));
+        throw const HttpError('E-mail ou senha incorreto, verifique e tente novamente!');
       }
     } on Failure catch (e) {
       throw HttpError(e.message);
