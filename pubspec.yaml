@@ -34,12 +34,18 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   bloc: ^8.1.0
+  dio: any
+  dio_http_cache: ^0.3.0
   flutter_bloc: ^8.1.1
+  flutter_colorpicker: ^1.0.3
   fluttertoast: ^8.0.8
   http: ^0.13.5
   equatable: ^2.0.5
-  shared_preferences: ^2.0.16
   intl: ^0.18.0
+  shared_preferences: ^2.0.16
+  validatorless: ^1.2.3
+  dartz: ^0.10.1
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
