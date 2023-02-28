@@ -14,7 +14,7 @@ class CadastrarFuncionarioController extends Cubit<CadastrarFuncionarioState> {
   Future<void> addFuncionario(Funcionario funcionario, GlobalKey<FormState> formKey) async {
     if (formKey.currentState!.validate() && state.uf != null && state.modalidade != null && state.dataAdmissao != null) {
       emit(state.copyWith(status: CadastrarFuncionarioStatus.loading));
-      final addFuncionario = di.getIt<FuncionarioUsecase>();
+      final addFuncionario = di.getIt<AddFuncionarioUsecase>();
 
       try {
         final result = await addFuncionario.call(funcionario);

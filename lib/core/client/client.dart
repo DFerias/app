@@ -35,7 +35,7 @@ class Client {
       Duration.zero,
       options: Options(
         headers: {
-          'From': 'aplicativo',
+          'Content-Type': 'application/json',
           'Authorization': '${AuthService.instance.token}',
         },
       ),

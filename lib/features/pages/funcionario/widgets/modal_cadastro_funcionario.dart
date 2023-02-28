@@ -54,7 +54,7 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
 
         if (state.status == CadastrarFuncionarioStatus.sucess) {
           Dialogs.close();
-          Dialogs.showAlertDialog('Usuário cadastrado com sucesso!', 'Sucesso!').then((_) => Dialogs.close());
+          Dialogs.showAlertDialog('Usuário cadastrado com sucesso!', 'Sucesso!').then((_) => Navigator.pop(context, true));
         }
 
         if (state.status == CadastrarFuncionarioStatus.error) {
@@ -263,16 +263,6 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                 modalidade: controller.state.modalidade,
                 dataAdmissao: controller.state.dataAdmissao,
               ),
-              /* FuncionarioModel(
-                nome: _nome.text,
-                email: _email.text,
-                senha: _senha.text,
-                cidade: _cidade.text,
-                idEquipe: _idEquipe.text.isNotEmpty ? int.parse(_idEquipe.text) : null,
-                uf: controller.state.uf,
-                modalidade: controller.state.modalidade,
-                dataAdmissao: controller.state.dataAdmissao,
-              ), */
               _formKey)
           ..validateData()
           ..validateModalidade()

@@ -4,4 +4,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class FuncionarioRepository {
   Future<Either<Failure, String>> addFuncionario(Funcionario funcionario);
+  Future<Either<Failure, List<Funcionario>>> getFuncionarios();
 }
