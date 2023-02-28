@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:app/core/ui/base_state/base_state.dart';
-import 'package:app/features/pages/home/bloc/equipe_controller/equipe_controller.dart';
+import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,10 +18,7 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
       ),
-      builder: (context) => BlocProvider(
-        create: (context) => EquipeController(),
-        child: const ModalSheetCadastroEquipe(),
-      ),
+      builder: (context) => const ModalSheetCadastroEquipe(),
     );
   }
 
@@ -231,12 +228,7 @@ class ModalSheetCadastroEquipeState extends BaseState<ModalSheetCadastroEquipe, 
       ),
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          controller.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
-          /* Dialogs.showLoadingDialog();
-          final data = await CadastroEquipeRepository().cadastrarEquipeRepo(_idLider.text, _nomeEquipe.text, currentColor.toString());
-          if (data is EquipeModel) {
-            Dialogs.showAlertDialog('Cadastro realizado: \n\n${data.id} - ${data.nome}', 'Sucesso').then((_) => Navigator.pop(context));
-          } */
+          // controller.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
         }
       },
     );

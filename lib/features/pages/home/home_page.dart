@@ -1,6 +1,7 @@
 import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/features/domain/entities/equipe.dart';
+import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
 import 'package:app/features/pages/shared/rounded_button_widget.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
 
   @override
   void onReady() {
+    context.read<EquipeController>().getEquipes();
     super.onReady();
 
     controller.loadFerias();
@@ -215,9 +217,9 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
     List<Widget> listaWidget = [
       RoundedButtonWidget(icone: Icons.history_outlined, label: 'Histórico', onPressed: () => Navigator.pushNamed(context, '/home/historico')),
       RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
-      RoundedButtonWidget(icone: Icons.checklist_outlined, label: 'Solicitações', onPressed: () => Navigator.of(context).pushNamed('/home/solicitacao')),
-      RoundedButtonWidget(icone: Icons.group_outlined, label: 'Equipes', onPressed: () => ModalSheetCadastroEquipe.showModalSheetCadastroEquipe()),
-      RoundedButtonWidget(icone: Icons.person, label: 'Funcionarios', onPressed: () => Navigator.of(context).pushNamed('/home/funcionario')),
+      RoundedButtonWidget(icone: Icons.checklist_outlined, label: 'Solicitações', onPressed: () => Navigator.pushNamed(context, '/home/solicitacao')),
+      RoundedButtonWidget(icone: Icons.group_outlined, label: 'Equipes', onPressed: () => Navigator.pushNamed(context, '/home/equipe')),
+      RoundedButtonWidget(icone: Icons.person, label: 'Funcionarios', onPressed: () => Navigator.pushNamed(context, '/home/funcionario')),
     ];
 
     return listaWidget;
@@ -411,7 +413,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
   }
 
   nomeEquipe(int? id) {
-    Equipe equipe = controller.state.equipes.firstWhere((e) => e.id == id);
+    Equipe equipe = context.read<EquipeController>().state.equipes.firstWhere((e) => e.id == id);
 
     return equipe.nome;
   }

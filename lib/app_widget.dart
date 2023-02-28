@@ -1,3 +1,4 @@
+import 'package:app/features/pages/routes/equipe_routes.dart';
 import 'package:app/features/pages/routes/funcionario_routes.dart';
 import 'package:app/features/pages/routes/historico_routes.dart';
 import 'package:app/features/pages/routes/solicitacao_routes.dart';
@@ -31,6 +32,7 @@ class AppWidget extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/home/historico': (context) => HistoricoRoutes.page,
         '/home/solicitacao': (context) => SolicitacaoRoutes.page,
+        '/home/equipe': (context) => EquipeRoutes.page,
         '/home/funcionario': (context) => FuncionarioRoutes.page,
       },
     );

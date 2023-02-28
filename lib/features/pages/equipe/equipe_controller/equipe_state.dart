@@ -4,6 +4,7 @@ enum EquipeStatus {
   initial,
   loading,
   loaded,
+  success,
   error,
 }
 

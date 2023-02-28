@@ -1,9 +1,8 @@
-import 'package:app/core/errors/failure.dart';
-import 'package:app/core/injections/injection.dart' as di;
 import 'package:app/features/domain/entities/equipe.dart';
 import 'package:app/features/domain/usecases/equipe_usecase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:app/core/injections/injection.dart' as di;
 
 part 'equipe_state.dart';
 
@@ -24,8 +23,24 @@ class EquipeController extends Cubit<EquipeState> {
         (l) => emit(state.copyWith(status: EquipeStatus.error, errorMessage: l.message)),
         (r) => emit(state.copyWith(status: EquipeStatus.loaded, equipe: r)),
       );
-    } on Failure catch (e) {
-      emit(state.copyWith(status: EquipeStatus.error, errorMessage: e.message));
+    } catch (e) {
+      emit(state.copyWith(status: EquipeStatus.error, errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getEquipes() async {
+    emit(state.copyWith(status: EquipeStatus.loading));
+
+    try {
+      final getEquipes = di.getIt<GetEquipesUseCase>();
+      final equipes = await getEquipes.call();
+
+      equipes.fold(
+        (l) => emit(state.copyWith(status: EquipeStatus.error, errorMessage: l.message)),
+        (r) => emit(state.copyWith(status: EquipeStatus.loaded, equipes: r)),
+      );
+    } catch (e) {
+      emit(state.copyWith(status: EquipeStatus.error, errorMessage: e.toString()));
     }
   }
 }

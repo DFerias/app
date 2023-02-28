@@ -28,7 +28,7 @@ export 'package:app/features/pages/shared/date_picker_widget.dart';
 export 'package:app/features/pages/shared/dialogs.dart';
 export 'package:app/features/pages/shared/loading.dart';
 export 'package:app/features/pages/funcionario/widgets/modal_cadastro_funcionario.dart';
-export 'package:app/features/pages/home/widgets/modal_cadastro_equipe.dart';
+export 'package:app/features/pages/equipe/widgets/modal_cadastro_equipe.dart';
 export 'package:app/features/pages/home/widgets/modal_solicitacao.dart';
 export 'package:app/features/pages/shared/text_field_widget.dart';
 export 'package:app/features/pages/shared/utils.dart';

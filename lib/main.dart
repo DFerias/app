@@ -1,5 +1,6 @@
 import 'package:app/app_widget.dart';
 import 'package:app/core/injections/injection.dart' as di;
+import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
 
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthController()),
         BlocProvider(create: (context) => ListarFeriasController()),
+        BlocProvider(create: (context) => EquipeController()),
       ],
       child: const AppWidget(),
     );
