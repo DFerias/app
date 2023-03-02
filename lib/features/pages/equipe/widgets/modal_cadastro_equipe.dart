@@ -1,14 +1,16 @@
 // ignore_for_file: deprecated_member_use
-import 'package:app/core/ui/base_state/base_state.dart';
-import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
-import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
+import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
+import 'package:app/index.dart';
+
 class ModalSheetCadastroEquipe extends StatefulWidget {
-  const ModalSheetCadastroEquipe({super.key});
+  const ModalSheetCadastroEquipe({
+    Key? key,
+  }) : super(key: key);
 
   static Future showModalSheetCadastroEquipe() async {
     return showModalBottomSheet(
@@ -26,7 +28,7 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
   ModalSheetCadastroEquipeState createState() => ModalSheetCadastroEquipeState();
 }
 
-class ModalSheetCadastroEquipeState extends BaseState<ModalSheetCadastroEquipe, EquipeController> {
+class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nomeEquipe = TextEditingController();
   final TextEditingController _idLider = TextEditingController();
@@ -36,6 +38,7 @@ class ModalSheetCadastroEquipeState extends BaseState<ModalSheetCadastroEquipe, 
   @override
   Widget build(BuildContext context) {
     return BlocListener<EquipeController, EquipeState>(
+      // bloc: widget.equipeController,
       listener: (context, state) {
         if (state.status == EquipeStatus.loading) {
           Dialogs.showLoadingDialog();
@@ -43,10 +46,11 @@ class ModalSheetCadastroEquipeState extends BaseState<ModalSheetCadastroEquipe, 
 
         if (state.status == EquipeStatus.loaded) {
           Dialogs.close();
-          Dialogs.showAlertDialog('Equipe Cadastrada com sucesso.', 'Sucesso!').then((_) => Dialogs.close());
+          Dialogs.showAlertDialog('Equipe Cadastrada com sucesso.', 'Sucesso!').then((_) => Navigator.pop(context, true));
         }
 
         if (state.status == EquipeStatus.error) {
+          Dialogs.close();
           Dialogs.showAlertDialog(state.errorMessage, 'Atenção!').then((_) => Dialogs.close());
         }
       },
@@ -229,6 +233,7 @@ class ModalSheetCadastroEquipeState extends BaseState<ModalSheetCadastroEquipe, 
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
           // controller.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
+          // widget.equipeController.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
         }
       },
     );

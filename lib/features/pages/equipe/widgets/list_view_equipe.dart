@@ -1,4 +1,5 @@
 import 'package:app/features/domain/entities/equipe.dart';
+import 'package:app/features/pages/equipe/widgets/tile_equipe.dart';
 import 'package:flutter/material.dart';
 
 class ListViewEquipe extends StatelessWidget {
@@ -14,13 +15,10 @@ class ListViewEquipe extends StatelessWidget {
     return ListView.builder(
       itemCount: lista.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          minLeadingWidth: 5.0,
-          leading: const Icon(Icons.account_circle, size: 30.0),
-          title: Text(
-            lista[index].nome!,
-            style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
-          ),
+        return TileEquipe(
+          nomeEquipe: lista[index].nome ?? '',
+          idEquipe: lista[index].id ?? 0,
+          cor: lista[index].cor ?? '',
         );
       },
     );

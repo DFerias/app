@@ -25,7 +25,7 @@ class ListarFeriasController extends Cubit<ListarFeriasState> {
 
       ferias.fold(
         (l) => emit(state.copyWith(status: ListaFeriasStatus.error, errorMessage: l.message)),
-        (r) => emit(state.copyWith(status: ListaFeriasStatus.loaded, ferias: r)),
+        (r) => emit(state.copyWith(status: ListaFeriasStatus.loaded, ferias: List<SolicitacaoFeriasDto>.from(r.where((element) => element.ferias?.status == 'APROVADA'))) /* r.where((e) => e.status == 'APROVADA').toList() */),
       );
     } catch (e) {
       emit(

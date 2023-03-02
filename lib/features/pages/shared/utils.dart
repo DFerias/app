@@ -1,6 +1,3 @@
-import 'package:app/index.dart';
-import 'package:flutter/material.dart';
-
 final utilListaUFs = {
   'RO': 'Rondônia',
   'AC': 'Acre',
@@ -31,7 +28,7 @@ final utilListaUFs = {
   'DF': 'Distrito Federal',
 };
 
-List<Map<String, dynamic>> listaColaborador = [
+/* List<Map<String, dynamic>> listaColaborador = [
   {
     'icone': Icons.history_outlined,
     'label': 'Histórico',
@@ -102,4 +99,4 @@ listaRh(BuildContext ctx) {
   ];
 
   return listaRh;
-}
+} */

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class RichTextWidget extends StatelessWidget {
   final String label;
   final TextStyle? labeltextStyle;
-  final String text;
+  final String? text;
   final TextStyle? textStyle;
 
   const RichTextWidget({
     Key? key,
     required this.label,
     this.labeltextStyle,
-    required this.text,
+    this.text,
     this.textStyle,
   }) : super(key: key);
 

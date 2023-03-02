@@ -1,4 +1,3 @@
-import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/features/domain/entities/equipe.dart';
 import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
@@ -14,17 +13,36 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
+class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
   Future<List<SolicitacaoFeriasDto>>? future;
   late SolicitacaoFeriasDto solFerias;
   List<Widget> listaBotoes = [];
+  late final ListarFeriasController feriasController;
+  late final EquipeController equipeController;
 
-  @override
+  /* @override
   void onReady() {
     context.read<EquipeController>().getEquipes();
     super.onReady();
 
     controller.loadFerias();
+  } */
+
+  @override
+  void initState() {
+    feriasController = ListarFeriasController();
+    equipeController = EquipeController();
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      feriasController.loadFerias();
+      equipeController.getEquipes();
+    });
+  }
+
+  Future<void> onRefresh() async {
+    feriasController.loadFerias();
+    equipeController.getEquipes();
   }
 
   @override
@@ -167,7 +185,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
           children: [
             const SizedBox(height: 5.0),
             const Text(
-              'Quadro Geral de Férias',
+              'Quadro de Férias Agendadas',
               style: TextStyle(fontSize: 18.0, color: Color(0xFF3F3F3F)),
             ),
             const SizedBox(height: 5.0),
@@ -175,8 +193,9 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
               child: NotificationListener<ScrollNotification>(
                 child: Scrollbar(
                   child: RefreshIndicator(
-                    onRefresh: () async {},
+                    onRefresh: onRefresh,
                     child: BlocBuilder<ListarFeriasController, ListarFeriasState>(
+                      bloc: feriasController,
                       builder: (context, state) {
                         return _loadingSolicitacoes(state);
                       },
@@ -272,7 +291,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
           child: ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.all(0),
-            physics: const BouncingScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             itemCount: state.carregando == true ? state.ferias.length + 1 : state.ferias.length,
             itemBuilder: (context, index) {
               if (state.ferias.length == index) {
@@ -413,7 +432,7 @@ class _HomePageState extends BaseState<HomePage, ListarFeriasController> {
   }
 
   nomeEquipe(int? id) {
-    Equipe equipe = context.read<EquipeController>().state.equipes.firstWhere((e) => e.id == id);
+    Equipe equipe = equipeController.state.equipes.isNotEmpty ? equipeController.state.equipes.firstWhere((e) => e.id == id) : const Equipe();
 
     return equipe.nome;
   }
