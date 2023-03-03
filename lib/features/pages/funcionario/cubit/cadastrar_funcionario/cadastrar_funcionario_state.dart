@@ -15,12 +15,16 @@ class CadastrarFuncionarioState extends Equatable {
   String? errorMessage;
   Map<String, String>? listaUfs;
   Funcionario? funcionario;
+  String? cidade;
+  Map<String, dynamic>? equipe;
   String? uf;
   String? modalidade;
   List<Modalidade>? listaModalidades;
   DateTime? dataAdmissao;
   bool? passVisible;
   bool? validarData;
+  bool? validarCidade;
+  bool? validarEquipe;
   bool? validarUf;
   bool? validarModalidade;
 
@@ -29,12 +33,16 @@ class CadastrarFuncionarioState extends Equatable {
     this.errorMessage,
     this.listaUfs,
     this.funcionario,
+    this.cidade,
+    this.equipe,
     this.uf,
     this.modalidade,
     this.listaModalidades,
     this.dataAdmissao,
     this.passVisible,
     this.validarData,
+    this.validarCidade,
+    this.validarEquipe,
     this.validarUf,
     this.validarModalidade,
   });
@@ -44,12 +52,16 @@ class CadastrarFuncionarioState extends Equatable {
         errorMessage = null,
         listaUfs = null,
         funcionario = null,
+        cidade = null,
+        equipe = null,
         uf = null,
         modalidade = null,
         listaModalidades = [],
         dataAdmissao = null,
         passVisible = false,
         validarData = true,
+        validarCidade = true,
+        validarEquipe = true,
         validarUf = true,
         validarModalidade = true;
 
@@ -59,12 +71,16 @@ class CadastrarFuncionarioState extends Equatable {
         errorMessage,
         listaUfs,
         funcionario,
+        cidade,
+        equipe,
         uf,
         modalidade,
         listaModalidades,
         dataAdmissao,
         passVisible,
         validarData,
+        validarCidade,
+        validarEquipe,
         validarUf,
         validarModalidade,
       ];
@@ -74,12 +90,16 @@ class CadastrarFuncionarioState extends Equatable {
     String? errorMessage,
     Map<String, String>? listaUfs,
     Funcionario? funcionario,
+    String? cidade,
+    Map<String, dynamic>? equipe,
     String? uf,
     String? modalidade,
     List<Modalidade>? listaModalidades,
     DateTime? dataAdmissao,
     bool? passVisible,
     bool? validarData,
+    bool? validarCidade,
+    bool? validarEquipe,
     bool? validarUf,
     bool? validarModalidade,
   }) {
@@ -88,78 +108,18 @@ class CadastrarFuncionarioState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       listaUfs: listaUfs ?? this.listaUfs,
       funcionario: funcionario ?? this.funcionario,
+      cidade: cidade ?? this.cidade,
+      equipe: equipe ?? this.equipe,
       uf: uf ?? this.uf,
       modalidade: modalidade ?? this.modalidade,
       listaModalidades: listaModalidades ?? this.listaModalidades,
       dataAdmissao: dataAdmissao ?? this.dataAdmissao,
-      passVisible: passVisible ?? (this.passVisible ?? false),
-      validarData: validarData ?? (this.validarData ?? false),
-      validarUf: validarUf ?? (this.validarUf ?? false),
-      validarModalidade: validarModalidade ?? (this.validarModalidade ?? false),
+      passVisible: passVisible ?? this.passVisible,
+      validarData: validarData ?? this.validarData,
+      validarCidade: validarCidade ?? this.validarCidade,
+      validarEquipe: validarEquipe ?? this.validarEquipe,
+      validarUf: validarUf ?? this.validarUf,
+      validarModalidade: validarModalidade ?? this.validarModalidade,
     );
   }
 }
-
-/* class CadastrarFuncionarioInitial extends CadastrarFuncionarioState {
-  CadastrarFuncionarioInitial({
-    required CadastrarFuncionarioStatus status,
-    Map<String, String>? listaUfs,
-    FuncionarioModel? funcionario,
-    String? uf,
-    String? modalidade,
-    DateTime? dataAdmissao,
-    bool? passVisible = false,
-    bool? validarData,
-    bool? validarUf,
-    bool? validarModalidade,
-  }) : super(
-          status: CadastrarFuncionarioStatus.initial,
-          listaUfs: utilListaUFs,
-          funcionario: funcionario,
-          uf: uf,
-          modalidade: modalidade,
-          dataAdmissao: dataAdmissao,
-          passVisible: passVisible,
-          validarData: validarData,
-          validarUf: validarUf,
-          validarModalidade: validarModalidade,
-        );
-
-  CadastrarFuncionarioInitial copyWith({
-    required CadastrarFuncionarioInitial status,
-    Map<String, String>? listaUfs,
-    FuncionarioModel? funcionario,
-    String? uf,
-    String? modalidade,
-    DateTime? dataAdmissao,
-    bool? passVisible = false,
-    bool? validarData,
-    bool? validarUf,
-    bool? validarModalidade,
-  }) {
-    return CadastrarFuncionarioInitial(
-      status: null,
-      listaUfs: listaUfs,
-      funcionario: funcionario,
-      uf: uf ?? this.uf,
-      modalidade: modalidade ?? this.modalidade,
-      dataAdmissao: dataAdmissao ?? this.dataAdmissao,
-      passVisible: passVisible ?? (this.passVisible ?? false),
-      validarData: validarData ?? (this.validarData ?? false),
-      validarUf: validarUf ?? (this.validarUf ?? false),
-      validarModalidade: validarModalidade ?? (this.validarModalidade ?? false),
-    );
-  }
-} */
-
-// class LoadingState extends CadastrarFuncionarioInitial {}
-
-// class SuccessState extends CadastrarFuncionarioInitial {}
-
-/* class ErrorState extends CadastrarFuncionarioInitial {
-  String messageErro;
-
-  ErrorState({
-    required this.messageErro,
-  });
-} */

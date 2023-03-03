@@ -21,7 +21,7 @@ class EquipeController extends Cubit<EquipeState> {
 
       newEquipe.fold(
         (l) => emit(state.copyWith(status: EquipeStatus.error, errorMessage: l.message)),
-        (r) => emit(state.copyWith(status: EquipeStatus.loaded, equipe: r)),
+        (r) => emit(state.copyWith(status: EquipeStatus.success, equipe: r)),
       );
     } catch (e) {
       emit(state.copyWith(status: EquipeStatus.error, errorMessage: e.toString()));

@@ -21,6 +21,10 @@ class _EquipePageState extends BaseState<EquipePage, EquipeController> {
     controller.getEquipes();
   }
 
+  Future<void> onRefresh() async {
+    controller.getEquipes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,15 +33,58 @@ class _EquipePageState extends BaseState<EquipePage, EquipeController> {
       ),
       body: BlocBuilder<EquipeController, EquipeState>(
         builder: (context, state) {
+          if (state.status == EquipeStatus.loading) {
+            return const Loading(
+              texto: 'Aguarde, carregando dados...',
+            );
+          } else if (state.status == EquipeStatus.initial || controller.state.equipes.isEmpty) {
+            return NotificationListener<ScrollNotification>(
+              child: RefreshIndicator(
+                onRefresh: onRefresh,
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/data_empty.gif',
+                            scale: 2.0,
+                          ),
+                          Text(
+                            'Nenhuma Solicitação Encontrada',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          } else if (state.status == EquipeStatus.error) {
+            Dialogs.showSnackBar(
+              context,
+              state.errorMessage ?? '',
+              cor: Colors.red,
+            );
+          }
+
           return ListViewEquipe(lista: controller.state.equipes);
         },
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
         onPressed: () {
-          ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(/* '/home/equipe' */).then((value) async {
+          ModalSheetCadastroEquipe.showModalSheetCadastroEquipe(controller).then((value) {
             if (value == true) {
-              await controller.getEquipes();
+              Dialogs.showAlertDialog('Equipe cadastrado com sucesso!', 'Sucesso!').then((value) => onRefresh());
             }
           });
         },

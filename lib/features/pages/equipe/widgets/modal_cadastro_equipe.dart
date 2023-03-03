@@ -8,11 +8,14 @@ import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.da
 import 'package:app/index.dart';
 
 class ModalSheetCadastroEquipe extends StatefulWidget {
+  final EquipeController equipeController;
+
   const ModalSheetCadastroEquipe({
     Key? key,
+    required this.equipeController,
   }) : super(key: key);
 
-  static Future showModalSheetCadastroEquipe() async {
+  static Future showModalSheetCadastroEquipe(EquipeController equipeController) async {
     return showModalBottomSheet(
       context: App.context,
       isScrollControlled: true,
@@ -20,7 +23,7 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
       ),
-      builder: (context) => const ModalSheetCadastroEquipe(),
+      builder: (context) => ModalSheetCadastroEquipe(equipeController: equipeController),
     );
   }
 
@@ -38,15 +41,14 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<EquipeController, EquipeState>(
-      // bloc: widget.equipeController,
       listener: (context, state) {
         if (state.status == EquipeStatus.loading) {
           Dialogs.showLoadingDialog();
         }
 
-        if (state.status == EquipeStatus.loaded) {
+        if (state.status == EquipeStatus.success) {
           Dialogs.close();
-          Dialogs.showAlertDialog('Equipe Cadastrada com sucesso.', 'Sucesso!').then((_) => Navigator.pop(context, true));
+          Navigator.pop(context, true);
         }
 
         if (state.status == EquipeStatus.error) {
@@ -232,8 +234,7 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
       ),
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          // controller.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
-          // widget.equipeController.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
+          widget.equipeController.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
         }
       },
     );

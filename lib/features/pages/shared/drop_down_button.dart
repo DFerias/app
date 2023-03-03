@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DropDownButton extends StatefulWidget {
-  final Map<String, String> lista;
+  final Map<String, dynamic> lista;
   final String label;
   final dynamic value;
   final bool? validate;
@@ -50,11 +50,11 @@ class _DropDownButtonState extends State<DropDownButton> {
                 ),
               ),
               value: widget.value,
-              items: widget.lista.entries.map((MapEntry<String, String> item) {
+              items: widget.lista.entries.map((MapEntry<String, dynamic> item) {
                 return DropdownMenuItem(
                   value: item.key,
                   child: Tooltip(
-                    message: item.value,
+                    message: item.value.toString(),
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.only(left: 8.0),

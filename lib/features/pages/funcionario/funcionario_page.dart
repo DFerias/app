@@ -1,4 +1,5 @@
 import 'package:app/core/ui/base_state/base_state.dart';
+import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
 import 'package:app/features/pages/funcionario/cubit/lista_funcionario_cubit/funcionario_controller.dart';
 import 'package:app/features/pages/funcionario/widgets/list_view_funcionario.dart';
 import 'package:app/features/pages/shared/dferias_appbar.dart';
@@ -19,6 +20,7 @@ class _FuncionarioPageState extends BaseState<FuncionarioPage, FuncionarioContro
     super.onReady();
 
     controller.getFuncionarios();
+    context.read<EquipeController>().getEquipes();
   }
 
   @override

@@ -317,6 +317,13 @@ class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
       elevation: 2.0,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Ink(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: [Colors.white, corEquipe(solFerias.funcionario?.idEquipe)],
+            center: Alignment.centerLeft,
+            radius: 12.0,
+          ),
+        ),
         child: InkWell(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
@@ -435,5 +442,11 @@ class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
     Equipe equipe = equipeController.state.equipes.isNotEmpty ? equipeController.state.equipes.firstWhere((e) => e.id == id) : const Equipe();
 
     return equipe.nome;
+  }
+
+  corEquipe(int? id) {
+    Equipe equipe = equipeController.state.equipes.isNotEmpty ? equipeController.state.equipes.firstWhere((e) => e.id == id) : const Equipe();
+
+    return Color(int.parse('0xFF${equipe.cor?.replaceAll('#', '')}')).withOpacity(.8);
   }
 }

@@ -21,8 +21,11 @@ class TileEquipe extends StatelessWidget {
       elevation: 3.0,
       child: Ink(
         decoration: BoxDecoration(
-          border: Border(
-            left: BorderSide(color: Color(int.parse('0xFF${cor!.replaceAll('#', '')}')), width: 6.0),
+          gradient: RadialGradient(
+            colors: [Colors.white, Color(int.parse('0xFF${cor!.replaceAll('#', '')}')).withOpacity(.8)],
+            center: Alignment.centerLeft,
+            radius: 12.0,
+            // stops: const [0.35, 1],
           ),
         ),
         child: InkWell(
@@ -41,22 +44,6 @@ class TileEquipe extends StatelessWidget {
                   textStyle: const TextStyle(
                     fontSize: 16.0,
                     color: Color(0xFF3F3F3F),
-                  ),
-                ),
-                Visibility(
-                  visible: true,
-                  child: RichTextWidget(
-                    label: '#',
-                    text: idEquipe.toString(),
-                    labeltextStyle: const TextStyle(
-                      fontSize: 18.0,
-                      color: Color(0xFF3F3F3F),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 16.0,
-                      color: Color(0xFF3F3F3F),
-                    ),
                   ),
                 ),
               ],

@@ -1,6 +1,7 @@
 // ignore_for_file: unrelated_type_equality_checks
 
 import 'package:app/core/ui/base_state/base_state.dart';
+import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
 import 'package:app/index.dart';
 import 'package:app/features/pages/shared/drop_down_button.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,6 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
   final _nome = TextEditingController();
   final _email = TextEditingController();
   final _senha = TextEditingController();
-  final _cidade = TextEditingController();
-  final _idEquipe = TextEditingController();
 
   @override
   void onReady() {
@@ -146,12 +145,24 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                             ),
                           ),
                           const SizedBox(height: 12.0),
-                          TextFieldWidget(
+                          /* TextFieldWidget(
                             controllerField: _cidade,
                             keyBoardType: TextInputType.name,
                             label: 'Cidade',
                             textInputAction: TextInputAction.next,
                             validator: Validatorless.required('Cidade Obrigatória *'),
+                          ), */
+                          DropDownButton(
+                            label: 'Cidade',
+                            lista: utilListaCidades,
+                            value: controller.state.cidade,
+                            validate: controller.state.validarCidade,
+                            messageValidate: 'Cidade Obrigatória',
+                            onChanged: (value) {
+                              controller
+                                ..selectCidade(value)
+                                ..validateCidade();
+                            },
                           ),
                           const SizedBox(height: 12.0),
                           Row(
@@ -159,12 +170,17 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                             children: [
                               Expanded(
                                 flex: 3,
-                                child: TextFieldWidget(
-                                  controllerField: _idEquipe,
-                                  keyBoardType: TextInputType.number,
-                                  textInputAction: TextInputAction.next,
-                                  label: 'ID Equipe',
-                                  validator: Validatorless.required('ID Equipe Obrigatório'),
+                                child: DropDownButton(
+                                  label: 'Equipe',
+                                  lista: listaEquipes(),
+                                  value: controller.state.equipe?.entries.first.key,
+                                  validate: controller.state.validarEquipe,
+                                  messageValidate: 'Equipe Obrigatória',
+                                  onChanged: (value) {
+                                    controller
+                                      ..selectEquipe(selectEquipe(value))
+                                      ..validateEquipe();
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 12.0),
@@ -232,6 +248,18 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
     );
   }
 
+  listaEquipes() {
+    Map<String, dynamic> listaEquipes = {for (var v in context.read<EquipeController>().state.equipes) v.nome!: v.id};
+
+    return listaEquipes;
+  }
+
+  Map<String, dynamic> selectEquipe(value) {
+    var idEquipe = context.read<EquipeController>().state.equipes.firstWhere((element) => element.nome == value);
+
+    return <String, dynamic>{idEquipe.nome!: idEquipe.id};
+  }
+
   Widget _botaoCadastrar() {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
@@ -257,8 +285,8 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                 nome: _nome.text,
                 email: _email.text,
                 senha: _senha.text,
-                cidade: _cidade.text,
-                idEquipe: _idEquipe.text.isNotEmpty ? int.parse(_idEquipe.text) : null,
+                cidade: controller.state.cidade,
+                idEquipe: controller.state.equipe?.entries.first.value,
                 uf: controller.state.uf,
                 modalidade: controller.state.modalidade,
                 dataAdmissao: controller.state.dataAdmissao,

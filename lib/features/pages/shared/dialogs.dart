@@ -85,7 +85,7 @@ class Dialogs {
             TextButton(
               child: const Text('Fechar'),
               onPressed: () {
-                Dialogs.close();
+                Navigator.pop(context);
               },
             ),
           ],

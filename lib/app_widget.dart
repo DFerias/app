@@ -1,5 +1,4 @@
 import 'package:app/features/pages/equipe/equipe_page.dart';
-import 'package:app/features/pages/routes/equipe_routes.dart';
 import 'package:app/features/pages/routes/funcionario_routes.dart';
 import 'package:app/features/pages/routes/historico_routes.dart';
 import 'package:app/features/pages/routes/solicitacao_routes.dart';

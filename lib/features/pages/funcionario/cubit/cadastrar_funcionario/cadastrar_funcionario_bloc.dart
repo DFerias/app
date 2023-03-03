@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/core/errors/failure.dart';
 import 'package:app/core/injections/injection.dart' as di;
 import 'package:app/index.dart';
@@ -46,6 +48,18 @@ class CadastrarFuncionarioController extends Cubit<CadastrarFuncionarioState> {
     }
   }
 
+  void selectCidade(String cidadeSelected) {
+    emit(state.copyWith(cidade: cidadeSelected));
+
+    inspect(state.cidade);
+  }
+
+  void selectEquipe(Map<String, dynamic> equipeSelected) {
+    emit(state.copyWith(equipe: equipeSelected));
+
+    inspect(state.equipe);
+  }
+
   void selectUf(String ufSelected) {
     emit(state.copyWith(uf: ufSelected));
   }
@@ -67,6 +81,22 @@ class CadastrarFuncionarioController extends Cubit<CadastrarFuncionarioState> {
       emit(state.copyWith(validarData: state.validarData = true, status: CadastrarFuncionarioStatus.initial));
     } else {
       emit(state.copyWith(validarData: state.validarData = false, status: CadastrarFuncionarioStatus.initial));
+    }
+  }
+
+  void validateCidade() {
+    if (state.cidade != null) {
+      emit(state.copyWith(validarCidade: state.validarCidade = true));
+    } else {
+      emit(state.copyWith(validarCidade: state.validarCidade = false));
+    }
+  }
+
+  void validateEquipe() {
+    if (state.equipe != null) {
+      emit(state.copyWith(validarEquipe: state.validarEquipe = true));
+    } else {
+      emit(state.copyWith(validarEquipe: state.validarEquipe = false));
     }
   }
 
