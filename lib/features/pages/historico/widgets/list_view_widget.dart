@@ -80,7 +80,6 @@ class _ListViewWidgetState extends BaseState<ListViewWidget, HistoricoController
                 itemBuilder: (context, index) {
                   return TileSolicitacao(
                     status: widget.listaFerias[index].status ?? '',
-                    id: widget.listaFerias[index].id,
                     dataInicial: widget.listaFerias[index].inicio ?? '',
                     dataFinal: widget.listaFerias[index].fim ?? '',
                     observacaoLider: widget.listaFerias[index].observacoesLider,

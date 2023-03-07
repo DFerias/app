@@ -15,6 +15,7 @@ abstract class FeriasRemoteDatasource {
   Future<List<Ferias>> listarHistoricoFerias(int id);
   Future<String> changeStatusFerias(int idSolicitacao, String status);
   Future<List<SolicitacaoFeriasDto>> listarFeriasEquipe();
+  Future<List<SolicitacaoFeriasDto>> listarFeriasValidadas();
   Future<String> cadastrarFerias(Ferias ferias);
 }
 
@@ -179,6 +180,37 @@ class FeriasRemoteDatasourceImpl implements FeriasRemoteDatasource {
         throw const HttpError(erroRequisicao);
       } else {
         throw HttpError(_client.getMessage(e.response?.data));
+      }
+    } on Failure catch (e) {
+      throw HttpError(e.message);
+    }
+  }
+
+  @override
+  Future<List<SolicitacaoFeriasDto>> listarFeriasValidadas() async {
+    try {
+      final response = await _client.dio.get(
+        '$urlApi/api/ferias/validada',
+        options: _client.cacheOptions(),
+      );
+
+      if (response.statusCode == 200) {
+        return List<SolicitacaoFeriasDto>.from(response.data.map((i) => SolicitacaoFeriasDto.fromJson(i))).toList();
+      } else {
+        if (response.statusCode == 204) {
+          throw const HttpError('Desculpe não há conteúdo a ser exibido');
+        }
+        if (response.statusCode == 403) {
+          throw const HttpError(erroAutorizacao);
+        } else {
+          throw const HttpError(erroRequisicao);
+        }
+      }
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.other) {
+        throw HttpError(e.message);
+      } else {
+        throw HttpError(e.message);
       }
     } on Failure catch (e) {
       throw HttpError(e.message);

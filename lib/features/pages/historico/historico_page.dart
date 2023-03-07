@@ -1,5 +1,4 @@
 import 'package:app/core/ui/base_state/base_state.dart';
-import 'package:app/features/domain/entities/ferias.dart';
 import 'package:app/features/pages/historico/cubit/historico_controller.dart';
 import 'package:app/features/pages/historico/widgets/list_view_widget.dart';
 import 'package:app/features/pages/shared/dferias_appbar.dart';
@@ -16,9 +15,6 @@ class HistoricoPage extends StatefulWidget {
 
 class _HistoricoPageState extends BaseState<HistoricoPage, HistoricoController> {
   late TabController _tabController;
-  List<Ferias> listaGeral = [];
-  List<Ferias> listaRecusados = [];
-  List<Ferias> listaAprovados = [];
 
   @override
   void initState() {

@@ -1,12 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
 import 'package:app/features/pages/solicitacao/solicitacao_controller/solicitacao_equipe_controller.dart';
 import 'package:app/features/pages/solicitacao/widgets/modal_validacao.dart';
 import 'package:app/features/pages/solicitacao/widgets/tile_solicitacao_equipe.dart';
 import 'package:app/index.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:app/core/ui/base_state/base_state.dart';
 
 class ListViewSolWidget extends StatefulWidget {
   final List<SolicitacaoFeriasDto> listaSolFerias;
@@ -65,11 +65,13 @@ class _ListViewSolWidgetState extends BaseState<ListViewSolWidget, SolicitacaoEq
             ),
           );
         } else if (state.status == SolicitacaoEquipeStatus.error) {
-          Dialogs.showSnackBar(
-            context,
-            state.errorMessage ?? '',
-            cor: Colors.red,
-          );
+          setState(() {
+            Dialogs.showSnackBar(
+              context,
+              state.errorMessage ?? '',
+              cor: Colors.red,
+            );
+          });
         }
 
         return NotificationListener<ScrollNotification>(
@@ -84,7 +86,6 @@ class _ListViewSolWidgetState extends BaseState<ListViewSolWidget, SolicitacaoEq
                   return TileSolicitacaoEquipe(
                     nome: widget.listaSolFerias[index].funcionario?.nome ?? '',
                     status: widget.listaSolFerias[index].ferias?.status ?? '',
-                    id: widget.listaSolFerias[index].ferias?.id,
                     dataInicial: widget.listaSolFerias[index].ferias?.inicio ?? '',
                     dataFinal: widget.listaSolFerias[index].ferias?.fim ?? '',
                     observacaoLider: widget.listaSolFerias[index].ferias?.observacoesLider,

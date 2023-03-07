@@ -11,12 +11,14 @@ enum SolicitacaoEquipeStatus {
 class SolicitacaoEquipeState extends Equatable {
   final SolicitacaoEquipeStatus status;
   final List<SolicitacaoFeriasDto>? solFerias;
+  final List<SolicitacaoFeriasDto>? solFeriasTodos;
   final String? successMessage;
   final String? errorMessage;
 
   const SolicitacaoEquipeState(
     this.status,
     this.solFerias,
+    this.solFeriasTodos,
     this.successMessage,
     this.errorMessage,
   );
@@ -24,6 +26,7 @@ class SolicitacaoEquipeState extends Equatable {
   SolicitacaoEquipeState.initial()
       : status = SolicitacaoEquipeStatus.initial,
         solFerias = [],
+        solFeriasTodos = [],
         successMessage = null,
         errorMessage = null;
 
@@ -31,6 +34,7 @@ class SolicitacaoEquipeState extends Equatable {
   List<Object?> get props => [
         status,
         solFerias,
+        solFeriasTodos,
         successMessage,
         errorMessage,
       ];
@@ -38,12 +42,14 @@ class SolicitacaoEquipeState extends Equatable {
   SolicitacaoEquipeState copyWith({
     SolicitacaoEquipeStatus? status,
     List<SolicitacaoFeriasDto>? solFerias,
+    List<SolicitacaoFeriasDto>? solFeriasTodos,
     String? successMessage,
     String? errorMessage,
   }) {
     return SolicitacaoEquipeState(
       status ?? this.status,
       solFerias ?? this.solFerias,
+      solFeriasTodos ?? this.solFeriasTodos,
       successMessage ?? this.successMessage,
       errorMessage ?? this.errorMessage,
     );

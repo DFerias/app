@@ -26,6 +26,23 @@ class SolicitacaoEquipeController extends Cubit<SolicitacaoEquipeState> {
     }
   }
 
+  Future<void> loadFeriasValidadas() async {
+    emit(state.copyWith(status: SolicitacaoEquipeStatus.loading));
+
+    try {
+      final getFeriasEquipe = di.getIt<GerFeriasValidadasUseCase>();
+
+      await getFeriasEquipe.call().then(
+            (solFerias) => solFerias.fold(
+              (l) => emit(state.copyWith(status: SolicitacaoEquipeStatus.error, errorMessage: l.message)),
+              (r) => emit(state.copyWith(status: SolicitacaoEquipeStatus.loaded, solFeriasTodos: r)),
+            ),
+          );
+    } catch (e) {
+      emit(state.copyWith(status: SolicitacaoEquipeStatus.error, errorMessage: e.toString()));
+    }
+  }
+
   Future<void> changeStatusFeriasEquipe(int idSolicitacao, String status) async {
     emit(state.copyWith(status: SolicitacaoEquipeStatus.loading));
 

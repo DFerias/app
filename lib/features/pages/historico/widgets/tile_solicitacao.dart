@@ -4,7 +4,6 @@ import 'package:app/features/pages/shared/rich_text_widget.dart';
 
 class TileSolicitacao extends StatelessWidget {
   final String status;
-  final int? id;
   final String dataInicial;
   final String dataFinal;
   final String? observacaoLider;
@@ -13,7 +12,6 @@ class TileSolicitacao extends StatelessWidget {
   const TileSolicitacao({
     Key? key,
     required this.status,
-    this.id,
     required this.dataInicial,
     required this.dataFinal,
     this.observacaoLider,
@@ -62,22 +60,6 @@ class TileSolicitacao extends StatelessWidget {
                   textStyle: const TextStyle(
                     fontSize: 16.0,
                     color: Color(0xFF3F3F3F),
-                  ),
-                ),
-                Visibility(
-                  visible: id != null,
-                  child: RichTextWidget(
-                    label: '#',
-                    text: id.toString(),
-                    labeltextStyle: const TextStyle(
-                      fontSize: 18.0,
-                      color: Color(0xFF3F3F3F),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 16.0,
-                      color: Color(0xFF3F3F3F),
-                    ),
                   ),
                 ),
               ],

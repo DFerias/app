@@ -36,6 +36,14 @@ class GetFeriasEquipeUseCase {
   Future<Either<Failure, List<SolicitacaoFeriasDto>>> call() async => _repository.getFeriasEquipe();
 }
 
+class GerFeriasValidadasUseCase {
+  final FeriasRepository _repository;
+
+  GerFeriasValidadasUseCase(this._repository);
+
+  Future<Either<Failure, List<SolicitacaoFeriasDto>>> call() async => _repository.getFeriasValidadas();
+}
+
 class AddFeriasUsecase {
   final FeriasRepository _repository;
 

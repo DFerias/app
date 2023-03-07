@@ -64,4 +64,15 @@ class FeriasRepositoryImpl implements FeriasRepository {
       return Left(e);
     }
   }
+
+  @override
+  Future<Either<Failure, List<SolicitacaoFeriasDto>>> getFeriasValidadas() async {
+    try {
+      final result = await _datasource.listarFeriasValidadas();
+
+      return Right(result);
+    } on Failure catch (e) {
+      return Left(e);
+    }
+  }
 }

@@ -5,7 +5,7 @@ import 'package:app/index.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
 
-const urlApi = 'http://dferias.ddns.net:25107';
+const urlApi = 'http://dferias.ddns.net:17850';
 
 class Client {
   final msgErroSessao = 'Sua sessão expirou ou foi revogada. Por favor, faça login novamente.';
@@ -29,8 +29,6 @@ class Client {
   }
 
   Options cacheOptions() {
-    // final auth = Get.find<AuthService>();
-
     return buildCacheOptions(
       Duration.zero,
       options: Options(

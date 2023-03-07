@@ -32,6 +32,7 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => GetHistoricoFerias(getIt<FeriasRepository>()));
   getIt.registerLazySingleton(() => ChangeStatusFeriasUseCase(getIt<FeriasRepository>()));
   getIt.registerLazySingleton(() => GetFeriasEquipeUseCase(getIt<FeriasRepository>()));
+  getIt.registerLazySingleton(() => GerFeriasValidadasUseCase(getIt<FeriasRepository>()));
   getIt.registerLazySingleton(() => AddFeriasUsecase(getIt<FeriasRepository>()));
   getIt.registerLazySingleton(() => ListarFuncionariosUsecase(getIt<FuncionarioRepository>()));
   getIt.registerLazySingleton(() => AddFuncionarioUsecase(getIt<FuncionarioRepository>()));

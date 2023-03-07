@@ -13,20 +13,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
+class _HomePageState extends State<HomePage> {
   Future<List<SolicitacaoFeriasDto>>? future;
   late SolicitacaoFeriasDto solFerias;
   List<Widget> listaBotoes = [];
   late final ListarFeriasController feriasController;
   late final EquipeController equipeController;
-
-  /* @override
-  void onReady() {
-    context.read<EquipeController>().getEquipes();
-    super.onReady();
-
-    controller.loadFerias();
-  } */
 
   @override
   void initState() {
@@ -35,14 +27,13 @@ class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      feriasController.loadFerias();
-      equipeController.getEquipes();
+      equipeController.getEquipes().whenComplete(() => feriasController.loadFerias());
     });
   }
 
   Future<void> onRefresh() async {
-    feriasController.loadFerias();
-    equipeController.getEquipes();
+    await equipeController.getEquipes();
+    await feriasController.loadFerias();
   }
 
   @override
@@ -216,7 +207,7 @@ class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
   botoesColaborador() {
     List<Widget> listaWidget = [
       RoundedButtonWidget(icone: Icons.history_outlined, label: 'Histórico', onPressed: () => Navigator.pushNamed(context, '/home/historico')),
-      RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
+      // RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
     ];
 
     return listaWidget;
@@ -225,7 +216,7 @@ class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
   botoesLider() {
     List<Widget> listaWidget = [
       RoundedButtonWidget(icone: Icons.history_outlined, label: 'Histórico', onPressed: () => Navigator.pushNamed(context, '/home/historico')),
-      RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
+      // RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
       RoundedButtonWidget(icone: Icons.checklist_outlined, label: 'Solicitações', onPressed: () => Navigator.of(context).pushNamed('/home/solicitacao')),
     ];
 
@@ -235,7 +226,7 @@ class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
   botoesRh() {
     List<Widget> listaWidget = [
       RoundedButtonWidget(icone: Icons.history_outlined, label: 'Histórico', onPressed: () => Navigator.pushNamed(context, '/home/historico')),
-      RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
+      // RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
       RoundedButtonWidget(icone: Icons.checklist_outlined, label: 'Solicitações', onPressed: () => Navigator.pushNamed(context, '/home/solicitacao')),
       RoundedButtonWidget(icone: Icons.group_outlined, label: 'Equipes', onPressed: () => Navigator.pushNamed(context, '/home/equipe')),
       RoundedButtonWidget(icone: Icons.person, label: 'Funcionarios', onPressed: () => Navigator.pushNamed(context, '/home/funcionario')),
@@ -445,8 +436,8 @@ class _HomePageState extends State<HomePage /* , ListarFeriasController */ > {
   }
 
   corEquipe(int? id) {
-    Equipe equipe = equipeController.state.equipes.isNotEmpty ? equipeController.state.equipes.firstWhere((e) => e.id == id) : const Equipe();
+    var equipe = equipeController.state.equipes.isNotEmpty ? equipeController.state.equipes.firstWhere((e) => e.id == id) : null;
 
-    return Color(int.parse('0xFF${equipe.cor?.replaceAll('#', '')}')).withOpacity(.8);
+    return equipe != null ? Color(int.parse('0xff${equipe.cor?.replaceAll('#', '')}')).withOpacity(.8) : Colors.white;
   }
 }
