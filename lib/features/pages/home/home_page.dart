@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
       // RoundedButtonWidget(icone: Icons.calendar_month, label: 'Quadro \nde Férias', onPressed: () {}),
       RoundedButtonWidget(icone: Icons.checklist_outlined, label: 'Solicitações', onPressed: () => Navigator.pushNamed(context, '/home/solicitacao')),
       RoundedButtonWidget(icone: Icons.group_outlined, label: 'Equipes', onPressed: () => Navigator.pushNamed(context, '/home/equipe')),
-      RoundedButtonWidget(icone: Icons.person, label: 'Funcionarios', onPressed: () => Navigator.pushNamed(context, '/home/funcionario')),
+      RoundedButtonWidget(icone: Icons.person, label: 'Funcionários', onPressed: () => Navigator.pushNamed(context, '/home/funcionario')),
     ];
 
     return listaWidget;

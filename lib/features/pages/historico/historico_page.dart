@@ -55,7 +55,7 @@ class _HistoricoPageState extends BaseState<HistoricoPage, HistoricoController> 
                 tabs: const [
                   Tab(text: 'Todas'),
                   Tab(text: 'Recusadas'),
-                  Tab(text: 'Aprovados'),
+                  Tab(text: 'Aprovadas'),
                 ],
               ),
               Expanded(

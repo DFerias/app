@@ -5,7 +5,6 @@ import 'package:app/index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'login_event.dart';
 part 'login_state.dart';
 
 class AuthController extends Cubit<AuthState> {

@@ -1,25 +1,27 @@
-import 'package:app/core/ui/base_state/base_state.dart';
-import 'package:app/features/pages/shared/button_widget.dart';
-import 'package:app/features/pages/solicitacao/widgets/text_field_observacao.dart';
-import 'package:app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/data/dto/solicitacao_ferias_dto.dart';
+import 'package:app/features/pages/shared/button_widget.dart';
 import 'package:app/features/pages/shared/rich_text_widget.dart';
 import 'package:app/features/pages/solicitacao/solicitacao_controller/solicitacao_equipe_controller.dart';
+import 'package:app/features/pages/solicitacao/widgets/text_field_observacao.dart';
+import 'package:app/index.dart';
 
 class ModalValidacao extends StatefulWidget {
   final BuildContext context;
   final SolicitacaoFeriasDto solicitacao;
+  final bool isRh;
 
   const ModalValidacao({
     Key? key,
     required this.context,
     required this.solicitacao,
+    required this.isRh,
   }) : super(key: key);
 
-  static Future showModalSheetValidacao(BuildContext context, SolicitacaoFeriasDto solicitacao) async {
+  static Future showModalSheetValidacao(BuildContext context, SolicitacaoFeriasDto solicitacao, bool isRh) async {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -31,7 +33,7 @@ class ModalValidacao extends StatefulWidget {
         create: (context) => SolicitacaoEquipeController(),
         child: Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: ModalValidacao(context: context, solicitacao: solicitacao),
+          child: ModalValidacao(context: context, solicitacao: solicitacao, isRh: isRh),
         ),
       ),
     );
@@ -44,6 +46,22 @@ class ModalValidacao extends StatefulWidget {
 class _ModalValidacaoState extends BaseState<ModalValidacao, SolicitacaoEquipeController> {
   final _observacao = TextEditingController();
   final ScrollController _scrollControllerText = ScrollController();
+
+  labelButton() {
+    if (widget.isRh) {
+      return const Text('Aprovar', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold));
+    } else {
+      return const Text('Validar', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold));
+    }
+  }
+
+  statusValue() {
+    if (widget.isRh) {
+      return 'APROVADA';
+    } else {
+      return 'VALIDADA';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,15 +106,6 @@ class _ModalValidacaoState extends BaseState<ModalValidacao, SolicitacaoEquipeCo
                     text: widget.solicitacao.funcionario?.nome ?? '',
                     textStyle: const TextStyle(fontSize: 16.0, color: Color(0xFF3F3F3F)),
                   ),
-                  Visibility(
-                    visible: widget.solicitacao.ferias?.id != null,
-                    child: RichTextWidget(
-                      label: '#',
-                      text: widget.solicitacao.ferias!.id.toString(),
-                      labeltextStyle: const TextStyle(fontSize: 18.0, color: Color(0xFF3F3F3F), fontWeight: FontWeight.bold),
-                      textStyle: const TextStyle(fontSize: 16.0, color: Color(0xFF3F3F3F)),
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 5.0),
@@ -130,9 +139,9 @@ class _ModalValidacaoState extends BaseState<ModalValidacao, SolicitacaoEquipeCo
                   const SizedBox(width: 10.0),
                   Expanded(
                     child: ButtonWidget(
-                      label: const Text('Validar', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                      label: labelButton(),
                       icon: const Icon(Icons.done),
-                      onPressed: () => controller.changeStatusFeriasEquipe(widget.solicitacao.ferias!.id!, 'VALIDADA'),
+                      onPressed: () => controller.changeStatusFeriasEquipe(widget.solicitacao.ferias!.id!, statusValue()),
                     ),
                   )
                 ],

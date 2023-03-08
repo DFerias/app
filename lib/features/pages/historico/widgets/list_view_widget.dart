@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:app/core/ui/base_state/base_state.dart';
 import 'package:app/features/domain/entities/ferias.dart';
 import 'package:app/features/pages/historico/cubit/historico_controller.dart';

@@ -17,10 +17,7 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        // side: BorderSide(color: backgroundColor ?? const Color(0x00000000)),
-      ),
+      style: ElevatedButton.styleFrom(backgroundColor: backgroundColor),
       onPressed: onPressed,
       icon: Visibility(visible: icon != null, child: icon ?? const Icon(null)),
       label: label,

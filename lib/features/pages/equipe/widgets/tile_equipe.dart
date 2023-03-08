@@ -25,7 +25,6 @@ class TileEquipe extends StatelessWidget {
             colors: [Colors.white, Color(int.parse('0xFF${cor!.replaceAll('#', '')}')).withOpacity(.8)],
             center: Alignment.centerLeft,
             radius: 12.0,
-            // stops: const [0.35, 1],
           ),
         ),
         child: InkWell(

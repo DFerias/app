@@ -30,7 +30,7 @@ class _FuncionarioPageState extends BaseState<FuncionarioPage, FuncionarioContro
     }
 
     return Scaffold(
-      appBar: DFeriasAppbar(title: 'Funcionarios'),
+      appBar: DFeriasAppbar(title: 'Funcionários'),
       body: BlocBuilder<FuncionarioController, FuncionarioState>(
         builder: (context, state) {
           if (state.status == FuncionarioStatus.loading) {

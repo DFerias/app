@@ -20,7 +20,6 @@ class _TextFieldObservacaoState extends State<TextFieldObservacao> {
     setState(() {});
     return TextFormField(
       scrollController: widget.scrollController,
-      key: const Key('observacoes_gerais'),
       autocorrect: false,
       keyboardType: TextInputType.multiline,
       textAlignVertical: TextAlignVertical.top,

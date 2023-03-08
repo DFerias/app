@@ -5,7 +5,6 @@ import 'package:app/core/injections/injection.dart' as di;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-part 'listar_ferias_event.dart';
 part 'listar_ferias_state.dart';
 
 class ListarFeriasController extends Cubit<ListarFeriasState> {

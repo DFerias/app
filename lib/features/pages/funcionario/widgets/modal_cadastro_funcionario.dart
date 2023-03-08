@@ -145,13 +145,6 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                             ),
                           ),
                           const SizedBox(height: 12.0),
-                          /* TextFieldWidget(
-                            controllerField: _cidade,
-                            keyBoardType: TextInputType.name,
-                            label: 'Cidade',
-                            textInputAction: TextInputAction.next,
-                            validator: Validatorless.required('Cidade Obrigatória *'),
-                          ), */
                           DropDownButton(
                             label: 'Cidade',
                             lista: utilListaCidades,

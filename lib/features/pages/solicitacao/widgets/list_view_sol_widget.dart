@@ -10,10 +10,12 @@ import 'package:app/index.dart';
 
 class ListViewSolWidget extends StatefulWidget {
   final List<SolicitacaoFeriasDto> listaSolFerias;
+  final bool isRh;
 
   const ListViewSolWidget({
     Key? key,
     required this.listaSolFerias,
+    required this.isRh,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,11 @@ class ListViewSolWidget extends StatefulWidget {
 
 class _ListViewSolWidgetState extends BaseState<ListViewSolWidget, SolicitacaoEquipeController> {
   Future<void> onRefresh() async {
-    controller.loadFeriasEquipe();
+    if (widget.isRh) {
+      controller.loadFeriasValidadas();
+    } else {
+      controller.loadFeriasEquipe();
+    }
   }
 
   @override
@@ -90,9 +96,13 @@ class _ListViewSolWidgetState extends BaseState<ListViewSolWidget, SolicitacaoEq
                     dataFinal: widget.listaSolFerias[index].ferias?.fim ?? '',
                     observacaoLider: widget.listaSolFerias[index].ferias?.observacoesLider,
                     observacaoRh: widget.listaSolFerias[index].ferias?.observacoesRh,
-                    onTap: () => ModalValidacao.showModalSheetValidacao(context, widget.listaSolFerias[index]).then((value) {
+                    onTap: () => ModalValidacao.showModalSheetValidacao(context, widget.listaSolFerias[index], widget.isRh).then((value) {
                       if (value == true) {
-                        controller.loadFeriasEquipe();
+                        if (widget.isRh) {
+                          controller.loadFeriasValidadas();
+                        } else {
+                          controller.loadFeriasEquipe();
+                        }
                       }
                     }),
                   );
