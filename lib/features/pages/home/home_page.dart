@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        Text('${App.authService.usuario?.modalidade} - Bsoft One', style: const TextStyle(fontSize: 16.0)),
+        Text('${App.authService.usuario?.modalidade} - ${nomeEquipe(AuthService.instance.usuario?.idEquipe)}', style: const TextStyle(fontSize: 16.0)),
       ],
     );
   }
@@ -430,9 +430,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   nomeEquipe(int? id) {
-    Equipe equipe = equipeController.state.equipes.isNotEmpty ? equipeController.state.equipes.firstWhere((e) => e.id == id) : const Equipe();
+    if (id != null) {
+      Equipe equipe = equipeController.state.equipes.isNotEmpty ? equipeController.state.equipes.firstWhere((e) => e.id == id) : const Equipe();
 
-    return equipe.nome;
+      return equipe.nome;
+    } else {
+      return '';
+    }
   }
 
   corEquipe(int? id) {
