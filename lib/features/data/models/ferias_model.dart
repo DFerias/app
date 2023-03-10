@@ -38,8 +38,8 @@ class FeriasModel extends Ferias {
         inicio: json['inicio'] == null ? null : DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json['inicio'])),
         fim: json['fim'] == null ? null : DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json['fim'])),
         status: json["status"],
-        observacoesRh: json["observacoesRh"],
-        observacoesLider: json["observacoesLider"],
+        observacoesRh: json["observacoes_rh"],
+        observacoesLider: json["observacoes_lider"],
       );
 
   Map<String, dynamic> toMap() => {

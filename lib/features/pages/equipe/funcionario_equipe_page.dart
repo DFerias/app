@@ -1,36 +1,43 @@
-import 'package:app/core/ui/base_state/base_state.dart';
-import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
-import 'package:app/features/pages/funcionario/cubit/lista_funcionario_cubit/funcionario_controller.dart';
-import 'package:app/features/pages/shared/dferias_appbar.dart';
 import 'package:app/features/pages/shared/list_view_funcionario.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
+import 'package:app/core/ui/base_state/base_state.dart';
+import 'package:app/features/pages/funcionario/cubit/lista_funcionario_cubit/funcionario_controller.dart';
+import 'package:app/features/pages/shared/dferias_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FuncionarioPage extends StatefulWidget {
-  const FuncionarioPage({super.key});
+class FuncionarioEquipePage extends StatefulWidget {
+  final String nomeEquipe;
+  final int idEquipe;
+
+  const FuncionarioEquipePage({
+    Key? key,
+    required this.nomeEquipe,
+    required this.idEquipe,
+  }) : super(key: key);
 
   @override
-  State<FuncionarioPage> createState() => _FuncionarioPageState();
+  State<FuncionarioEquipePage> createState() => _FuncionarioEquipePageState();
 }
 
-class _FuncionarioPageState extends BaseState<FuncionarioPage, FuncionarioController> {
+class _FuncionarioEquipePageState extends BaseState<FuncionarioEquipePage, FuncionarioController> {
   @override
   void onReady() {
     super.onReady();
 
-    controller.getFuncionarios();
-    context.read<EquipeController>().getEquipes();
+    controller.getFuncionariosEquipe(widget.idEquipe);
   }
 
   @override
   Widget build(BuildContext context) {
     Future<void> onRefresh() async {
-      controller.getFuncionarios();
+      controller.getFuncionariosEquipe(widget.idEquipe);
     }
 
     return Scaffold(
-      appBar: DFeriasAppbar(title: 'Funcionários'),
+      appBar: DFeriasAppbar(
+        title: widget.nomeEquipe,
+      ),
       body: BlocBuilder<FuncionarioController, FuncionarioState>(
         builder: (context, state) {
           if (state.status == FuncionarioStatus.loading) {
@@ -75,7 +82,6 @@ class _FuncionarioPageState extends BaseState<FuncionarioPage, FuncionarioContro
               cor: Colors.red,
             );
           }
-
           return NotificationListener<ScrollNotification>(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
@@ -86,18 +92,6 @@ class _FuncionarioPageState extends BaseState<FuncionarioPage, FuncionarioContro
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange,
-        child: const Icon(
-          Icons.person_add_outlined,
-          color: Colors.white,
-        ),
-        onPressed: () => ModalSheetCadastroFuncionario.showModalSheetCadastroFuncionario().then((value) {
-          if (value == true) {
-            onRefresh();
-          }
-        }),
       ),
     );
   }

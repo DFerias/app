@@ -15,7 +15,6 @@ class FuncionarioDto {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'funcionario': funcionario.toMap()});
     result.addAll({'authority': authority.toMap()});
 
     return result;

@@ -34,7 +34,7 @@ class FuncionarioRemoteDatasourceImpl implements FuncionarioRemoteDatasource {
           "idEquipe": funcionario?.idEquipe,
           "uf": funcionario?.uf,
           "modalidade": funcionario?.modalidade,
-          "dataAdmissao": "${funcionario?.dataAdmissao!.year.toString().padLeft(4, '0')}-${funcionario?.dataAdmissao!.month.toString().padLeft(2, '0')}-${funcionario?.dataAdmissao!.day.toString().padLeft(2, '0')}",
+          "dataAdmissao": funcionario?.dataAdmissao != null ? funcionario!.dataAdmissao.toString().split(' ').first : null,
         }),
       );
 

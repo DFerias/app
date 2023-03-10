@@ -93,7 +93,7 @@ class FeriasRemoteDatasourceImpl implements FeriasRemoteDatasource {
         options: Options(
           headers: {
             'From': 'aplicativo',
-            'Authorization': '  ${AuthService.instance.token}',
+            'Authorization': '${AuthService.instance.token}',
           },
         ),
       );

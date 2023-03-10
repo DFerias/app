@@ -28,7 +28,7 @@ class TileEquipe extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(context, '/home/equipe/funcionarios', arguments: {'nomeEquipe': nomeEquipe, 'idEquipe': idEquipe}),
           child: ListTile(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
