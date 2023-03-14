@@ -5,6 +5,7 @@ class RichTextWidget extends StatelessWidget {
   final TextStyle? labeltextStyle;
   final String? text;
   final TextStyle? textStyle;
+  final TextOverflow? overflow;
 
   const RichTextWidget({
     Key? key,
@@ -12,12 +13,15 @@ class RichTextWidget extends StatelessWidget {
     this.labeltextStyle,
     this.text,
     this.textStyle,
-  }) : super(key: key);
+    this.overflow,
+  }) : super(
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
     return RichText(
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow ?? TextOverflow.ellipsis,
       text: TextSpan(
         children: [
           TextSpan(

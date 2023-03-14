@@ -1,3 +1,5 @@
+import 'package:app/features/domain/entities/ferias.dart';
+import 'package:app/features/pages/historico/widgets/modal_info_solicitacao.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/features/pages/shared/rich_text_widget.dart';
@@ -46,7 +48,17 @@ class TileSolicitacao extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: () => ModalInfoSolicitacao.showModalSheetInfoSolicitacao(
+            context,
+            Ferias(
+              status: status,
+              inicio: dataInicial,
+              fim: dataFinal,
+              diasAgendados: diasAgendados,
+              observacoesLider: observacaoLider,
+              observacoesRh: observacaoRh,
+            ),
+          ),
           child: ListTile(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

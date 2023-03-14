@@ -18,6 +18,8 @@ class AuthService {
     this.authRh,
   });
 
+  Funcionario get user => usuario ?? FuncionarioModel.fromCache();
+
   bool get logado {
     return token != null;
   }

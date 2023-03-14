@@ -92,20 +92,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _displayInfoUser() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              const TextSpan(text: 'Bem-vindo(a), ', style: TextStyle(fontSize: 16.0)),
-              TextSpan(text: App.authService.usuario?.nome.toString(), style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-            ],
-          ),
-        ),
-        Text('${App.authService.usuario?.modalidade} - ${nomeEquipe(AuthService.instance.usuario?.idEquipe)}', style: const TextStyle(fontSize: 16.0)),
-      ],
+    return BlocBuilder<ListarFeriasController, ListarFeriasState>(
+      bloc: feriasController,
+      builder: (context, state) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(text: 'Bem-vindo(a), ', style: TextStyle(fontSize: 16.0)),
+                  TextSpan(text: App.authService.usuario?.nome.toString(), style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Text('${App.authService.usuario?.modalidade}', style: const TextStyle(fontSize: 16.0)),
+                Visibility(visible: nomeEquipe(AuthService.instance.user.idEquipe) != null, child: Text(' - ${nomeEquipe(AuthService.instance.user.idEquipe)}', style: const TextStyle(fontSize: 16.0))),
+              ],
+            )
+          ],
+        );
+      },
     );
   }
 

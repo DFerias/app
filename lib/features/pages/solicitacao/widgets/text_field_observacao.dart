@@ -26,7 +26,7 @@ class _TextFieldObservacaoState extends State<TextFieldObservacao> {
       style: TextStyle(color: Colors.grey[700]),
       textAlign: TextAlign.start,
       maxLines: null,
-      maxLength: 500,
+      maxLength: 100,
       keyboardAppearance: Brightness.dark,
       controller: widget.textEditingController,
       decoration: InputDecoration(
