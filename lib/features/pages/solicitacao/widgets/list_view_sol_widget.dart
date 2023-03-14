@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -71,13 +73,7 @@ class _ListViewSolWidgetState extends BaseState<ListViewSolWidget, SolicitacaoEq
             ),
           );
         } else if (state.status == SolicitacaoEquipeStatus.error) {
-          setState(() {
-            Dialogs.showSnackBar(
-              context,
-              state.errorMessage ?? '',
-              cor: Colors.red,
-            );
-          });
+          log(state.errorMessage ?? '');
         }
 
         return NotificationListener<ScrollNotification>(
@@ -94,6 +90,7 @@ class _ListViewSolWidgetState extends BaseState<ListViewSolWidget, SolicitacaoEq
                     status: widget.listaSolFerias[index].ferias?.status ?? '',
                     dataInicial: widget.listaSolFerias[index].ferias?.inicio ?? '',
                     dataFinal: widget.listaSolFerias[index].ferias?.fim ?? '',
+                    diasAgendados: widget.listaSolFerias[index].ferias?.diasAgendados ?? '',
                     observacaoLider: widget.listaSolFerias[index].ferias?.observacoesLider,
                     observacaoRh: widget.listaSolFerias[index].ferias?.observacoesRh,
                     onTap: () => ModalValidacao.showModalSheetValidacao(context, widget.listaSolFerias[index], widget.isRh).then((value) {

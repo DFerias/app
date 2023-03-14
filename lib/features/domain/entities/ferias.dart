@@ -7,6 +7,7 @@ class Ferias extends Equatable {
   final int? idLider;
   final String? inicio;
   final String? fim;
+  final String? diasAgendados;
   final String? status;
   final String? observacoesRh;
   final String? observacoesLider;
@@ -18,6 +19,7 @@ class Ferias extends Equatable {
     this.idLider,
     this.inicio,
     this.fim,
+    this.diasAgendados,
     this.status,
     this.observacoesRh,
     this.observacoesLider,
@@ -31,6 +33,7 @@ class Ferias extends Equatable {
         idLider,
         inicio,
         fim,
+        diasAgendados,
         status,
         observacoesRh,
         observacoesLider,

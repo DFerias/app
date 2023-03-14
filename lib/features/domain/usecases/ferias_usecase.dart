@@ -25,7 +25,18 @@ class ChangeStatusFeriasUseCase {
 
   ChangeStatusFeriasUseCase(this._repository);
 
-  Future<Either<Failure, String>> call(int idSolicitacao, String status) async => _repository.changeStatusFerias(idSolicitacao, status);
+  Future<Either<Failure, String>> call(
+    int idSolicitacao,
+    String status, {
+    String? comentarioLider,
+    String? comentarioRh,
+  }) async =>
+      _repository.changeStatusFerias(
+        idSolicitacao,
+        status,
+        comentarioLider: comentarioLider,
+        comentarioRh: comentarioRh,
+      );
 }
 
 class GetFeriasEquipeUseCase {

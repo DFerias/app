@@ -27,7 +27,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       );
 
       if (response.statusCode == 200) {
-        return AuthDto.fromJson(response.data);
+        return AuthDto.fromMap(response.data);
       } else {
         if (response.statusCode == 400) {
           throw const HttpError(erroRequisicao);

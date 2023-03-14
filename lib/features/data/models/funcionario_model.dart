@@ -65,10 +65,25 @@ class FuncionarioModel extends Funcionario {
         "username": username,
       };
 
+  static Map<String, dynamic> toCache(Funcionario funcionario) => {
+        "id": funcionario.id,
+        "idEquipe": funcionario.idEquipe,
+        "nome": funcionario.nome,
+        "dataAdmissao": funcionario.dataAdmissao.toString(),
+        "email": funcionario.email,
+        "pass": funcionario.senha,
+        "saldoFerias": funcionario.saldoFerias,
+        "modalidade": funcionario.modalidade,
+        "cidade": funcionario.cidade,
+        "uf": funcionario.uf,
+        "enabled": funcionario.enabled,
+        "username": funcionario.username,
+      };
+
   factory FuncionarioModel.fromJson(str) => FuncionarioModel.fromMap(json.decode(str));
 
   factory FuncionarioModel.fromCache() {
-    return FuncionarioModel.fromJson(json.decode(App.cache!.getString('usuario')!));
+    return FuncionarioModel.fromJson(App.cache!.getString('usuario')!);
   }
 
   String toJson() => json.encode(toMap());

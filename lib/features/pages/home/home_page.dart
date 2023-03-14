@@ -329,28 +329,54 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Dept.: ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF3F3F3F),
-                        ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Dept.: ',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3F3F3F),
+                            ),
+                          ),
+                          TextSpan(
+                            text: nomeEquipe(
+                              solFerias.funcionario?.idEquipe,
+                            ),
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Color(0xFF3F3F3F),
+                            ),
+                          )
+                        ],
                       ),
-                      TextSpan(
-                        text: nomeEquipe(
-                          solFerias.funcionario?.idEquipe,
-                        ),
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          color: Color(0xFF3F3F3F),
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Dias: ',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3F3F3F),
+                            ),
+                          ),
+                          TextSpan(
+                            text: solFerias.ferias?.diasAgendados,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Color(0xFF3F3F3F),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

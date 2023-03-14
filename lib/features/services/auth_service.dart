@@ -66,7 +66,7 @@ class AuthService {
     }
 
     if (usuario != null) {
-      _cache?.setString('usuario', json.encode(usuario));
+      _cache?.setString('usuario', json.encode(FuncionarioModel.toCache(usuario!)));
     }
 
     if (isLider != null) {

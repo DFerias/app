@@ -7,6 +7,7 @@ class TileSolicitacaoEquipe extends StatelessWidget {
   final String status;
   final String dataInicial;
   final String dataFinal;
+  final String diasAgendados;
   final String? observacaoLider;
   final String? observacaoRh;
   final GestureTapCallback onTap;
@@ -17,6 +18,7 @@ class TileSolicitacaoEquipe extends StatelessWidget {
     required this.status,
     required this.dataInicial,
     required this.dataFinal,
+    required this.diasAgendados,
     this.observacaoLider,
     this.observacaoRh,
     required this.onTap,
@@ -51,8 +53,8 @@ class TileSolicitacaoEquipe extends StatelessWidget {
           onTap: onTap,
           child: ListTile(
             contentPadding: const EdgeInsets.all(10.0),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RichTextWidget(
                   label: 'Nome:',
@@ -65,6 +67,28 @@ class TileSolicitacaoEquipe extends StatelessWidget {
                   textStyle: const TextStyle(
                     fontSize: 16.0,
                     color: Color(0xFF3F3F3F),
+                  ),
+                ),
+                const SizedBox(height: 5.0),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Qtd. de dias: ',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF3F3F3F),
+                        ),
+                      ),
+                      TextSpan(
+                        text: diasAgendados,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Color(0xFF3F3F3F),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],

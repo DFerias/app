@@ -6,6 +6,7 @@ class TileSolicitacao extends StatelessWidget {
   final String status;
   final String dataInicial;
   final String dataFinal;
+  final String diasAgendados;
   final String? observacaoLider;
   final String? observacaoRh;
 
@@ -14,6 +15,7 @@ class TileSolicitacao extends StatelessWidget {
     required this.status,
     required this.dataInicial,
     required this.dataFinal,
+    required this.diasAgendados,
     this.observacaoLider,
     this.observacaoRh,
   }) : super(key: key);
@@ -60,6 +62,27 @@ class TileSolicitacao extends StatelessWidget {
                   textStyle: const TextStyle(
                     fontSize: 16.0,
                     color: Color(0xFF3F3F3F),
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Qtd. de dias: ',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF3F3F3F),
+                        ),
+                      ),
+                      TextSpan(
+                        text: diasAgendados,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Color(0xFF3F3F3F),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],

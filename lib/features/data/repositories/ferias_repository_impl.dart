@@ -33,9 +33,9 @@ class FeriasRepositoryImpl implements FeriasRepository {
   }
 
   @override
-  Future<Either<Failure, String>> changeStatusFerias(idSolicitacao, status) async {
+  Future<Either<Failure, String>> changeStatusFerias(idSolicitacao, status, {String? comentarioLider, String? comentarioRh}) async {
     try {
-      final result = await _datasource.changeStatusFerias(idSolicitacao, status);
+      final result = await _datasource.changeStatusFerias(idSolicitacao, status, comentarioLider: comentarioLider, comentarioRh: comentarioRh);
 
       return Right(result);
     } on Failure catch (e) {

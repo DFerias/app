@@ -87,8 +87,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 }
 
 class DateTimePicker {
-  Future picker(DateTime? firstDate) async {
-    DateTime? data = await DateDialog.show(DateTime.now(), firstDate);
+  Future picker(DateTime? firstDate, {DateTime? initial}) async {
+    DateTime? data = await DateDialog.show(initial ?? DateTime.now(), firstDate);
     if (data == null) return;
 
     TimeOfDay? time = TimeOfDay.now();

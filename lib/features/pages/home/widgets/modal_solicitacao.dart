@@ -1,3 +1,4 @@
+import 'package:app/features/pages/funcionario/cubit/lista_funcionario_cubit/funcionario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +9,7 @@ import 'package:app/index.dart';
 
 class ModalSheetSolicitacao extends StatefulWidget {
   final String rota;
+
   const ModalSheetSolicitacao({
     Key? key,
     required this.rota,
@@ -21,8 +23,11 @@ class ModalSheetSolicitacao extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
       ),
-      builder: (context) => BlocProvider(
-        create: (context) => SolicitacaoController(),
+      builder: (context) => MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => SolicitacaoController()),
+          BlocProvider(create: (context) => FuncionarioController()),
+        ],
         child: ModalSheetSolicitacao(rota: rota),
       ),
     );
@@ -40,28 +45,53 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
   bool? _finalValido;
 
   @override
+  void onReady() {
+    super.onReady();
+    context.read<FuncionarioController>().getFuncionariosId(AuthService.instance.usuario!.id!);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocListener<SolicitacaoController, SolicitacaoState>(
-      listener: (context, state) {
-        if (state.status == SolicitacaoStatus.loading) {
-          Dialogs.showLoadingDialog();
-        }
-
-        if (state.status == SolicitacaoStatus.error) {
-          Dialogs.showAlertDialog(state.errorMessage, 'Atenção!').then((_) => Dialogs.close());
-        }
-
-        if (state.status == SolicitacaoStatus.success) {
-          Dialogs.showAlertDialog(state.successMessage, 'Sucesso').then((_) {
-            Navigator.pop(context);
-            if (widget.rota == '/home') {
-              Navigator.of(context).pushNamedAndRemoveUntil(widget.rota, (Route<dynamic> route) => false);
-            } else {
-              Navigator.pop(context, true);
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SolicitacaoController, SolicitacaoState>(
+          listener: (context, state) {
+            if (state.status == SolicitacaoStatus.loading) {
+              Dialogs.showLoadingDialog();
             }
-          });
-        }
-      },
+
+            if (state.status == SolicitacaoStatus.error) {
+              Dialogs.showAlertDialog(state.errorMessage, 'Atenção!').then((_) => Dialogs.close());
+            }
+
+            if (state.status == SolicitacaoStatus.success) {
+              Dialogs.showAlertDialog(state.successMessage, 'Sucesso').then((_) {
+                Navigator.pop(context);
+                if (widget.rota == '/home') {
+                  Navigator.of(context).pushNamedAndRemoveUntil(widget.rota, (Route<dynamic> route) => false);
+                } else {
+                  Navigator.pop(context, true);
+                }
+              });
+            }
+          },
+        ),
+        BlocListener<FuncionarioController, FuncionarioState>(
+          listener: (context, state) {
+            if (state.status == FuncionarioStatus.loading) {
+              Dialogs.showLoadingDialog();
+            }
+
+            if (state.status == FuncionarioStatus.error) {
+              Dialogs.showAlertDialog(state.errorMessage, 'Atenção!').then((_) => Dialogs.close());
+            }
+
+            if (state.status == FuncionarioStatus.loaded) {
+              Dialogs.close();
+            }
+          },
+        ),
+      ],
       child: ClipRRect(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         child: Container(
@@ -85,6 +115,37 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
                   const Text(
                     'Nova Solicitação',
                     style: TextStyle(color: Color(0xFF3F3F3F), fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10.0),
+                  BlocBuilder<FuncionarioController, FuncionarioState>(
+                    builder: (context, state) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Saldo de Férias:',
+                            style: TextStyle(fontSize: 16.0, color: Color(0xFF3F3F3F), fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${_subtrairDiasAgendadosDoSaldo()} dias',
+                            style: const TextStyle(fontSize: 16.0, color: Color(0xFF3F3F3F)),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Dias Agendados: ',
+                        style: TextStyle(fontSize: 16.0, color: Color(0xFF3F3F3F), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${_calcularDiasAgendados()} dias',
+                        style: const TextStyle(fontSize: 16.0, color: Color(0xFF3F3F3F)),
+                      )
+                    ],
                   ),
                   const SizedBox(height: 20.0),
                   _dataInicio(),
@@ -118,12 +179,14 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
   }
 
   Widget _dataFim() {
+    var dataInicial = _inicio?.add(const Duration(days: 5));
+
     return DatePickerWidget(
       label: 'Data Final',
       date: _fim,
       dataFinalValid: _finalValido,
       onTap: () {
-        DateTimePicker().picker(null).then((value) {
+        DateTimePicker().picker(dataInicial, initial: dataInicial).then((value) {
           setState(() {
             _fim = value;
             _finalValido = true;
@@ -175,5 +238,25 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
         _finalValido = false;
       }
     });
+  }
+
+  _calcularDiasAgendados() {
+    if (_inicio != null && _fim != null) {
+      Duration diferenca = _fim!.difference(_inicio!);
+      return diferenca.inDays.toString();
+    } else {
+      return '0';
+    }
+  }
+
+  _subtrairDiasAgendadosDoSaldo() {
+    if (_inicio != null && _fim != null) {
+      Duration diferenca = _fim!.difference(_inicio!);
+      var saldo = AuthService.instance.usuario?.saldoFerias ?? 0;
+
+      return saldo - diferenca.inDays;
+    } else {
+      return AuthService.instance.usuario?.saldoFerias ?? 0;
+    }
   }
 }

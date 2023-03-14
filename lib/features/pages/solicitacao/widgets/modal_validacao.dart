@@ -133,7 +133,7 @@ class _ModalValidacaoState extends BaseState<ModalValidacao, SolicitacaoEquipeCo
                         color: Color(0xFFFF8D06),
                       ),
                       backgroundColor: const Color.fromARGB(255, 252, 230, 202),
-                      onPressed: () => controller.changeStatusFeriasEquipe(widget.solicitacao.ferias!.id!, 'RECUSADA'),
+                      onPressed: () => controller.changeStatusFeriasEquipe(widget.solicitacao.ferias!.id!, 'RECUSADA', _observacao.text, widget.isRh),
                     ),
                   ),
                   const SizedBox(width: 10.0),
@@ -141,7 +141,7 @@ class _ModalValidacaoState extends BaseState<ModalValidacao, SolicitacaoEquipeCo
                     child: ButtonWidget(
                       label: labelButton(),
                       icon: const Icon(Icons.done),
-                      onPressed: () => controller.changeStatusFeriasEquipe(widget.solicitacao.ferias!.id!, statusValue()),
+                      onPressed: () => controller.changeStatusFeriasEquipe(widget.solicitacao.ferias!.id!, statusValue(), _observacao.text, widget.isRh),
                     ),
                   )
                 ],

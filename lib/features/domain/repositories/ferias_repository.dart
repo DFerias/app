@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 abstract class FeriasRepository {
   Future<Either<Failure, List<SolicitacaoFeriasDto>>> getFerias();
   Future<Either<Failure, List<Ferias>>> getHistoricoFerias(id);
-  Future<Either<Failure, String>> changeStatusFerias(idSolicitacao, status);
+  Future<Either<Failure, String>> changeStatusFerias(idSolicitacao, status, {String? comentarioLider, String? comentarioRh});
   Future<Either<Failure, List<SolicitacaoFeriasDto>>> getFeriasEquipe();
   Future<Either<Failure, List<SolicitacaoFeriasDto>>> getFeriasValidadas();
   Future<Either<Failure, String>> addFerias(ferias);

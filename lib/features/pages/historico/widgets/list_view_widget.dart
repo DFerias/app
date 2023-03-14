@@ -81,6 +81,7 @@ class _ListViewWidgetState extends BaseState<ListViewWidget, HistoricoController
                     status: widget.listaFerias[index].status ?? '',
                     dataInicial: widget.listaFerias[index].inicio ?? '',
                     dataFinal: widget.listaFerias[index].fim ?? '',
+                    diasAgendados: widget.listaFerias[index].diasAgendados ?? '',
                     observacaoLider: widget.listaFerias[index].observacoesLider,
                     observacaoRh: widget.listaFerias[index].observacoesRh,
                   );

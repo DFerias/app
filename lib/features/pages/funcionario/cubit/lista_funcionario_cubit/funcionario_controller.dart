@@ -41,4 +41,24 @@ class FuncionarioController extends Cubit<FuncionarioState> {
       emit(state.copyWith(status: FuncionarioStatus.error, errorMessage: e.toString()));
     }
   }
+
+  Future<void> getFuncionariosId(int idFuncionario) async {
+    emit(state.copyWith(status: FuncionarioStatus.loading));
+
+    try {
+      final getFuncionarios = di.getIt<ListarFuncionariosUsecase>();
+
+      await getFuncionarios.call().then((funcionarios) {
+        funcionarios.fold(
+          (l) => emit(state.copyWith(status: FuncionarioStatus.error, errorMessage: l.message)),
+          (r) {
+            AuthService.instance.atualizarSessao(usuario: r.firstWhere((element) => element.id == idFuncionario));
+            emit(state.copyWith(status: FuncionarioStatus.loaded));
+          },
+        );
+      });
+    } catch (e) {
+      emit(state.copyWith(status: FuncionarioStatus.error, errorMessage: e.toString()));
+    }
+  }
 }
