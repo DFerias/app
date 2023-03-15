@@ -61,4 +61,16 @@ class FuncionarioController extends Cubit<FuncionarioState> {
       emit(state.copyWith(status: FuncionarioStatus.error, errorMessage: e.toString()));
     }
   }
+
+  void selectFuncionario(Map<String, dynamic> funcionarioSelected) {
+    emit(state.copyWith(funcionarioSelected: funcionarioSelected));
+  }
+
+  void validateFuncionario() {
+    if (state.funcionarioSelected != null) {
+      emit(state.copyWith(validarFuncionario: state.validarFuncionario));
+    } else {
+      emit(state.copyWith(validarFuncionario: state.validarFuncionario = false));
+    }
+  }
 }

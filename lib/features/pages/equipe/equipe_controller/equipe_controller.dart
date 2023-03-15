@@ -9,14 +9,14 @@ part 'equipe_state.dart';
 class EquipeController extends Cubit<EquipeState> {
   EquipeController() : super(EquipeState.initial());
 
-  Future<void> addEquipe(String idLider, String nomeEquipe, String cor) async {
+  Future<void> addEquipe(int idLider, String nomeEquipe, String cor) async {
     emit(state.copyWith(status: EquipeStatus.loading));
 
     final addEquipes = di.getIt<AddEquipeUseCase>();
 
     try {
       final newEquipe = await addEquipes.call(
-        Equipe(idLider: int.parse(idLider), nome: nomeEquipe, cor: cor.replaceAll('Color(0xff', '#').replaceAll(')', '')),
+        Equipe(idLider: idLider, nome: nomeEquipe, cor: cor.replaceAll('Color(0xff', '#').replaceAll(')', '')),
       );
 
       newEquipe.fold(

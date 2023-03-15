@@ -35,28 +35,32 @@ class _ListViewWidgetState extends BaseState<ListViewWidget, HistoricoController
           );
         } else if (state.status == HistoricoStatus.initial || widget.listaFerias.isEmpty) {
           return NotificationListener<ScrollNotification>(
-            child: SingleChildScrollView(
-              child: RefreshIndicator(
-                onRefresh: onRefresh,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/data_empty.gif',
-                        scale: 2.0,
-                      ),
-                      Text(
-                        'Nenhuma Solicitação Encontrada',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.grey[700],
-                          fontWeight: FontWeight.w500,
+            child: RefreshIndicator(
+              onRefresh: onRefresh,
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/data_empty.gif',
+                          scale: 2.0,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                        Text(
+                          'Nenhuma Solicitação Encontrada',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
           );

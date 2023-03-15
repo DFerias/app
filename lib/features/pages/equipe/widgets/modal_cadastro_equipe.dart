@@ -1,10 +1,11 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:app/features/pages/equipe/equipe_controller/equipe_controller.dart';
+import 'package:app/features/pages/funcionario/cubit/lista_funcionario_cubit/funcionario_controller.dart';
+import 'package:app/features/pages/shared/drop_down_button.dart';
 import 'package:app/index.dart';
 
 class ModalSheetCadastroEquipe extends StatefulWidget {
@@ -23,7 +24,12 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
       ),
-      builder: (context) => ModalSheetCadastroEquipe(equipeController: equipeController),
+      builder: (context) => BlocProvider(
+        create: (context) => FuncionarioController(),
+        child: ModalSheetCadastroEquipe(
+          equipeController: equipeController,
+        ),
+      ),
     );
   }
 
@@ -34,9 +40,19 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
 class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nomeEquipe = TextEditingController();
-  final TextEditingController _idLider = TextEditingController();
   Color pickerColor = const Color(0xff443a49);
   Color currentColor = const Color(0xff443a49);
+
+  late FuncionarioController funcionarioController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    funcionarioController = context.read<FuncionarioController>();
+
+    funcionarioController.getFuncionarios();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,28 +149,27 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
   }
 
   Widget _idLeaderField() {
-    return TextFormField(
-      controller: _idLider,
-      keyboardType: TextInputType.number,
-      style: TextStyle(color: Colors.grey[700]),
-      decoration: InputDecoration(
-        isDense: true,
-        label: const Text('ID Líder'),
-        floatingLabelStyle: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
-        filled: true,
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.orange),
-        ),
-      ),
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(4),
-      ],
+    return BlocBuilder<FuncionarioController, FuncionarioState>(
+      builder: (context, state) {
+        return DropDownButton(
+          label: 'Líder',
+          lista: _funcionarioLista(),
+          value: funcionarioController.state.funcionarioSelected?.entries.first.key,
+          validate: funcionarioController.state.validarFuncionario,
+          messageValidate: 'Informe um Líder',
+          onChanged: (value) {
+            funcionarioController
+              ..selectFuncionario(selectedFuncionario(value))
+              ..validateFuncionario();
+          },
+        );
+      },
     );
   }
 
   Widget _corField() {
     return TextFormField(
-      initialValue: ' $currentColor',
+      initialValue: ' ${currentColor.toString().replaceAll('Color(0xff', '#').replaceAll(')', '')}',
       readOnly: true,
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(color: Colors.grey[700]),
@@ -206,6 +221,7 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
               onPressed: () {
                 setState(() => currentColor = pickerColor);
                 Navigator.of(context).pop();
+                primaryFocus!.unfocus();
               },
             )
           ],
@@ -233,10 +249,25 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
         style: TextStyle(fontSize: 22.0, color: Colors.white),
       ),
       onPressed: () async {
+        primaryFocus!.unfocus();
         if (_formKey.currentState!.validate()) {
-          widget.equipeController.addEquipe(_idLider.text, _nomeEquipe.text, currentColor.toString());
+          widget.equipeController.addEquipe(funcionarioController.state.funcionarioSelected?.entries.first.value, _nomeEquipe.text, currentColor.toString());
         }
       },
     );
+  }
+
+  _funcionarioLista() {
+    var lista = funcionarioController.state.funcionarios;
+
+    final funcionarios = {for (var e in lista) e.nome!: e.id!};
+
+    return funcionarios;
+  }
+
+  Map<String, dynamic> selectedFuncionario(value) {
+    var funcionario = context.read<FuncionarioController>().state.funcionarios.firstWhere((element) => element.nome == value);
+
+    return <String, dynamic>{funcionario.nome!: funcionario.id};
   }
 }

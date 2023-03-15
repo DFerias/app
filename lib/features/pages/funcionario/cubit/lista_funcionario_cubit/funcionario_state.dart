@@ -7,19 +7,24 @@ enum FuncionarioStatus {
   error;
 }
 
+// ignore: must_be_immutable
 class FuncionarioState extends Equatable {
-  final FuncionarioStatus status;
-  final Funcionario? funcionario;
-  final List<Funcionario> funcionarios;
-  final List<Funcionario> funcionariosEquipe;
-  final String? errorMessage;
+  FuncionarioStatus status;
+  Funcionario? funcionario;
+  List<Funcionario> funcionarios;
+  List<Funcionario> funcionariosEquipe;
+  String? errorMessage;
+  Map<String, dynamic>? funcionarioSelected;
+  bool? validarFuncionario;
 
-  const FuncionarioState(
+  FuncionarioState(
     this.status,
     this.funcionario,
     this.funcionarios,
     this.funcionariosEquipe,
     this.errorMessage,
+    this.funcionarioSelected,
+    this.validarFuncionario,
   );
 
   FuncionarioState.initial()
@@ -27,7 +32,9 @@ class FuncionarioState extends Equatable {
         funcionario = null,
         funcionarios = [],
         funcionariosEquipe = [],
-        errorMessage = null;
+        errorMessage = null,
+        funcionarioSelected = null,
+        validarFuncionario = true;
 
   @override
   List<Object?> get props => [
@@ -36,6 +43,8 @@ class FuncionarioState extends Equatable {
         funcionarios,
         funcionariosEquipe,
         errorMessage,
+        funcionarioSelected,
+        validarFuncionario,
       ];
 
   FuncionarioState copyWith({
@@ -44,6 +53,8 @@ class FuncionarioState extends Equatable {
     List<Funcionario>? funcionarios,
     List<Funcionario>? funcionariosEquipe,
     String? errorMessage,
+    Map<String, dynamic>? funcionarioSelected,
+    bool? validarFuncionario,
   }) {
     return FuncionarioState(
       status ?? this.status,
@@ -51,6 +62,8 @@ class FuncionarioState extends Equatable {
       funcionarios ?? this.funcionarios,
       funcionariosEquipe ?? this.funcionariosEquipe,
       errorMessage ?? this.errorMessage,
+      funcionarioSelected ?? this.funcionarioSelected,
+      validarFuncionario ?? this.validarFuncionario,
     );
   }
 }

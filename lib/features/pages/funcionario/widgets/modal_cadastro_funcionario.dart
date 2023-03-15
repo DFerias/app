@@ -220,9 +220,11 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                               DateTimePicker().picker(DateTime(2005)).then((value) {
                                 setState(() {
                                   primaryFocus!.unfocus();
-                                  controller
-                                    ..selectDataAdmissao(value)
-                                    ..validateData();
+                                  if (value != null) {
+                                    controller
+                                      ..selectDataAdmissao(value)
+                                      ..validateData();
+                                  }
                                 });
                               });
                             },

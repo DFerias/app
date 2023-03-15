@@ -54,7 +54,6 @@ class _LoginPageState extends BaseState<LoginPage, AuthController> {
                   const SizedBox(height: 25.0),
                   _loginButton(),
                   const SizedBox(height: 25.0),
-                  _resetPasswordButton(),
                 ],
               ),
             ),
@@ -118,16 +117,6 @@ class _LoginPageState extends BaseState<LoginPage, AuthController> {
           }
         },
       ),
-    );
-  }
-
-  Widget _resetPasswordButton() {
-    return OutlinedButton(
-      child: const Text(
-        'Esqueceu sua senha?',
-        style: TextStyle(fontSize: 17.0),
-      ),
-      onPressed: () {},
     );
   }
 

@@ -4,12 +4,14 @@ import 'package:app/features/pages/shared/rich_text_widget.dart';
 
 class TileEquipe extends StatelessWidget {
   final String? nomeEquipe;
+  final String? nomeLider;
   final int? idEquipe;
   final String? cor;
 
   const TileEquipe({
     Key? key,
     this.nomeEquipe,
+    this.nomeLider,
     this.idEquipe,
     this.cor,
   }) : super(key: key);
@@ -30,24 +32,19 @@ class TileEquipe extends StatelessWidget {
         child: InkWell(
           onTap: () => Navigator.pushNamed(context, '/home/equipe/funcionarios', arguments: {'nomeEquipe': nomeEquipe, 'idEquipe': idEquipe}),
           child: ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichTextWidget(
-                  label: nomeEquipe ?? 'Sem Nome',
-                  labeltextStyle: const TextStyle(
-                    fontSize: 18.0,
-                    color: Color(0xFF3F3F3F),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 16.0,
-                    color: Color(0xFF3F3F3F),
-                  ),
+              title: RichTextWidget(
+                label: nomeEquipe ?? 'Sem Nome',
+                labeltextStyle: const TextStyle(
+                  fontSize: 18.0,
+                  color: Color(0xFF3F3F3F),
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-          ),
+                textStyle: const TextStyle(
+                  fontSize: 16.0,
+                  color: Color(0xFF3F3F3F),
+                ),
+              ),
+              subtitle: Text('Líder: ${nomeLider ?? 'Sem Nome'}')),
         ),
       ),
     );

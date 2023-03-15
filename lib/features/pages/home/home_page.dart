@@ -46,11 +46,12 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(20.0, 40.0, 0, 20.0),
             alignment: Alignment.centerLeft,
             color: const Color(0xFFFE9822),
-            constraints: const BoxConstraints.expand(height: 150.0),
+            constraints: const BoxConstraints.expand(height: 175.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 15.0),
                 Expanded(
                   child: Row(
                     children: [
@@ -110,7 +111,23 @@ class _HomePageState extends State<HomePage> {
             Row(
               children: [
                 Text('${App.authService.usuario?.modalidade}', style: const TextStyle(fontSize: 16.0)),
-                Visibility(visible: nomeEquipe(AuthService.instance.user.idEquipe) != null, child: Text(' - ${nomeEquipe(AuthService.instance.user.idEquipe)}', style: const TextStyle(fontSize: 16.0))),
+                nomeEquipe(AuthService.instance.user.idEquipe) != null
+                    ? Text(' - ${nomeEquipe(AuthService.instance.user.idEquipe)}', style: const TextStyle(fontSize: 16.0))
+                    : Row(
+                        children: const [
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                            width: 10.0,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 1.0,
+                            ),
+                          ),
+                        ],
+                      ),
               ],
             )
           ],

@@ -17,6 +17,7 @@ class EquipeModel extends Equipe {
 
   factory EquipeModel.fromMap(Map<String, dynamic> json) => EquipeModel(
         id: json["id"],
+        idLider: json['id_lider'],
         nome: json["nome"],
         cor: json["cor"],
       );
