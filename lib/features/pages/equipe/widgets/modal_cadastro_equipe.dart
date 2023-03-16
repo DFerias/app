@@ -40,6 +40,7 @@ class ModalSheetCadastroEquipe extends StatefulWidget {
 class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nomeEquipe = TextEditingController();
+  late TextEditingController _cor;
   Color pickerColor = const Color(0xff443a49);
   Color currentColor = const Color(0xff443a49);
 
@@ -50,6 +51,7 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
     super.initState();
 
     funcionarioController = context.read<FuncionarioController>();
+    _cor = TextEditingController(text: currentColor.toString().replaceAll('Color(0xff', ' #').replaceAll(')', ''));
 
     funcionarioController.getFuncionarios();
   }
@@ -137,6 +139,7 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.orange),
         ),
+        contentPadding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       ),
       validator: (value) {
         if (value!.isEmpty) {
@@ -169,7 +172,7 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
 
   Widget _corField() {
     return TextFormField(
-      initialValue: ' ${currentColor.toString().replaceAll('Color(0xff', '#').replaceAll(')', '')}',
+      controller: _cor,
       readOnly: true,
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(color: Colors.grey[700]),
@@ -194,6 +197,7 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.orange),
         ),
+        contentPadding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       ),
     );
   }
@@ -207,7 +211,10 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
       context: App.context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Selecione a cor'),
+          title: const Text(
+            'Selecione a cor',
+            style: TextStyle(color: Colors.black),
+          ),
           content: SingleChildScrollView(
             child: ColorPicker(
               showLabel: false,
@@ -219,7 +226,10 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
             ElevatedButton(
               child: const Text('Selecionar'),
               onPressed: () {
-                setState(() => currentColor = pickerColor);
+                setState(() {
+                  currentColor = pickerColor;
+                  _cor.text = pickerColor.toString().replaceAll('Color(0xff', ' #').replaceAll(')', '');
+                });
                 Navigator.of(context).pop();
                 primaryFocus!.unfocus();
               },

@@ -5,6 +5,7 @@ import 'package:app/features/pages/routes/historico_routes.dart';
 import 'package:app/features/pages/routes/solicitacao_routes.dart';
 import 'package:app/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -37,6 +38,12 @@ class AppWidget extends StatelessWidget {
         '/home/equipe/funcionarios': (context) => FuncionarioEquipeRoutes.page,
         '/home/funcionario': (context) => FuncionarioRoutes.page,
       },
+      supportedLocales: const [Locale('pt', 'BR')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
     );
   }
 }

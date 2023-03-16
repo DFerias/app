@@ -38,7 +38,7 @@ class FeriasModel extends Ferias {
         var inicio = DateTime.parse(json['inicio']);
         var fim = DateTime.parse(json['fim']);
 
-        return fim.difference(inicio).inDays.toString();
+        return (fim.difference(inicio).inDays + 1).toString();
       } else {
         return null;
       }

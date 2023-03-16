@@ -168,7 +168,7 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
       date: _inicio,
       dataInicialValid: _inicialValido,
       onTap: () {
-        DateTimePicker().picker(null).then((value) {
+        DateTimePicker().picker(null, initial: _inicio ?? DateTime.now()).then((value) {
           setState(() {
             _inicio = value;
             _inicialValido = true;
@@ -179,7 +179,7 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
   }
 
   Widget _dataFim() {
-    var dataInicial = _inicio?.add(const Duration(days: 5));
+    var dataInicial = _inicio?.add(const Duration(days: 4));
 
     return DatePickerWidget(
       label: 'Data Final',
@@ -243,7 +243,7 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
   _calcularDiasAgendados() {
     if (_inicio != null && _fim != null) {
       Duration diferenca = _fim!.difference(_inicio!);
-      return diferenca.inDays.toString();
+      return (diferenca.inDays + 1).toString();
     } else {
       return '0';
     }
@@ -254,7 +254,7 @@ class ModalSheetSolicitacaoState extends BaseState<ModalSheetSolicitacao, Solici
       Duration diferenca = _fim!.difference(_inicio!);
       var saldo = AuthService.instance.usuario?.saldoFerias ?? 0;
 
-      return saldo - diferenca.inDays;
+      return saldo - (diferenca.inDays + 1);
     } else {
       return AuthService.instance.usuario?.saldoFerias ?? 0;
     }
