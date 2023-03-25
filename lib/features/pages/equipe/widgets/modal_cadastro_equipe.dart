@@ -109,7 +109,20 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
                             const SizedBox(width: 12.0),
                             Expanded(
                               flex: 7,
-                              child: _corField(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Selecionar Cor',
+                                    style: TextStyle(
+                                      color: Color(0xFF3F3F3F),
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  _corField(),
+                                ],
+                              ),
                             ),
                           ],
                         )
