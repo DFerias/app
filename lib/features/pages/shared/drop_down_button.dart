@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class DropDownButton extends StatefulWidget {
   final Map<String, dynamic> lista;
+  final String titulo;
   final String label;
   final dynamic value;
   final bool? validate;
@@ -11,6 +12,7 @@ class DropDownButton extends StatefulWidget {
   const DropDownButton({
     Key? key,
     required this.lista,
+    required this.titulo,
     required this.label,
     this.value,
     this.validate,
@@ -28,7 +30,17 @@ class _DropDownButtonState extends State<DropDownButton> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          widget.titulo,
+          style: const TextStyle(
+            color: Color(0xFF3F3F3F),
+            fontSize: 16.0,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 2.0),
         Container(
           padding: const EdgeInsets.only(bottom: 0.0),
           width: double.infinity,

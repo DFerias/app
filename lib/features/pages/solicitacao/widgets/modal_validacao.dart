@@ -1,3 +1,4 @@
+import 'package:app/features/pages/historico/widgets/text_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -115,6 +116,14 @@ class _ModalValidacaoState extends BaseState<ModalValidacao, SolicitacaoEquipeCo
                   RichTextWidget(label: 'Início:', text: widget.solicitacao.ferias?.inicio ?? ''),
                   RichTextWidget(label: 'Fim:', text: widget.solicitacao.ferias?.fim ?? ''),
                 ],
+              ),
+              const SizedBox(height: 8.0),
+              Visibility(
+                visible: widget.solicitacao.ferias?.observacoesLider != null,
+                child: TextContainer(
+                  label: 'Observação Líder',
+                  observacao: widget.solicitacao.ferias?.observacoesLider,
+                ),
               ),
               const SizedBox(height: 8.0),
               TextFieldObservacao(

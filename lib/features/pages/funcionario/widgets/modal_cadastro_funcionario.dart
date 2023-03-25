@@ -146,15 +146,16 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                           ),
                           const SizedBox(height: 12.0),
                           DropDownButton(
-                            label: 'Cidade',
-                            lista: utilListaCidades,
-                            value: controller.state.cidade,
-                            validate: controller.state.validarCidade,
-                            messageValidate: 'Cidade Obrigatória',
+                            titulo: 'Equipe',
+                            label: 'Selecionar',
+                            lista: listaEquipes(),
+                            value: controller.state.equipe?.entries.first.key,
+                            validate: controller.state.validarEquipe,
+                            messageValidate: 'Equipe Obrigatória',
                             onChanged: (value) {
                               controller
-                                ..selectCidade(value)
-                                ..validateCidade();
+                                ..selectEquipe(selectEquipe(value))
+                                ..validateEquipe();
                             },
                           ),
                           const SizedBox(height: 12.0),
@@ -164,15 +165,16 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                               Expanded(
                                 flex: 3,
                                 child: DropDownButton(
-                                  label: 'Equipe',
-                                  lista: listaEquipes(),
-                                  value: controller.state.equipe?.entries.first.key,
-                                  validate: controller.state.validarEquipe,
-                                  messageValidate: 'Equipe Obrigatória',
+                                  titulo: 'Cidade',
+                                  label: 'Selecionar',
+                                  lista: utilListaCidades,
+                                  value: controller.state.cidade,
+                                  validate: controller.state.validarCidade,
+                                  messageValidate: 'Cidade Obrigatória',
                                   onChanged: (value) {
                                     controller
-                                      ..selectEquipe(selectEquipe(value))
-                                      ..validateEquipe();
+                                      ..selectCidade(value)
+                                      ..validateCidade();
                                   },
                                 ),
                               ),
@@ -180,7 +182,8 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                               Expanded(
                                 flex: 3,
                                 child: DropDownButton(
-                                  label: 'UF',
+                                  titulo: 'UF',
+                                  label: 'Selecionar',
                                   lista: utilListaUFs,
                                   value: controller.state.uf,
                                   validate: controller.state.validarUf,
@@ -196,7 +199,8 @@ class ModalSheetCadastroFuncionarioState extends BaseState<ModalSheetCadastroFun
                           ),
                           const SizedBox(height: 12.0),
                           DropDownButton(
-                            label: 'Modalidade',
+                            titulo: 'Modalidade',
+                            label: 'Selecionar',
                             lista: {for (var v in controller.state.listaModalidades!) v.name!: v.id.toString()},
                             value: controller.state.modalidade,
                             validate: controller.state.validarModalidade,

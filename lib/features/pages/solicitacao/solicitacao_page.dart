@@ -36,7 +36,7 @@ class _SolicitacaoPageState extends BaseState<SolicitacaoPage, SolicitacaoEquipe
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DFeriasAppbar(title: 'Solicitações Equipe'),
+      appBar: DFeriasAppbar(title: AuthService.instance.usuario?.rh == true ? 'Solicitações' : 'Solicitações Equipe'),
       body: BlocBuilder<SolicitacaoEquipeController, SolicitacaoEquipeState>(
         buildWhen: (previous, current) {
           if (current.status == SolicitacaoEquipeStatus.loaded) {

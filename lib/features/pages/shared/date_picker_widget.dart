@@ -38,7 +38,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
             widget.label,
             style: const TextStyle(
               color: Color(0xFF3F3F3F),
-              fontSize: 18.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.w500,
             ),
           ),

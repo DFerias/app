@@ -155,7 +155,8 @@ class ModalSheetCadastroEquipeState extends State<ModalSheetCadastroEquipe> {
     return BlocBuilder<FuncionarioController, FuncionarioState>(
       builder: (context, state) {
         return DropDownButton(
-          label: 'Líder',
+          titulo: 'Líder',
+          label: 'Selecionar',
           lista: _funcionarioLista(),
           value: funcionarioController.state.funcionarioSelected?.entries.first.key,
           validate: funcionarioController.state.validarFuncionario,
